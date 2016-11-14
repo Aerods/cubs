@@ -1,0 +1,387 @@
+.search-input {
+  margin-bottom: 10px;
+  float: right;
+  padding-left: 5px;
+}
+@media screen and (max-width: 520px) {
+  .search-input {
+    height: 40px;
+    width: 50%;
+    border: 2px solid #c1c1c1;
+  }
+}
+.nav-button {
+  background-color: #2ea33a;
+  padding: 5px 15px;
+  margin: 5px;
+  color: white;
+  cursor: pointer;
+}
+.nav-button:hover {
+  background-color: #217329;
+  cursor: pointer;
+  text-decoration: none !important;
+  color: white;
+}
+.badge-form ul li:hover,
+.badge-form ol li:hover {
+  background-color: #ace7b2;
+}
+#ViewCub ul,
+.select-activity ul,
+#ViewCub ol,
+.select-activity ol {
+  margin-bottom: 20px;
+}
+#ViewCub ul ul,
+.select-activity ul ul,
+#ViewCub ol ul,
+.select-activity ol ul {
+  margin-left: 0 !important;
+}
+#ViewCub ol li,
+.select-activity ol li {
+  margin-bottom: 20px;
+}
+#ViewCub ol li span:hover,
+.select-activity ol li span:hover {
+  cursor: pointer;
+  background-color: #ace7b2;
+}
+#ViewCub ol li span.selected,
+.select-activity ol li span.selected {
+  background-color: #70d77a;
+}
+#ViewCub ul li,
+.select-activity ul li {
+  margin-bottom: 0px !important;
+}
+#ViewCub ul li:hover,
+.select-activity ul li:hover {
+  cursor: pointer;
+  background-color: #ace7b2;
+}
+#ViewCub ul li.selected,
+.select-activity ul li.selected {
+  background-color: #70d77a;
+}
+#BadgeForm .badge-image {
+  width: 100px;
+  margin-left: 23%;
+  margin-bottom: 20px;
+}
+@media screen and (min-width: 1200px) {
+  #BadgeForm .badge-image {
+    margin-left: 22%;
+  }
+}
+#BadgeProgress .cub-names {
+  -ms-transform: rotate(270deg);
+  /* IE 9 */
+  -webkit-transform: rotate(270deg);
+  /* Chrome, Safari, Opera */
+  transform: rotate(270deg);
+  width: 150px;
+  height: 75px;
+  position: absolute;
+  left: 293px;
+}
+#BadgeProgress .cub-name {
+  width: 152px;
+  height: 25px;
+  border-bottom: 1px solid black;
+  cursor: pointer;
+  padding-left: 2px;
+}
+#BadgeProgress .badges {
+  height: 389px;
+  overflow-y: scroll;
+  position: absolute;
+  left: -60px;
+  top: 275px;
+  border-top: 3px solid black;
+}
+#BadgeProgress .badges .badge-row {
+  border-bottom: 3px solid black;
+  width: 1090px;
+}
+#BadgeProgress .badges .badge-row .badge-details {
+  width: 400px;
+  min-height: 185px;
+  white-space: nowrap;
+  position: relative;
+}
+#BadgeProgress .badges .badge-row .badge-details .badge-name {
+  -ms-transform: rotate(270deg);
+  /* IE 9 */
+  -webkit-transform: rotate(270deg);
+  /* Chrome, Safari, Opera */
+  transform: rotate(270deg);
+  position: absolute;
+  left: -13px;
+  bottom: 85px;
+  width: 175px;
+  cursor: pointer;
+}
+#BadgeProgress .badges .badge-row .badge-details .badge-criteria {
+  position: relative;
+  left: 90px;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+}
+#BadgeProgress .badges .badge-row .badge-details .badge-criteria:last-child {
+  border-bottom: none;
+}
+#BadgeProgress .badges .badge-row .badge-details .badge-criteria .criteria-text {
+  -ms-transform: rotate(270deg);
+  /* IE 9 */
+  -webkit-transform: rotate(270deg);
+  /* Chrome, Safari, Opera */
+  transform: rotate(270deg);
+  position: absolute;
+  bottom: 20px;
+  width: 50px;
+  height: 22px;
+  left: -10px;
+  cursor: pointer;
+}
+#BadgeProgress .badges .badge-row .badge-details .badge-criteria .task,
+#BadgeProgress .badges .badge-row .badge-details .badge-criteria .single-task {
+  position: absolute;
+  left: 25px;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  width: 274px;
+  min-width: 274px;
+  padding-left: 5px;
+  overflow: hidden;
+  cursor: pointer;
+}
+#BadgeProgress .badges .badge-row .badge-details .badge-criteria .task.single-task,
+#BadgeProgress .badges .badge-row .badge-details .badge-criteria .single-task.single-task {
+  left: -1px;
+  border-left: 0;
+  width: 300px;
+  min-width: 300px;
+}
+#BadgeProgress .badges .badge-row .badge-details .badge-criteria .task:hover,
+#BadgeProgress .badges .badge-row .badge-details .badge-criteria .single-task:hover {
+  width: auto;
+  background: #feffb8;
+  z-index: 100;
+  border: 1px solid black;
+}
+#BadgeProgress .badges .badge-row .badge-details .badge-criteria .task:last-child,
+#BadgeProgress .badges .badge-row .badge-details .badge-criteria .single-task:last-child {
+  border-bottom: none;
+}
+#BadgeProgress .badges .badge-row .badge-details .badge-criteria .cell-row {
+  position: absolute;
+  left: 299px;
+}
+#BadgeProgress .badges .badge-row .badge-details .badge-criteria .cell-row:last-child {
+  border-bottom: 1px solid black;
+}
+#BadgeProgress .badges .badge-row .badge-details .badge-criteria .cell-row .cell {
+  display: inline-block;
+  width: 25px;
+  height: 21px;
+  border: 1px solid black;
+  cursor: pointer;
+}
+#BadgeProgress .badges .badge-row .badge-details .badge-criteria .cell-row .cell.done {
+  background-color: green;
+}
+#ProgrammePrint #sign-in-sheet {
+  width: 675px;
+  height: 975px;
+  padding: 10px;
+}
+#ProgrammePrint #sign-in-sheet h3 {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+#ProgrammePrint #sign-in-sheet .meeting-details {
+  float: right;
+}
+#ProgrammePrint table {
+  margin-bottom: -1px;
+}
+#ProgrammePrint table thead tr {
+  text-align: center;
+  color: black;
+}
+#ProgrammePrint table tr {
+  background-color: white;
+  border-bottom: 1px solid black;
+}
+#ProgrammePrint table tr td {
+  padding: 6px;
+}
+#ViewBadge .view-col {
+  padding-top: 13px;
+  margin-left: 15px;
+}
+.view-sheet {
+  background-color: white;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+@media screen and (min-width: 990px) {
+  .view-sheet {
+    width: 940px;
+  }
+}
+.view-sheet .view-group {
+  background-color: #f2f2f2;
+  padding: 25px;
+  margin-bottom: 10px;
+}
+.view-sheet .view-group h3 {
+  display: inline-block;
+  margin-top: 0;
+  margin-bottom: 25px;
+}
+.view-sheet .view-group .view-image {
+  padding: 5px;
+}
+.view-sheet .view-group .view-image img {
+  height: 100px;
+}
+.view-sheet .view-group .nav-button {
+  float: right;
+}
+.view-sheet .view-group .view-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+.view-sheet .view-group .field-group {
+  border-bottom: 1px solid #CCC;
+  padding: 10px;
+  margin-bottom: 5px;
+  width: 48%;
+  margin-right: 2%;
+  display: inline-block;
+}
+@media screen and (max-width: 520px) {
+  .view-sheet .view-group .field-group {
+    width: 100%;
+  }
+}
+.view-sheet .view-group .field-group.wide {
+  width: 98%;
+}
+.view-sheet .view-group .field-group .field-name {
+  width: 125px;
+  display: inline-table;
+  font-weight: bold;
+}
+.view-sheet .view-group .field-group .field-value {
+  display: inline-table;
+}
+@media screen and (min-width: 520px) {
+  .view-sheet .view-group .field-group .field-value {
+    width: 250px;
+  }
+}
+.view-sheet .view-group .field-group .field-value.wide {
+  width: 0;
+}
+.view-sheet .view-group .view-col {
+  display: inline-table;
+  width: 100%;
+  margin-right: 2%;
+}
+@media screen and (min-width: 520px) {
+  .view-sheet .view-group .view-col {
+    width: 48%;
+  }
+}
+.view-sheet .view-group .view-col .field-group {
+  display: block;
+  width: 100%;
+}
+.view-sheet .view-group .view-col .field-group.tall {
+  height: 127px;
+}
+@media screen and (min-width: 990px) {
+  .view-sheet .view-group .view-col .field-group.tall {
+    height: 133px;
+  }
+}
+@media screen and (min-width: 990px) {
+  .view-sheet .view-group .view-col .field-group.tall .field-name {
+    height: 130px;
+  }
+}
+.view-sheet ol li {
+  margin-bottom: 20px;
+}
+.view-sheet ul li {
+  margin-bottom: 0px !important;
+}
+#BadgeGrid .badge-grid-wrapper {
+  margin-top: 40px;
+}
+@media screen and (max-width: 520px) {
+  #BadgeGrid .badge-grid-wrapper {
+    margin-top: 50px;
+  }
+}
+#BadgeGrid .badge-grid-wrapper .badge-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+#BadgeGrid .badge-grid-wrapper .badge-grid .badge-grid-item {
+  position: relative;
+  text-align: center;
+  width: 95px;
+  margin: 5px;
+  padding: 5px;
+}
+@media screen and (max-width: 520px) {
+  #BadgeGrid .badge-grid-wrapper .badge-grid .badge-grid-item {
+    width: 85px;
+  }
+}
+#BadgeGrid .badge-grid-wrapper .badge-grid .badge-grid-item:hover {
+  cursor: pointer;
+  background-color: #ace7b2;
+}
+#BadgeGrid .badge-grid-wrapper .badge-grid .badge-grid-item .badge-image img {
+  width: 85px;
+}
+@media screen and (max-width: 520px) {
+  #BadgeGrid .badge-grid-wrapper .badge-grid .badge-grid-item .badge-image img {
+    width: 75px;
+  }
+}
+#BadgeGrid .badge-grid-wrapper .badge-grid .badge-grid-item .badge-image.not-earned img {
+  opacity: 0.2;
+  -webkit-filter: grayscale(50%);
+}
+#BadgeGrid .badge-grid-wrapper .badge-grid .badge-grid-item .badge-image.moving-on {
+  height: 84px;
+  padding-top: 22px;
+}
+#BadgeGrid .badge-grid-wrapper .badge-grid .badge-grid-item .badge-name {
+  display: table-cell;
+  vertical-align: middle;
+  line-height: 14px;
+  padding: 2px 1px;
+  height: 32px;
+  width: 85px;
+}
+#BadgeGrid .badge-grid-wrapper .badge-grid .badge-grid-item .percentage {
+  display: none;
+  position: absolute;
+  left: 29px;
+  top: 35px;
+  font-size: 22px;
+  font-weight: bold;
+}
+#BadgeGrid .badge-grid-wrapper .badge-grid .badge-grid-item:hover .percentage {
+  display: block;
+}

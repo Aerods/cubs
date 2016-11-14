@@ -1,0 +1,260 @@
+#PageContent {
+  background-color: #f2f2f2;
+  overflow-y: auto;
+  padding-top: 10px;
+}
+.topbar {
+  background-color: #37c345;
+  height: 45px;
+  padding: 10px;
+}
+.topbar .topbar-brand {
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  text-decoration: none;
+  margin-right: 10px;
+}
+@media screen and (max-width: 730px) {
+  .topbar .topbar-brand {
+    display: none;
+  }
+}
+.topbar .topbar-nav {
+  color: white;
+  margin: 14px;
+  font-size: 16px;
+  cursor: pointer;
+  padding-bottom: 3px;
+  text-decoration: none;
+}
+.topbar .topbar-nav:hover {
+  color: #0e44d0;
+}
+.topbar .topbar-nav.active {
+  border-bottom: 2px solid;
+}
+.sidebar {
+  width: 180px;
+  height: 100%;
+  position: fixed;
+  display: flex;
+  flex-wrap: wrap;
+  z-index: 1;
+  top: 55px;
+  box-shadow: 3px 3px 5px grey;
+  background: white;
+  left: 0px;
+  padding: 20px;
+  border-right: 1px solid;
+}
+.sidebar .sidebar-nav {
+  color: black;
+  flex: 0 0 100%;
+  font-size: 18px;
+  height: 24px;
+}
+html body {
+  font-family: sans-serif;
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #333;
+}
+html body input {
+  line-height: inherit;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+}
+html body a {
+  text-decoration: none;
+}
+html body a:hover {
+  text-decoration: none;
+}
+html body table {
+  border-spacing: 0;
+  border-collapse: collapse;
+  background-color: transparent;
+}
+html body table td,
+html body table th {
+  padding: 0;
+  text-align: left;
+}
+html body h1,
+html body h2,
+html body h3,
+html body h4,
+html body h5,
+html body h6 {
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+}
+html body h1 {
+  font-size: 36px;
+}
+html body h2 {
+  font-size: 30px;
+}
+html body h3 {
+  font-size: 24px;
+}
+html body h4 {
+  font-size: 18px;
+}
+html body h5 {
+  font-size: 14px;
+}
+html body h6 {
+  font-size: 12px;
+}
+html * {
+  box-sizing: border-box;
+}
+html label {
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}
+@media screen and (max-width: 520px) {
+  .hidden-xs {
+    display: none !important;
+  }
+}
+@media screen and (min-width: 520px) and (max-width: 730px) {
+  .hidden-sm {
+    display: none !important;
+  }
+}
+@media screen and (min-width: 730px) and (max-width: 1100px) {
+  .hidden-md {
+    display: none !important;
+  }
+}
+@media screen and (min-width: 1100px) {
+  .hidden-lg {
+    display: none !important;
+  }
+}
+.spacer {
+  height: 20px;
+}
+.italic {
+  font-style: italic;
+}
+.SubHeader {
+  background-color: white;
+  height: 40px;
+  border-bottom: 1px solid black;
+  padding: 10px;
+  display: flex;
+}
+.SubHeader i {
+  font-size: 26px;
+  cursor: pointer;
+  line-height: 20px;
+}
+.SubHeader .heading {
+  font-weight: bold;
+  font-size: 18px;
+  margin: 0 20px;
+  line-height: 20px;
+}
+@media screen and (max-width: 520px) {
+  .SubHeader {
+    height: 55px;
+    padding: 17px;
+  }
+  .SubHeader i {
+    font-size: 50px;
+  }
+  .SubHeader .heading {
+    font-size: 22px;
+  }
+  .SubHeader .nav-button {
+    padding: 10px 18px;
+  }
+}
+.grow {
+  flex: 1 0 auto;
+}
+.SelectInput {
+  user-select: none;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+}
+.SelectInput i {
+  position: absolute;
+  right: 10px;
+  top: 9px;
+}
+.SelectInput .options {
+  margin-top: 7px;
+  position: absolute;
+  width: 101%;
+  background-color: white;
+  left: -1px;
+  box-shadow: 2px 2px 5px #ccc;
+  z-index: 10;
+}
+.SelectInput .options .option {
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding: 5px 10px;
+}
+.SelectInput .options .option:hover {
+  background-color: #fafafa;
+}
+@media screen and (max-width: 520px) {
+  .SelectInput {
+    padding-top: 8px !important;
+  }
+  .SelectInput i {
+    top: 12px;
+  }
+  .SelectInput .options {
+    margin-top: 11px;
+  }
+  .SelectInput .options .option {
+    padding: 9px 10px;
+  }
+}
+@media screen and (min-width: 770px) {
+  .row {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+}
+.row:before {
+  display: table;
+  content: " ";
+}

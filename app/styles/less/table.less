@@ -1,0 +1,112 @@
+@lightest-primary: lighten(@primary, 30%);
+@light-primary: lighten(@primary, 15%);
+@primary: #37c345;
+@dark-primary: darken(@primary, 8%);
+@darker-primary: darken(@primary, 20%);
+@darkest-primary: darken(@primary, 32%);
+@yellow: #E4FD4B;
+@error-red: #FFCDCD;
+@light-gray: #f2f2f2;
+
+.table-scroll-container {
+    overflow-y: scroll;
+    border: 1px solid black;
+    background-color: @light-gray;
+    &.tall {
+        height: 460px;
+    }
+    &.short {
+        height: 218px;
+    }
+}
+
+// .no-select {
+//     -webkit-touch-callout: none; /* iOS Safari */
+//     -webkit-user-select: none;   /* Chrome/Safari/Opera */
+//     -khtml-user-select: none;    /* Konqueror */
+//     -moz-user-select: none;      /* Firefox */
+//     -ms-user-select: none;       /* Internet Explorer/Edge */
+//     user-select: none;           /* Non-prefixed version, currently */
+// }
+
+table {
+    user-select: none;
+    width: 100%;
+    margin: 0 0 25px 0;
+    border: 1px solid black;
+    &.header {
+        margin-bottom: 0;
+        border: 0;
+        thead {
+            border-bottom: 0px !important;
+        }
+    }
+    &.scrollable {
+        border: 0;
+    }
+    thead {
+        cursor: pointer;
+        border: 1px solid black;
+        background-color: @primary;
+        color: white;
+        tr {
+            th {
+                padding: 8px;
+                @media screen and (max-width: 520px) {
+                    padding: 12px 8px;
+                }
+                position: relative;
+                i {
+                    position: absolute;
+                    margin-left: 10px;
+                    &.fa-sort-asc {
+                        top: 16px;
+                    }
+                    &.fa-sort-desc {
+                        top: 8px;
+                    }
+                }
+            }
+        }
+    }
+    tbody {
+        tr {
+            &:nth-child(even) {
+                background-color: white;
+            }
+            &:nth-child(odd) {
+                background-color: @lightest-primary;
+            }
+            &:hover {
+                background-color: @light-primary;
+                cursor: pointer;
+            }
+            &.selected, &.awarded {
+                background-color: @yellow;
+                border-top: 1px solid grey;
+            }
+            td {
+                padding: 8px;
+                @media screen and (max-width: 520px) {
+                    padding: 12px 8px;
+                }
+                border-right: 1px solid black;
+                &.red {
+                    background-color: #ff7272;
+                }
+                &.blue {
+                    background-color: #7575ff;
+                }
+                &.green {
+                    background-color: #65ff65;
+                }
+                &.yellow {
+                    background-color: #ffff5d;
+                }
+                &.image {
+                    text-align: center;
+                }
+            }
+        }
+    }
+}

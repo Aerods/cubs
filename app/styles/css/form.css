@@ -1,0 +1,94 @@
+.form .form-group {
+  margin-bottom: 15px;
+}
+.form .form-group label {
+  width: 20%;
+  padding-right: 10px;
+  text-align: right;
+  float: left;
+  padding-top: 6px;
+}
+@media screen and (max-width: 680px) {
+  .form .form-group label {
+    width: 28%;
+  }
+}
+@media screen and (max-width: 520px) {
+  .form .form-group label {
+    padding-top: 9px;
+    width: 34%;
+  }
+}
+@media screen and (max-width: 400px) {
+  .form .form-group label {
+    width: 40%;
+  }
+}
+.form .form-group .form-control {
+  display: inline-block;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  width: 50%;
+}
+.form .form-group .form-control.small {
+  width: 20%;
+}
+@media screen and (max-width: 680px) {
+  .form .form-group .form-control.small {
+    width: 26%;
+  }
+}
+@media screen and (max-width: 520px) {
+  .form .form-group .form-control {
+    height: 40px;
+    width: 60%;
+  }
+  .form .form-group .form-control.small {
+    width: 30%;
+  }
+}
+.form .form-group .form-radio-buttons {
+  display: inline-block;
+  width: 50%;
+  padding-top: 5px;
+}
+.form .form-buttons,
+.form h2,
+.form h3 {
+  margin-left: 20%;
+  margin-bottom: 20px;
+}
+.form h4 {
+  margin-left: 20%;
+}
+.form ul,
+.form ol {
+  margin-bottom: 20px;
+  margin-left: 20%;
+}
+.form ul li:hover,
+.form ol li:hover {
+  cursor: pointer;
+}
+.form ul ul,
+.form ol ul {
+  margin-left: 0 !important;
+}
+.form ol li {
+  margin-bottom: 20px;
+}
+.form ul li {
+  margin-bottom: 0px !important;
+}
+.form .validation-error {
+  background-color: #FFCDCD;
+  padding: 5px 10px;
+  width: 50%;
+  margin-left: 20%;
+}
