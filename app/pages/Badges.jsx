@@ -2,8 +2,8 @@ import React from 'react';
 import { Link, browserHistory } from 'react-router';
 var store = require('../store');
 import Modal from '../widgets/Modal';
-import SelectActivity from './SelectActivity';
-import BadgeGrid from './BadgeGrid';
+import SelectActivity from '../components/SelectActivity';
+import BadgeGrid from '../components/BadgeGrid';
 import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
 

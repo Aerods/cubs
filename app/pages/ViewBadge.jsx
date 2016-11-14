@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
-import BadgeDisplay from './BadgeDisplay';
+import BadgeDisplay from '../components/BadgeDisplay';
 import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
 var actions = require('../Actions');

@@ -1,7 +1,7 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
 import Modal from '../widgets/Modal';
-import ParentForm from './ParentForm';
+import ParentForm from '../pages/ParentForm';
 import DataTable from '../widgets/DataTable';
 
 var AddCubParent = React.createClass({
