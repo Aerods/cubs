@@ -35,6 +35,7 @@ gulp.task("copy", ["build", "less"], function () {
 
 gulp.task('watch', ['copy'], function () {
     gulp.watch('./app/components/*.jsx', ['copy']);
+    gulp.watch('./app/pages/*.jsx', ['copy']);
     gulp.watch('./app/widgets/*.jsx', ['copy']);
     gulp.watch('./app/main.jsx', ['copy']);
     gulp.watch('./app/styles/less/*.less', ['copy']);
