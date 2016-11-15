@@ -1,75 +1,33 @@
-var $ = require("jquery");
+var axios = require("axios");
 var promise = require("es6-promise");
 var resourceUrl = "http://localhost:8080/api/database";
 
 module.exports = {
     get: function (data) {
         data.actionType = 'get';
-        var Promise = promise.Promise;
-        return new Promise(function (resolve, reject) {
-            $.ajax({
-                url: resourceUrl,
-                method: "PUT",
-                data: JSON.stringify(data),
-                dataType: "json",
-                contentType: "application/json",
-                success: resolve,
-                error: reject
-            });
+        return axios.put(resourceUrl, data).then((response, test) => {
+            return response.data;
         });
     },
 
     add: function (data, callback) {
         data.actionType = 'update';
-        var Promise = promise.Promise;
-        return new Promise(function (resolve, reject) {
-            $.ajax({
-                url: resourceUrl,
-                data: JSON.stringify(data),
-                method: "POST",
-                dataType: "json",
-                contentType: "application/json",
-                success: resolve,
-                error: reject
-            });
-        }).then(function(data) {
-            callback(data);
+        return axios.post(resourceUrl, data).then((response, test) => {
+            callback(response.data);
         });
     },
 
     update: function (data, callback) {
         data.actionType = 'update';
-        var Promise = promise.Promise;
-        return new Promise(function (resolve, reject) {
-            $.ajax({
-                url: resourceUrl,
-                data: JSON.stringify(data),
-                method: "PUT",
-                dataType: "json",
-                contentType: "application/json",
-                success: resolve,
-                error: reject
-            });
-        }).then(function(data) {
-            callback(data);
+        return axios.put(resourceUrl, data).then((response, test) => {
+            callback(response.data);
         });
     },
 
     destroy: function (data, callback) {
         data.actionType = 'delete';
-        var Promise = promise.Promise;
-        return new Promise(function (resolve, reject) {
-            $.ajax({
-                url: resourceUrl,
-                data: JSON.stringify(data),
-                method: "PUT",
-                dataType: "json",
-                contentType: "application/json",
-                success: resolve,
-                error: reject
-            });
-        }).then(function(data) {
-            callback(data);
+        return axios.put(resourceUrl, data).then((response, test) => {
+            callback(response.data);
         });
     }
 }
