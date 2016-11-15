@@ -134,7 +134,7 @@ var ParentForm = React.createClass({
         return(
             <div id="ParentForm">
                 <SubHeader heading={ this.props.params.id ? 'Edit' : 'New parent' }>
-                    <span className="grow"></span>
+                    { this.props.onClose ? <span className="grow"></span> : '' }
                     { this.props.onClose ?
                         <a><span className="nav-button" onClick={ this.props.onClose }>Cancel</span></a>
                     :
