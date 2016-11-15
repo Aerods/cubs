@@ -5,28 +5,28 @@ var resourceUrl = "http://localhost:8080/api/database";
 module.exports = {
     get: function (data) {
         data.actionType = 'get';
-        return axios.put(resourceUrl, data).then((response, test) => {
+        return axios.put(resourceUrl, data).then((response) => {
             return response.data;
         });
     },
 
     add: function (data, callback) {
         data.actionType = 'update';
-        return axios.post(resourceUrl, data).then((response, test) => {
+        return axios.post(resourceUrl, data).then((response) => {
             callback(response.data);
         });
     },
 
     update: function (data, callback) {
         data.actionType = 'update';
-        return axios.put(resourceUrl, data).then((response, test) => {
+        return axios.put(resourceUrl, data).then((response) => {
             callback(response.data);
         });
     },
 
     destroy: function (data, callback) {
         data.actionType = 'delete';
-        return axios.put(resourceUrl, data).then((response, test) => {
+        return axios.put(resourceUrl, data).then((response) => {
             callback(response.data);
         });
     }
