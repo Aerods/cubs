@@ -6,7 +6,7 @@ module.exports = {
             type: "ADD",
             data: data
         }, function(data) {
-            callback(data);
+            if (callback) callback(data);
         });
     },
     update: function(data, callback) {
@@ -14,7 +14,7 @@ module.exports = {
             type: "UPDATE",
             data: data
         }, function(data) {
-            callback(data);
+            if (callback) callback(data);
         });
     },
     destroy: function(data, callback) {
@@ -22,7 +22,7 @@ module.exports = {
             type: "DESTROY",
             data: data
         }, function(data) {
-            callback(data);
+            if (callback) callback(data);
         });
     }
 }
