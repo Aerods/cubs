@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, Link, browserHistory } from 'react-router';
+import Login from './pages/Login';
 import Cubs from './pages/Cubs';
 import PackStats from './pages/PackStats';
 import ViewCub from './pages/ViewCub'
@@ -17,10 +18,12 @@ import ProgrammeForm from './pages/ProgrammeForm';
 import ProgrammePrint from './pages/ProgrammePrint';
 import AwardBadges from './pages/AwardBadges';
 import BadgeProgress from './pages/BadgeProgress';
+import Cookies from './cookies.js';
 
 var MainLayout = React.createClass({
     render: function() {
         var path = this.props.location.pathname.split('/');
+        if (!Cookies.token) browserHistory.push('/login');
         return (
             <div id="MainLayout">
                 <div className="topbar hidden-xs">
@@ -40,6 +43,7 @@ var MainLayout = React.createClass({
 
 ReactDOM.render((
     <Router history={ browserHistory }>
+        <Route path="/login" component={ Login } />
         <Route path="/programmePrint/:id" component={ ProgrammePrint } />
         <Route component={ MainLayout }>
             <Route path="/" component={ Cubs } />

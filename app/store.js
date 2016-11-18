@@ -10,7 +10,7 @@ function Store() {
 
     function get(data, cb) {
         service.get(data).then(function (res) {
-            cb(res);
+            if (cb) cb(res);
         });
     }
 

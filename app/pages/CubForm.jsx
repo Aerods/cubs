@@ -16,44 +16,44 @@ import SubHeader from '../widgets/SubHeader';
 
 var CubForm = React.createClass({
     getDefaultProps: function() {
-      return {
-          id: null,
-          params: { id: null }
-      }
+        return {
+            id: null,
+            params: { id: null }
+        }
     },
     getInitialState: function() {
-      return {
-          dataType: 'cub',
-          id: this.props.params.id,
-          forename: '',
-          surname: '',
-          date_of_birth: '',
-          gender: '',
-          rank: '',
-          six: '',
-          phone: '',
-          address_1: '',
-          address_2: '',
-          address_3: '',
-          town: 'Exeter',
-          postcode: '',
-          start_date: '',
-          from_beavers: '',
-          invested: '',
-          previous_group: '',
-          medical_information: '',
-          notes: '',
-          to_scouts: '',
-          parents: [],
-          cub_parents: [],
-          badges: [],
-          cub_badges: [],
-          parent: {},
-          validation: {},
-          isParentModalOpen: false,
-          isBadgeModalOpen: false,
-          isFormOpen: false
-      }
+        return {
+            dataType: 'cub',
+            id: this.props.params.id,
+            forename: '',
+            surname: '',
+            date_of_birth: '',
+            gender: '',
+            rank: '',
+            six: '',
+            phone: '',
+            address_1: '',
+            address_2: '',
+            address_3: '',
+            town: 'Exeter',
+            postcode: '',
+            start_date: '',
+            from_beavers: '',
+            invested: '',
+            previous_group: '',
+            medical_information: '',
+            notes: '',
+            to_scouts: '',
+            parents: [],
+            cub_parents: [],
+            badges: [],
+            cub_badges: [],
+            parent: {},
+            validation: {},
+            isParentModalOpen: false,
+            isBadgeModalOpen: false,
+            isFormOpen: false
+        }
     },
 
     componentDidMount: function() {

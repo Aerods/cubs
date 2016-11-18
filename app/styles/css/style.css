@@ -385,3 +385,27 @@
 #BadgeGrid .badge-grid-wrapper .badge-grid .badge-grid-item:hover .percentage {
   display: block;
 }
+#Login .login-box {
+  width: 300px;
+  margin: 48% auto;
+  border: 1px solid black;
+  padding: 15px;
+}
+#Login .login-box h3 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+#Login .login-box .form-group {
+  margin-bottom: 5px;
+}
+#Login .login-box .form-group label {
+  width: 85px;
+}
+#Login .login-box .form-group input {
+  padding: 2px;
+}
+#Login .login-box .nav-button {
+  width: 62px;
+  margin-top: 10px;
+  margin-left: 105px;
+}
