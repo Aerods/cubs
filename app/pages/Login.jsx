@@ -2,6 +2,7 @@ import React from 'react';
 import { browserHistory, Link } from 'react-router';
 import Cookies from '../cookies.js';
 import cookie from 'react-cookie';
+import FormGroup from '../widgets/FormGroup';
 var OnResize = require("react-window-mixins").OnResize;
 var actions = require('../Actions');
 var moment = require('moment');
@@ -47,14 +48,8 @@ var Login = React.createClass({
             <div id="Login" style={ {height:this.state.window.height} }>
                 <form className="login-box" onSubmit={ this.submitLogin }>
                     <h3>Login</h3>
-                    <div className="form-group">
-                        <label className="control-label" htmlFor="username">Username:</label>
-                        <input type="text" className="form-control" id="username" name="username" value={ this.state.username } onChange={ this.handleInputChange } />
-                    </div>
-                    <div className="form-group">
-                        <label className="control-label" htmlFor="password">Password:</label>
-                        <input type="password" className="form-control" id="password" name="password" value={ this.state.password } onChange={ this.handleInputChange } />
-                    </div>
+                    <FormGroup name="username" label="Username:" value={ this.state.username } onChange={ this.handleInputChange } />
+                    <FormGroup name="password" label="Password:" value={ this.state.password } onChange={ this.handleInputChange } type="password" />
                     <input className="hidden" type="submit" />
                     <div className="nav-button" onClick={ this.submitLogin }>Login</div>
                 </form>

@@ -4,15 +4,9 @@ var actions = require('../Actions');
 var store = require('../store');
 var moment = require('moment');
 import DataTable from '../widgets/DataTable';
-import CubBadgeList from '../components/CubBadgeList';
-import Modal from '../widgets/Modal';
-import AddCubParent from '../components/AddCubParent';
-import SelectBadge from '../components/SelectBadge';
-import ParentForm from './ParentForm';
-import SelectInput from '../widgets/SelectInput';
-import ValidationError from '../widgets/ValidationError';
 import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
+import FormGroup from '../widgets/FormGroup';
 
 var CubForm = React.createClass({
     getDefaultProps: function() {
@@ -49,10 +43,7 @@ var CubForm = React.createClass({
             badges: [],
             cub_badges: [],
             parent: {},
-            validation: {},
-            isParentModalOpen: false,
-            isBadgeModalOpen: false,
-            isFormOpen: false
+            validation: {}
         }
     },
 
@@ -83,24 +74,7 @@ var CubForm = React.createClass({
                     to_scouts: cub.to_scouts
                 });
             });
-            store.onChange({ dataType: 'parent', cub_id: this.props.params.id }, function(parents) {
-                var cub_parents = parents.map(function(parent, key) {
-                    parent.uuid = key + 1;
-                    parent.cub_id = self.state.id;
-                    return parent;
-                });
-                self.setState({ cub_parents: cub_parents });
-            });
-            store.onChange({ dataType: 'cubBadge', cub_id: this.props.params.id }, function(cub_badges) {
-                self.setState({ cub_badges: cub_badges });
-            });
         };
-        store.onChange({ dataType: 'parent' }, function(parents) {
-            self.setState({ parents: parents });
-        });
-        store.onChange({ dataType: 'badge' }, function(badges) {
-            self.setState({ badges: badges });
-        });
     },
 
     validateCub: function(data) {
@@ -120,8 +94,6 @@ var CubForm = React.createClass({
     saveCub: function(e) {
         e.preventDefault();
         var cub = this.state;
-        cub.parents = cub.cub_parents;
-        cub.badges = cub.cub_badges;
         var errors = this.validateCub(cub);
         if (!errors) {
             if (this.props.params.id) {
@@ -144,10 +116,6 @@ var CubForm = React.createClass({
       this.setState(state);
     },
 
-    closeForm: function() {
-        this.setState({ isFormOpen: false });
-    },
-
     render: function() {
         return(
             <div id="CubForm">
@@ -157,105 +125,26 @@ var CubForm = React.createClass({
                 </SubHeader>
                 <PageContent>
                     <div className="form" onSubmit={ this.saveCub }>
-
                         <h3>Cub details</h3>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="forename">First name:</label>
-                            <input type="text" className="form-control" id="forename" name="forename" value={ this.state.forename } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.forename } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="surname">Last name:</label>
-                            <input type="text" className="form-control" id="surname" name="surname" value={ this.state.surname } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.surname } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="date_of_birth">Date of birth:</label>
-                            <input type="text" className="form-control small" id="date_of_birth" name="date_of_birth" value={ this.state.date_of_birth } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.date_of_birth } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="gender">Gender:</label>
-                            <SelectInput
-                                data={ ['Male', 'Female'] }
-                                selected={ this.state.gender }
-                                name="gender"
-                                onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.gender } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="rank">Rank:</label>
-                            <SelectInput
-                                data={ ['None', 'Sixer', 'Seconder'] }
-                                selected={ this.state.rank }
-                                name="rank"
-                                onChange={ this.handleInputChange } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="six">Six:</label>
-                            <SelectInput
-                                data={ ['Red', 'Blue', 'Green', 'Yellow'] }
-                                selected={ this.state.six }
-                                name="six"
-                                onChange={ this.handleInputChange } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="phone">Home phone:</label>
-                            <input type="text" className="form-control" id="phone" name="phone" value={ this.state.phone } onChange={ this.handleInputChange } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="address_1">Address line 1:</label>
-                            <input type="text" className="form-control" id="address_1" name="address_1" value={ this.state.address_1 } onChange={ this.handleInputChange } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="address_2">Address line 2:</label>
-                            <input type="text" className="form-control" id="address_2" name="address_2" value={ this.state.address_2 } onChange={ this.handleInputChange } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="address_3">Address line 3:</label>
-                            <input type="text" className="form-control" id="address_3" name="address_3" value={ this.state.address_3 } onChange={ this.handleInputChange } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="town">Town:</label>
-                            <input type="text" className="form-control" id="town" name="town" value={ this.state.town } onChange={ this.handleInputChange } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="postcode">Postcode:</label>
-                            <input type="text" className="form-control small" id="postcode" name="postcode" value={ this.state.postcode } onChange={ this.handleInputChange } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="start_date">Start date:</label>
-                            <input type="text" className="form-control small" id="start_date" name="start_date" value={ this.state.start_date } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.start_date } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="start_date">From Beavers:</label>
-                            <input type="text" className="form-control small" id="from_beavers" name="from_beavers" value={ this.state.from_beavers } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.from_beavers } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="invested">Invested:</label>
-                            <input type="text" className="form-control small" id="invested" name="invested" value={ this.state.invested } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.invested } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="previous_group">Previous group:</label>
-                            <input type="text" className="form-control" id="previous_group" name="previous_group" value={ this.state.previous_group } onChange={ this.handleInputChange } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="medical_information">Medical info:</label>
-                            <textarea type="text" className="form-control" id="medical_information" name="medical_information" value={ this.state.medical_information } onChange={ this.handleInputChange } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="notes">Notes:</label>
-                            <textarea type="text" className="form-control" id="notes" name="notes" value={ this.state.notes } onChange={ this.handleInputChange } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="to_scouts">To Scouts:</label>
-                            <input type="text" className="form-control small" id="to_scouts" name="to_scouts" value={ this.state.to_scouts } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.to_scouts } />
-                        </div>
-
+                        <FormGroup name="forename" label="First name:" value={ this.state.forename } onChange={ this.handleInputChange } error={ this.state.validation.forename } />
+                        <FormGroup name="surname" label="Last name:" value={ this.state.surname } onChange={ this.handleInputChange } error={ this.state.validation.surname } />
+                        <FormGroup name="date_of_birth" type="small" value={ this.state.date_of_birth } onChange={ this.handleInputChange } error={ this.state.validation.date_of_birth } />
+                        <FormGroup name="gender" type="select" value={ this.state.gender } data={ ['Male', 'Female'] } onChange={ this.handleInputChange } error={ this.state.validation.gender } />
+                        <FormGroup name="rank" type="select" value={ this.state.rank } data={ ['None', 'Sixer', 'Seconder'] } onChange={ this.handleInputChange } />
+                        <FormGroup name="six" type="select" value={ this.state.six } data={ ['Red', 'Blue', 'Green', 'Yellow'] } onChange={ this.handleInputChange } />
+                        <FormGroup name="phone" label="Home phone:" value={ this.state.phone } onChange={ this.handleInputChange } />
+                        <FormGroup name="address_1" label="Address line 1:" value={ this.state.address_1 } onChange={ this.handleInputChange } />
+                        <FormGroup name="address_2" label="Address line 2:" value={ this.state.address_2 } onChange={ this.handleInputChange } />
+                        <FormGroup name="address_3" label="Address line 3:" value={ this.state.address_3 } onChange={ this.handleInputChange } />
+                        <FormGroup name="town" value={ this.state.town } onChange={ this.handleInputChange } />
+                        <FormGroup name="postcode" type="small" value={ this.state.postcode } onChange={ this.handleInputChange } />
+                        <FormGroup name="start_date" type="small" value={ this.state.start_date } onChange={ this.handleInputChange } error={ this.state.validation.start_date } />
+                        <FormGroup name="from_beavers" type="small" value={ this.state.from_beavers } onChange={ this.handleInputChange } error={ this.state.validation.from_beavers } />
+                        <FormGroup name="invested" type="small" value={ this.state.invested } onChange={ this.handleInputChange } error={ this.state.validation.invested } />
+                        <FormGroup name="previous_group" value={ this.state.previous_group } onChange={ this.handleInputChange } />
+                        <FormGroup name="medical_information" label="Medical info:" type="textarea" value={ this.state.medical_information } onChange={ this.handleInputChange } />
+                        <FormGroup name="notes" type="textarea" value={ this.state.notes } onChange={ this.handleInputChange } />
+                        <FormGroup name="to_scouts" type="small" value={ this.state.to_scouts } onChange={ this.handleInputChange } error={ this.state.validation.to_scouts } />
                     </div>
                 </PageContent>
             </div>

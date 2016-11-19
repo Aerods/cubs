@@ -53,6 +53,11 @@
     width: 30%;
   }
 }
+.form .form-group textarea {
+  font-size: inherit;
+  font-family: inherit;
+  height: 55px !important;
+}
 .form .form-group .form-radio-buttons {
   display: inline-block;
   width: 50%;
