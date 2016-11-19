@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
+import Cookies from '../cookies.js';
+import cookie from 'react-cookie';
 
 var SubHeader = React.createClass({
     getDefaultProps: function() {
@@ -16,6 +18,11 @@ var SubHeader = React.createClass({
     hideSidebar: function () {
         this.setState({ sidebar: false });
     },
+    logout: function () {
+        Cookies.token = '';
+        cookie.remove('token');
+        browserHistory.push('/login');
+    },
 
     render: function () {
         return (
@@ -30,6 +37,7 @@ var SubHeader = React.createClass({
                             <Link className="sidebar-nav" to="/badges">Badges</Link>
                             <Link className="sidebar-nav" to="/programme">Programme</Link>
                             <Link className="sidebar-nav" to="/award">Award</Link>
+                            <div className="sidebar-nav" onClick={ this.logout }>Log out</div>
                         </div>
                     </div>
                 ) : (

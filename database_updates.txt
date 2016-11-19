@@ -1,0 +1,1 @@
+ALTER TABLE `cub_database`.`leaders` ADD COLUMN `username` VARCHAR(45) NULL DEFAULT NULL AFTER `cub_name`, ADD COLUMN `password` VARCHAR(45) NULL DEFAULT NULL AFTER `username`;

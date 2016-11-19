@@ -13,6 +13,8 @@ exports.create = function(data, done) {
         data.surname,
         data.position,
         data.cub_name,
+        data.username,
+        data.password,
         data.phone_1,
         data.phone_2,
         data.email,
@@ -30,6 +32,8 @@ exports.create = function(data, done) {
                 surname,                        \
                 position,                       \
                 cub_name,                       \
+                username,                       \
+                '+(data.password ? 'password,' : '')+'\
                 phone_1,                        \
                 phone_2,                        \
                 email,                          \
@@ -39,7 +43,7 @@ exports.create = function(data, done) {
                 town,                           \
                 postcode                        \
             )                                   \
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) \
+            VALUES(?, ?, ?, ?, ?, ?, '+(data.password ? 'SHA1(?),' : '')+' ?, ?, ?, ?, ?, ?, ?, ?) \
         ', values, function(err, result) {
             if (err) return done(err);
             server.emitSocket('leadersUpdate');
@@ -55,6 +59,8 @@ exports.update = function(data, done) {
         data.surname,
         data.position,
         data.cub_name,
+        data.username,
+        data.password,
         data.phone_1,
         data.phone_2,
         data.email,
@@ -73,6 +79,8 @@ exports.update = function(data, done) {
                 surname = ?,            \
                 position = ?,           \
                 cub_name = ?,           \
+                username = ?,           \
+                '+(data.password ? 'password = SHA1(?),' : '')+'\
                 phone_1 = ?,            \
                 phone_2 = ?,            \
                 email = ?,              \
@@ -97,5 +105,13 @@ exports.delete = function(data, done) {
             server.emitSocket('leadersUpdate');
             done(null, { id: result.affectedRows })
         })
+    })
+}
+
+exports.login = function(data, done) {
+    db.get().query('SELECT id from leaders WHERE username = ? AND password = SHA1(?) AND deleted=0 LIMIT 1', [data.username, data.password], function(err, result) {
+        if (err) return done(err);
+        else if (result[0]) done(null, { result: 'success', token: 'P3X-595', leader_id: result[0].id });
+        else done(null, { result: 'Fail' });
     })
 }

@@ -20,14 +20,15 @@ function post(req, res) {
 
 function put(req, res) {
     if (req.body.dataType == 'login') {
-        var data = {};
-        if (req.body.username == 'test' && req.body.password == 'test') {
-            data.result = 'success';
-            data.token = 'P3X-595';
-        } else {
-            data.result = 'fail';
-        }
-        res.json(data);
+        var leader = require("./actions/leader");
+        leader.login(req.body, function (err, data) {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            } else {
+                res.json(data);
+            }
+        });
     } else if (req.body.token != 'P3X-595') {
         console.log('Permission error!');
         res.send('Permission error!');

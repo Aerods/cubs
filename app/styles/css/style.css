@@ -385,9 +385,12 @@
 #BadgeGrid .badge-grid-wrapper .badge-grid .badge-grid-item:hover .percentage {
   display: block;
 }
+#Login {
+  overflow-y: hidden;
+}
 #Login .login-box {
   width: 300px;
-  margin: 48% auto;
+  margin: 20% auto;
   border: 1px solid black;
   padding: 15px;
 }

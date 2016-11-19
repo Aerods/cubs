@@ -7,6 +7,7 @@
   background-color: #37c345;
   height: 45px;
   padding: 10px;
+  display: flex;
 }
 .topbar .topbar-brand {
   color: white;
@@ -22,7 +23,7 @@
 }
 .topbar .topbar-nav {
   color: white;
-  margin: 14px;
+  margin: 0 14px;
   font-size: 16px;
   cursor: pointer;
   padding-bottom: 3px;
@@ -257,4 +258,7 @@ html label {
 .row:before {
   display: table;
   content: " ";
+}
+.hidden {
+  display: none;
 }

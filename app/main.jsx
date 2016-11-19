@@ -19,8 +19,14 @@ import ProgrammePrint from './pages/ProgrammePrint';
 import AwardBadges from './pages/AwardBadges';
 import BadgeProgress from './pages/BadgeProgress';
 import Cookies from './cookies.js';
+import cookie from 'react-cookie';
 
 var MainLayout = React.createClass({
+    logout: function () {
+        Cookies.token = '';
+        cookie.remove('token');
+        browserHistory.push('/login');
+    },
     render: function() {
         var path = this.props.location.pathname.split('/');
         if (!Cookies.token) browserHistory.push('/login');
@@ -34,6 +40,8 @@ var MainLayout = React.createClass({
                     <Link className={ "topbar-nav" + (path[1] == 'badges' ? ' active' : '') } to="/badges">Badges</Link>
                     <Link className={ "topbar-nav" + (path[1] == 'programme' ? ' active' : '') } to="/programme">Programme</Link>
                     <Link className={ "topbar-nav" + (path[1] == 'award' ? ' active' : '') } to="/award">Award</Link>
+                    <div className="grow" />
+                    <div className="topbar-nav hidden-sm" onClick={ this.logout }>Log out</div>
                 </div>
                 { this.props.children }
             </div>

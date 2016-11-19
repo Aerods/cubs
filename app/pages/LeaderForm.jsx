@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
+import Cookies from '../cookies.js';
 import CheckboxInput from '../widgets/CheckboxInput';
 import SelectInput from '../widgets/SelectInput';
 import ValidationError from '../widgets/ValidationError';
@@ -25,6 +26,9 @@ var LeaderForm = React.createClass({
           surname: '',
           position: '',
           cub_name: '',
+          username: '',
+          password: '',
+          password_2: '',
           phone_1: '',
           phone_2: '',
           email: '',
@@ -54,6 +58,7 @@ var LeaderForm = React.createClass({
             surname: leader.surname,
             position: leader.position,
             cub_name: leader.cub_name,
+            username: leader.username,
             phone_1: leader.phone_1,
             phone_2: leader.phone_2,
             email: leader.email,
@@ -85,6 +90,9 @@ var LeaderForm = React.createClass({
         if (!data.forename) err.forename = 'Please enter a first name';
         if (!data.surname) err.surname = 'Please enter a last name';
         if (!data.position) err.position = 'Please select a position';
+        if (data.password && !data.username) err.username = 'Please enter a username';
+        if (data.password && data.password.length<8) err.password = 'Passwords must be at least 8 characters long';
+        if (data.password != data.password_2) err.password_2 = 'Passwords do not match';
         this.setState({ validation: err });
         return Object.keys(err).length;
     },
@@ -158,6 +166,23 @@ var LeaderForm = React.createClass({
                             <label className="control-label" htmlFor="cub_name">Cub name:</label>
                             <input type="text" className="form-control" id="cub_name" name="cub_name" value={ this.state.cub_name } onChange={ this.handleInputChange } />
                         </div>
+                        { Cookies.leader_id == this.props.params.id ? <div>
+                            <div className="form-group">
+                                <label className="control-label" htmlFor="username">Username:</label>
+                                <input type="text" className="form-control" id="username" name="username" value={ this.state.username } onChange={ this.handleInputChange } />
+                                <ValidationError error={ this.state.validation.username } />
+                            </div>
+                            <div className="form-group">
+                                <label className="control-label" htmlFor="password">Password:</label>
+                                <input type="password" className="form-control" id="password" name="password" value={ this.state.password } onChange={ this.handleInputChange } />
+                                <ValidationError error={ this.state.validation.password } />
+                            </div>
+                            <div className="form-group">
+                                <label className="control-label" htmlFor="password_2">Confirm password:</label>
+                                <input type="password" className="form-control" id="password_2" name="password_2" value={ this.state.password_2 } onChange={ this.handleInputChange } />
+                                <ValidationError error={ this.state.validation.password_2 } />
+                            </div>
+                        </div> : '' }
                         <div className="form-group">
                             <label className="control-label" htmlFor="phone_1">Home phone:</label>
                             <input type="text" className="form-control small" id="phone_1" name="phone_1" value={ this.state.phone_1 } onChange={ this.handleInputChange } />
