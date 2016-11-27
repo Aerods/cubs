@@ -1,28 +1,26 @@
-var dispatcher = require("./dispatcher");
+import dispatcher from "./dispatcher";
 
-module.exports = {
-    add: function(data, callback) {
-        dispatcher.dispatch({
-            type: "ADD",
-            data: data
-        }, function(data) {
-            if (callback) callback(data);
-        });
-    },
-    update: function(data, callback) {
-        dispatcher.dispatch({
-            type: "UPDATE",
-            data: data
-        }, function(data) {
-            if (callback) callback(data);
-        });
-    },
-    destroy: function(data, callback) {
-        dispatcher.dispatch({
-            type: "DESTROY",
-            data: data
-        }, function(data) {
-            if (callback) callback(data);
-        });
-    }
+export function get(data) {
+    dispatcher.dispatch({
+        type: "GET",
+        data: data
+    });
+}
+export function add(data) {
+    dispatcher.dispatch({
+        type: "ADD",
+        data: data
+    });
+}
+export function update(data) {
+    dispatcher.dispatch({
+        type: "UPDATE",
+        data: data
+    });
+}
+export function destroy(data) {
+    dispatcher.dispatch({
+        type: "DESTROY",
+        data: data
+    });
 }

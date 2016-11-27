@@ -3,59 +3,65 @@ import { browserHistory, Link } from 'react-router';
 import Cookies from '../cookies.js';
 import cookie from 'react-cookie';
 import FormGroup from '../widgets/FormGroup';
+import moment from 'moment';
+import * as actions from '../Actions';
+import Store from '../store';
+import reactMixin from 'react-mixin';
 var OnResize = require("react-window-mixins").OnResize;
-var actions = require('../Actions');
-var moment = require('moment');
 
-var Login = React.createClass({
-    mixins: [ OnResize ],
-
-    getInitialState: function() {
-        return {
+export default class Login extends React.Component {
+    constructor() {
+        super();
+        this.login = this.login.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.state = {
             username: '',
             password: ''
-        }
-    },
+        };
+    }
 
-    submitLogin: function(e) {
+    submitLogin(e) {
         e.preventDefault();
         var user = {
             dataType: 'login',
             username: this.state.username,
             password: this.state.password
         };
-        actions.update(user, function(data) {
-            if (data.result == 'success') {
-                Cookies.token = data.token;
-                Cookies.leader_id = data.leader_id;
-                var cookieExpiry = moment().add(2, 'days').toDate();
-                cookie.save('token', data.token, { expires: cookieExpiry });
-                cookie.save('leader_id', data.leader_id, { expires: cookieExpiry });
-                browserHistory.push('/');
-            }
-        });
-    },
+        actions.update(user);
+        Store.on('login-update', this.login);
+    }
 
-    handleInputChange: function(e) {
+    login() {
+        var data = Store.data;
+        if (data.result == 'success') {
+            Cookies.token = data.token;
+            Cookies.leader_id = data.leader_id;
+            var cookieExpiry = moment().add(2, 'days').toDate();
+            cookie.save('token', data.token, { expires: cookieExpiry });
+            cookie.save('leader_id', data.leader_id, { expires: cookieExpiry });
+            browserHistory.push('/');
+        }
+    }
+
+    handleInputChange(e) {
       var name = e.target.name;
       var state = this.state;
       state[name] = e.target.value;
       this.setState(state);
-    },
+    }
 
-    render: function() {
+    render() {
         return (
             <div id="Login" style={ {height:this.state.window.height} }>
-                <form className="login-box" onSubmit={ this.submitLogin }>
+                <form className="login-box" onSubmit={ this.submitLogin.bind(this) }>
                     <h3>Login</h3>
                     <FormGroup name="username" label="Username:" value={ this.state.username } onChange={ this.handleInputChange } />
                     <FormGroup name="password" label="Password:" value={ this.state.password } onChange={ this.handleInputChange } type="password" />
                     <input className="hidden" type="submit" />
-                    <div className="nav-button" onClick={ this.submitLogin }>Login</div>
+                    <div className="nav-button" onClick={ this.submitLogin.bind(this) }>Login</div>
                 </form>
             </div>
         )
     }
-});
-
-export default Login;
+}
+reactMixin(Login.prototype, OnResize);

@@ -1,39 +1,42 @@
 import React from 'react';
 import { browserHistory, Link } from 'react-router';
-var store = require('../store');
+import * as actions from '../Actions';
+import Store from '../store';
 import DataTable from '../widgets/DataTable';
 import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
 
-var Leaders = React.createClass({
-    getInitialState: function() {
-      return { leaders: [] }
-    },
+export default class Leaders extends React.Component {
+    constructor() {
+        super();
+        this.setLeaders = this.setLeaders.bind(this);
+        this.state = {
+            leaders: []
+        };
+    }
 
-    componentDidMount: function() {
-        var self = this;
-        this.getData();
-        socket.on('leadersUpdate', function () {
-            self.getData();
+    componentWillMount() {
+        actions.get({ dataType: 'leader' });
+        socket.on('leadersUpdate', () => {
+            actions.get({ dataType: 'leader' });
         });
-    },
+        Store.on('leader-get', this.setLeaders);
+    }
 
-    getData: function() {
-        var self = this;
-        store.onChange({ dataType: 'leader' }, function(leaders) {
-            if (self.isMounted()) self.setState({ leaders: leaders });
-        });
-    },
+    componentWillUnmount() {
+        Store.removeListener('leader-get', this.setLeaders);
+    }
 
-    handleClick: function(leader) {
-        if (this.props.onClick) {
-            this.props.onClick(leader);
-        } else {
-            browserHistory.push('/leaders/'+leader.id+'/edit');
-        }
-    },
+    setLeaders() {
+        this.setState({ leaders: Store.data });
+    }
 
-    render: function() {
+
+    handleClick(leader) {
+        browserHistory.push('/leaders/'+leader.id+'/edit');
+    }
+
+    render() {
         var headers = {
             title: 'Title',
             forename: 'First name',
@@ -51,11 +54,9 @@ var Leaders = React.createClass({
                     <Link to="/leaders/new"><span className="nav-button">Add</span></Link>
                 </SubHeader>
                 <PageContent>
-                    <DataTable headers={ headers } classes={ classes } data={ this.state.leaders } onClick={ this.handleClick } height="tall" />
+                    <DataTable headers={ headers } classes={ classes } data={ this.state.leaders } onClick={ this.handleClick.bind(this) } height="tall" />
                 </PageContent>
             </div>
         )
     }
-});
-
-export default Leaders;
+}

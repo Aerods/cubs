@@ -332,7 +332,7 @@
 #BadgeGrid .badge-grid-wrapper .badge-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: center;
 }
 #BadgeGrid .badge-grid-wrapper .badge-grid .badge-grid-item {
   position: relative;
@@ -390,7 +390,7 @@
 }
 #Login .login-box {
   width: 300px;
-  margin: 20% auto;
+  margin: 15% auto;
   border: 1px solid black;
   padding: 15px;
 }

@@ -1,74 +1,59 @@
-var dispatcher = require("./dispatcher");
-var service = require("./service");
+import dispatcher from "./dispatcher";
+import { EventEmitter } from "events";
+import * as service from "./service";
 
-function Store() {
-    var listeners = [];
-
-    function onChange(data, listener) {
-        get(data, listener);
+class Store extends EventEmitter {
+    constructor() {
+        super()
+        this.data = [];
     }
 
-    function get(data, cb) {
-        service.get(data).then(function (res) {
-            if (cb) cb(res);
+    get(data) {
+        service.get(data, (response) => {
+            this.data = response;
+            this.emit((data.dataName || data.dataType) + "-get");
         });
     }
 
-    function add(data, callback) {
-        service.add(data, function(data) {
-            callback(data);
-        }).then(function (res) {
-            triggerListeners();
+    add(data) {
+        service.add(data, (response) => {
+            this.data = response;
+            this.emit((data.dataName || data.dataType) + "-add");
         });
     }
 
-    function update(data, callback) {
-        service.update(data, function(data) {
-            callback(data);
-        }).then(function (res) {
-            triggerListeners();
+    update(data) {
+        service.update(data, (response) => {
+            this.data = response;
+            this.emit((data.dataName || data.dataType) + "-update");
         });
     }
 
-    function destroy(data, callback) {
-        service.destroy(data, function(data) {
-            callback(data);
-        }).then(function (res) {
-            triggerListeners();
+    destroy(data) {
+        service.destroy(data, (response) => {
+            this.data = response;
+            this.emit((data.dataName || data.dataType) + "-destroy");
         });
-    }
-
-    function triggerListeners() {
-        get(function (res) {
-            listeners.forEach(function (listener) {
-                listener(res);
-            });
-        });
-    }
-
-    dispatcher.register(function (payload, callback) {
-        switch (payload.type) {
-            case "ADD":
-                add(payload.data, function(data) {
-                    callback(data);
-                });
-                break;
-            case "UPDATE":
-                update(payload.data, function(data) {
-                    callback(data);
-                });
-                break;
-            case "DESTROY":
-                destroy(payload.data, function(data) {
-                    callback(data);
-                });
-                break;
-        }
-    });
-
-    return {
-        onChange: onChange
     }
 }
 
-module.exports = Store();
+const store = new Store;
+
+dispatcher.register(function (payload) {
+    switch (payload.type) {
+        case "GET":
+            store.get(payload.data);
+            break;
+        case "ADD":
+            store.add(payload.data);
+            break;
+        case "UPDATE":
+            store.update(payload.data);
+            break;
+        case "DESTROY":
+            store.destroy(payload.data);
+            break;
+    }
+});
+
+export default store;

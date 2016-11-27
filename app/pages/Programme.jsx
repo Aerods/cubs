@@ -1,39 +1,45 @@
 import React from 'react';
-import { browserHistory, Link } from 'react-router';
-var store = require('../store');
+import { Link, browserHistory } from 'react-router';
+import * as actions from '../Actions';
+import Store from '../store';
 import DataTable from '../widgets/DataTable';
 import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
 
-var Programme = React.createClass({
-    getInitialState: function() {
-      return { programme: [] }
-    },
+export default class Programme extends React.Component {
+    constructor() {
+        super();
+        this.setProgramme = this.setProgramme.bind(this);
+        this.state = {
+            programme: []
+        };
+    }
 
-    componentDidMount: function() {
-        var self = this;
-        this.getData();
-        socket.on('programmeUpdate', function () {
-            self.getData();
+    componentWillMount() {
+        actions.get({ dataType: 'programme' });
+        socket.on('programmeUpdate', () => {
+            actions.get({ dataType: 'programme' });
         });
-    },
+        Store.on('programme-get', this.setProgramme);
+    }
 
-    getData: function() {
-        var self = this;
-        store.onChange({ dataType: 'programme' }, function(programme) {
-            if (self.isMounted()) self.setState({ programme: programme });
-        });
-    },
+    componentWillUnmount() {
+        Store.removeListener('programme-get', this.setProgramme);
+    }
 
-    handleClick: function(meeting) {
+    setProgramme() {
+        this.setState({ programme: Store.data });
+    }
+
+    handleClick(meeting) {
         if (this.props.onClick) {
             this.props.onClick(meeting);
         } else {
             browserHistory.push('/programme/'+meeting.id+'/edit');
         }
-    },
+    }
 
-    render: function() {
+    render() {
         var headers = {
             date: 'Date',
             title: 'Title',
@@ -52,11 +58,9 @@ var Programme = React.createClass({
                     <Link to="/programme/new"><span className="nav-button">Add</span></Link>
                 </SubHeader>
                 <PageContent>
-                    <DataTable headers={ headers } classes={ classes } data={ this.state.programme } onClick={ this.handleClick } height="tall" />
+                    <DataTable headers={ headers } classes={ classes } data={ this.state.programme } onClick={ this.handleClick.bind(this) } height="tall" />
                 </PageContent>
             </div>
         )
     }
-});
-
-export default Programme;
+}

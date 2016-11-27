@@ -51,7 +51,7 @@ var AddCubParent = React.createClass({
                 { heading }
                 <div className="spacer hidden-xs" />
                 <Modal isOpen={this.state.isFormOpen}>
-                    <ParentForm onClose={ this.closeForm } onSave={ this.props.addParent } cub={ this.props.cub } />
+                    <ParentForm onClose={ this.closeForm } onSave={ this.props.addParent } cub={ this.props.cub } params={ {} } />
                 </Modal>
 
                 <DataTable

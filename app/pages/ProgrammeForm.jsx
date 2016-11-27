@@ -1,10 +1,8 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
-var actions = require('../Actions');
-var store = require('../store');
+import * as actions from '../Actions';
+import Store from '../store';
 var moment = require('moment');
-var promise = require("es6-promise");
-var Promise = promise.Promise;
 import SelectBadge from '../components/SelectBadge';
 import Modal from '../widgets/Modal';
 import CriteriaList from '../components/CriteriaList';
@@ -14,24 +12,24 @@ import ValidationError from '../widgets/ValidationError';
 import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
 
-var ProgrammeForm = React.createClass({
-    getDefaultProps: function() {
-        return {
-            params: { id: null }
-        }
-    },
-    getInitialState: function() {
-        return {
+export default class ProgrammeForm extends React.Component {
+    constructor() {
+        super();
+        this.setMeeting = this.setMeeting.bind(this);
+        this.setCubs = this.setCubs.bind(this);
+        this.setBadges = this.setBadges.bind(this);
+        this.setAllBadges = this.setAllBadges.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.state = {
             dataType: 'programme',
-            id: this.props.params.id,
-            date: null,
-            title: null,
+            date: '',
+            title: '',
             type: 'Standard',
-            location: null,
-            details: null,
+            location: '',
+            details: '',
             start_time: '18:30',
             end_time: '20:00',
-            end_date: null,
+            end_date: '',
             validation: {},
             isModalOpen: false,
             all_badges: [],
@@ -39,17 +37,42 @@ var ProgrammeForm = React.createClass({
             badges: [],
             cubs: []
         }
-    },
+    }
 
-    handleInputChange: function(e) {
+    componentWillMount() {
+        if (this.props.params.id) {
+            actions.get({ dataType: 'programme', id: this.props.params.id });
+            actions.get({ dataType: 'programme_cubs', programme_id: this.props.params.id });
+            actions.get({ dataType: 'programme_badge', programme_id: this.props.params.id });
+        }
+        actions.get({ dataType: 'badgesWithCriteria' });
+
+        Store.on('programme-get', this.setMeeting);
+        Store.on('programme_cubs-get', this.setCubs);
+        Store.on('programme_badge-get', this.setBadges);
+        Store.on('badgesWithCriteria-get', this.setAllBadges);
+        Store.on('programme-destroy', this.navBack);
+        Store.on('programme-add', this.navBack);
+        Store.on('programme-update', this.navBack);
+    }
+
+    componentWillUnmount() {
+        Store.removeListener('programme-get', this.setMeeting);
+        Store.removeListener('programme_cubs-get', this.setCubs);
+        Store.removeListener('programme_badge-get', this.setBadges);
+        Store.removeListener('badgesWithCriteria-get', this.setAllBadges);
+    }
+
+    handleInputChange(e) {
         var name = e.target.name;
         var state = this.state;
         state[name] = e.target.value;
         state.validation[name] = '';
         this.setState(state);
-    },
+    }
 
-    setMeeting: function(meeting) {
+    setMeeting() {
+        var meeting = Store.data[0];
         this.setState({
           id: meeting.id,
           date: meeting.date,
@@ -61,43 +84,21 @@ var ProgrammeForm = React.createClass({
           end_time: meeting.end_time,
           end_date: meeting.end_date
         });
-    },
+    }
 
-    componentDidMount: function() {
-        var self = this;
-        store.onChange({ dataType: 'badge' }, function(all_badges) {
-            var badgesWithCriteria = all_badges.map(function(badge) {
-                store.onChange({ dataType: 'criteria', badge_id: badge.id }, function(badge_criteria) {
-                    var criteriaWithTasks = badge_criteria.map(function(criteria) {
-                        store.onChange({ dataType: 'task', badge_criteria_id: criteria.id }, function(badge_tasks) {
-                            var tasks = badge_tasks.map(function(task) {
-                                return task;
-                            });
-                            criteria.badge_tasks = tasks;
-                        });
-                        return criteria;
-                    });
-                    badge.badge_criteria = criteriaWithTasks;
-                });
-                return badge;
-            });
-            self.setState({ all_badges: badgesWithCriteria });
-        });
-        if (this.props.params.id) {
-            store.onChange({ dataType: 'programme', id: this.props.params.id }, function(programme) {
-                var meeting = programme[0];
-                self.setMeeting(meeting);
-            });
-            store.onChange({ dataType: 'programme_badge', programme_id: this.props.params.id }, function(badges) {
-                self.setState({ badges: badges });
-            });
-        }
-        store.onChange({ dataType: 'programme_cubs', programme_id: this.props.params.id }, function(cubs) {
-            self.setState({ cubs: cubs });
-        });
-    },
+    setCubs() {
+        this.setState({ cubs: Store.data });
+    }
 
-    validateMeeting: function(data) {
+    setBadges() {
+        this.setState({ badges: Store.data });
+    }
+
+    setAllBadges() {
+        this.setState({ all_badges: Store.data });
+    }
+
+    validateMeeting(data) {
         var err = {};
         if (moment(data.date, 'DD/MM/YYYY').format() == 'Invalid date') err.date = 'Please enter a date in DD/MM/YYYY format';
         if (!data.title) err.title = 'Please enter a title';
@@ -108,42 +109,50 @@ var ProgrammeForm = React.createClass({
         if (data.type == 'Camp' && moment(data.end_date, 'DD/MM/YYYY').format() == 'Invalid date') err.end_date = 'Please enter a date in DD/MM/YYYY format';
         this.setState({ validation: err });
         return Object.keys(err).length;
-    },
+    }
 
-    saveMeeting: function(e) {
+    saveMeeting(e) {
         e.preventDefault();
         var meeting = this.state;
         var errors = this.validateMeeting(meeting);
         if (!errors) {
-            meeting.dataType = 'programme';
-            this.props.params.id ? actions.update(meeting) : actions.add(meeting);
-            browserHistory.push('/programme');
+            if (this.state.id) {
+                actions.update(meeting);
+            } else {
+                actions.add(meeting);
+            }
         }
-    },
+    }
 
-    deleteMeeting: function(e) {
+    deleteMeeting(e) {
         e.preventDefault();
-        actions.destroy({ id: this.props.params.id, dataType: 'programme' });
-        browserHistory.push('/programme');
-    },
+        var confirmed = confirm("Delete this record?");
+        if (confirmed) {
+            actions.destroy({ id: this.state.id, dataType: 'programme' });
+        }
+    }
 
-    addBadge: function(badge) {
+    navBack() {
+        browserHistory.push('/programme');
+    }
+
+    addBadge(badge) {
         var badges = this.state.badges;
         badges.push(badge);
         this.setState({
             badges: badges,
             isModalOpen: false
         });
-    },
+    }
 
-    openModal: function() {
+    openModal() {
         this.setState({ isModalOpen: true });
-    },
-    closeModal: function() {
+    }
+    closeModal() {
         this.setState({ isModalOpen: false });
-    },
+    }
 
-    selectCub: function(cub) {
+    selectCub(cub) {
         var cubs = this.state.cubs;
         var new_cubs = [];
         cubs.map(function(new_cub) {
@@ -153,25 +162,25 @@ var ProgrammeForm = React.createClass({
             new_cubs.push(new_cub);
         });
         this.setState({ cubs: new_cubs });
-    },
+    }
 
-    selectAll: function() {
+    selectAll() {
         var new_cubs = this.state.cubs.map(function(cub) {
             cub.selected = 1;
             return cub;
         });
         this.setState({ cubs: new_cubs });
-    },
+    }
 
-    deselectAll: function() {
+    deselectAll() {
         var new_cubs = this.state.cubs.map(function(cub) {
             cub.selected = 0;
             return cub;
         });
         this.setState({ cubs: new_cubs });
-    },
+    }
 
-    render: function() {
+    render() {
         var self = this;
         var meetingEndDateTime = moment(this.state.date + ' ' + this.state.end_time, 'DD/MM/YYYY HH:mm');
         var meetingInPast = moment().isAfter(meetingEndDateTime);
@@ -262,15 +271,15 @@ var ProgrammeForm = React.createClass({
 
         return(
             <div id="ProgrammeForm">
-                <SubHeader heading={ this.props.params.id ? 'Edit meeting' : 'New meeting' }>
+                <SubHeader heading={ this.state.id ? 'Edit meeting' : 'New meeting' }>
                     <Link to="/programme"><span className="nav-button">back</span></Link>
-                    { this.props.params.id ? <a><span className="nav-button" onClick={ this.deleteMeeting }>Delete</span></a> : '' }
-                    { this.props.params.id ? <Link to={"/programmePrint/"+this.props.params.id}><span className="nav-button">Print</span></Link> : '' }
-                    <a><span className="nav-button" onClick={ this.saveMeeting }>Save</span></a>
+                    { this.state.id ? <a><span className="nav-button" onClick={ this.deleteMeeting.bind(this) }>Delete</span></a> : '' }
+                    { this.state.id ? <Link to={"/programmePrint/"+this.state.id}><span className="nav-button">Print</span></Link> : '' }
+                    <a><span className="nav-button" onClick={ this.saveMeeting.bind(this) }>Save</span></a>
                 </SubHeader>
 
                 <PageContent>
-                    <div className="form" onSubmit={ this.saveMeeting }>
+                    <div className="form">
                         <h3>Meeting details</h3>
                         <div className="form-group">
                             <label className="control-label" htmlFor="date">Date:</label>
@@ -319,20 +328,20 @@ var ProgrammeForm = React.createClass({
                         <div className="spacer" />
 
                         <Modal isOpen={ this.state.isModalOpen }>
-                            <SelectBadge badges={ this.state.all_badges } addBadge={ this.addBadge } closeModal={ this.closeModal } />
+                            <SelectBadge badges={ this.state.all_badges } addBadge={ this.addBadge.bind(this) } closeModal={ this.closeModal.bind(this) } />
                         </Modal>
 
                         { badgeWork }
                         <div className="form-buttons">
-                            <a><span className="nav-button" onClick={ self.openModal }>Add badge</span></a>
+                            <a><span className="nav-button" onClick={ self.openModal.bind(this) }>Add badge</span></a>
                         </div>
 
                         { meetingInPast ? <div>
                             <div className="spacer" />
                             <h3>Cubs</h3>
-                            <a><span className="nav-button" onClick={ this.selectAll }>select all</span></a>
-                            <a><span className="nav-button" onClick={ this.deselectAll }>deselect all</span></a>
-                            <DataTable headers={ headers } data={ this.state.cubs } onClick={ this.selectCub } height="short" />
+                            <a><span className="nav-button" onClick={ this.selectAll.bind(this) }>select all</span></a>
+                            <a><span className="nav-button" onClick={ this.deselectAll.bind(this) }>deselect all</span></a>
+                            <DataTable headers={ headers } data={ this.state.cubs } onClick={ this.selectCub.bind(this) } height="short" />
                             <div className="spacer" />
                         </div> : '' }
                     </div>
@@ -340,6 +349,4 @@ var ProgrammeForm = React.createClass({
             </div>
         )
     }
-})
-
-export default ProgrammeForm;
+}

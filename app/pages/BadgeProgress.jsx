@@ -1,52 +1,54 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
-var actions = require('../Actions');
-var store = require('../store');
+import * as actions from '../Actions';
+import Store from '../store';
 import DataTable from '../widgets/DataTable';
 import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
+import reactMixin from 'react-mixin';
 var OnResize = require("react-window-mixins").OnResize;
 
-var BadgeProgress = React.createClass({
-    mixins: [ OnResize ],
-    getDefaultProps: function() {
-      return {
-          params: { badge_id: null }
-      }
-    },
-    getInitialState: function() {
-        return {
+export default class BadgeProgress extends React.Component {
+    constructor() {
+        super();
+        this.setCubs = this.setCubs.bind(this);
+        this.setBadges = this.setBadges.bind(this);
+        this.updateComplete = this.updateComplete.bind(this);
+        this.state = {
             cubs: [],
             badges: [],
             hoverCub: null,
-            hoverTask: null
+            hoverTask: null,
+            updating: false
         }
-    },
+    }
 
-    componentDidMount: function() {
-        var self = this;
-        store.onChange({ dataType: 'cub_tasks' }, function(cubs) {
-            if (self.isMounted()) self.setState({ cubs: cubs });
-            store.onChange({ dataType: 'badge', id: self.props.params.badge_id, purpose: 'progress' }, function(badges) {
-                var badgesWithCriteria = [];
-                badges.map(function(badge, bKey) {
-                    badge.badge_criteria = [];
-                    store.onChange({ dataType: 'criteria', badge_id: badge.id }, function(badge_criteria) {
-                        badge_criteria.map(function(criteria, cKey) {
-                            store.onChange({ dataType: 'task', badge_criteria_id: criteria.id }, function(badge_tasks) {
-                                criteria.badge_tasks = badge_tasks;
-                                badge.badge_criteria.push(criteria);
-                                if (cKey+1 == badge_criteria.length) badgesWithCriteria.push(badge);
-                                if (bKey+1 == badges.length && cKey+1 == badge_criteria.length) self.setState({ badges: badgesWithCriteria });
-                            });
-                        });
-                    });
-                });
-            });
-        });
-    },
+    componentWillMount() {
+        actions.get({ dataType: 'cub_tasks' });
+        actions.get({ dataType: 'badgesWithCriteria', id: this.props.params.badge_id });
+        Store.on('cub_tasks-get', this.setCubs);
+        Store.on('badgesWithCriteria-get', this.setBadges);
+        Store.on('activity-update', this.updateComplete);
+    }
 
-    render: function() {
+    componentWillUnmount() {
+        Store.removeListener('cub_tasks-get', this.setCubs);
+        Store.removeListener('badgesWithCriteria-get', this.setBadges);
+    }
+
+    setCubs() {
+        this.setState({ cubs: Store.data });
+    }
+
+    setBadges() {
+        this.setState({ badges: Store.data });
+    }
+
+    updateComplete() {
+        this.setState({ updating: false });
+    }
+
+    render() {
         var self = this;
         var cubs = this.state.cubs.map(function(cub, key) {
             var className = "cub-name";
@@ -59,10 +61,12 @@ var BadgeProgress = React.createClass({
                     var taskClass = criteria.complete_all ? 'single-task' : 'task';
                     var cells = self.state.cubs.map(function(cub, cellKey) {
                         function handleClick() {
-                            var cubs = self.state.cubs;
-                            cubs[cellKey].badge_tasks[task.id] = !cub.badge_tasks[task.id];
-                            self.setState({ cubs: cubs });
-                            actions.update({ dataType: 'activity', cub: cub, task_id: task.id, mark: cub.badge_tasks[task.id] });
+                            if (!self.state.updating) {
+                                var cubs = self.state.cubs;
+                                cubs[cellKey].badge_tasks[task.id] = !cub.badge_tasks[task.id];
+                                self.setState({ cubs: cubs, updating: true });
+                                actions.update({ dataType: 'activity', cub: cub, task_id: task.id, mark: cub.badge_tasks[task.id] });
+                            }
                         };
                         var cellClass = 'cell';
                         if (cub.badge_tasks[task.id]) cellClass += ' done';
@@ -113,6 +117,5 @@ var BadgeProgress = React.createClass({
             </div>
         )
     }
-});
-
-export default BadgeProgress;
+}
+reactMixin(BadgeProgress.prototype, OnResize);

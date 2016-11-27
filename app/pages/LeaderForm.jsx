@@ -6,51 +6,61 @@ import SelectInput from '../widgets/SelectInput';
 import ValidationError from '../widgets/ValidationError';
 import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
-var actions = require('../Actions');
-var store = require('../store');
+import * as actions from '../Actions';
+import Store from '../store';
+import FormGroup from '../widgets/FormGroup';
 
-var LeaderForm = React.createClass({
-    getDefaultProps: function() {
-      return {
-          params: { id: null },
-          leader: null,
-          onClose: null
-      }
-    },
-    getInitialState: function() {
-      return {
-          dataType: 'leader',
-          id: this.props.params.id,
-          title: '',
-          forename: '',
-          surname: '',
-          position: '',
-          cub_name: '',
-          username: '',
-          password: '',
-          password_2: '',
-          phone_1: '',
-          phone_2: '',
-          email: '',
-          address_1: '',
-          address_2: '',
-          address_3: '',
-          town: 'Exeter',
-          postcode: '',
-          uuid: null,
-          validation: {}
-      }
-    },
+export default class LeaderForm extends React.Component {
+    constructor() {
+        super();
+        this.setLeader = this.setLeader.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.state = {
+            dataType: 'leader',
+            title: '',
+            forename: '',
+            surname: '',
+            position: '',
+            cub_name: '',
+            username: '',
+            password: '',
+            password_2: '',
+            phone_1: '',
+            phone_2: '',
+            email: '',
+            address_1: '',
+            address_2: '',
+            address_3: '',
+            town: 'Exeter',
+            postcode: '',
+            validation: {}
+        }
+    }
 
-    handleInputChange: function(e) {
+    componentWillMount() {
+        if (this.props.params.id) {
+            actions.get({ dataType: 'leader', id: this.props.params.id });
+        }
+        Store.on('leader-get', this.setLeader);
+        Store.on('leader-destroy', this.navBack);
+        Store.on('leader-add', this.navBack);
+        Store.on('leader-update', this.navBack);
+    }
+
+    componentWillUnmount() {
+        Store.removeListener('leader-get', this.setLeader);
+    }
+
+    handleInputChange(e) {
         var name = e.target.name;
         var state = this.state;
         state[name] = e.target.value;
         state.validation[name] = '';
         this.setState(state);
-    },
+    }
 
-    setLeader: function(leader) {
+    setLeader() {
+        var leader = Store.data[0];
         this.setState({
             id: leader.id,
             title: leader.title,
@@ -66,25 +76,11 @@ var LeaderForm = React.createClass({
             address_2: leader.address_2,
             address_3: leader.address_3,
             town: leader.town,
-            postcode: leader.postcode,
-            uuid: leader.uuid
+            postcode: leader.postcode
         });
-    },
+    }
 
-    componentDidMount: function() {
-        var self = this;
-        if (this.props.params.id) {
-            store.onChange({ dataType: 'leader', id: this.props.params.id }, function(leaders) {
-                var leader = leaders[0];
-                self.setLeader(leader);
-            });
-        } else if (this.props.leader) {
-            var leader = this.props.leader;
-            self.setLeader(leader);
-        }
-    },
-
-    validateLeader: function(data) {
+    validateLeader(data) {
         var err = {};
         if (!data.title) err.title = 'Please select a title';
         if (!data.forename) err.forename = 'Please enter a first name';
@@ -95,30 +91,33 @@ var LeaderForm = React.createClass({
         if (data.password != data.password_2) err.password_2 = 'Passwords do not match';
         this.setState({ validation: err });
         return Object.keys(err).length;
-    },
+    }
 
-    saveLeader: function(e) {
-        e.preventDefault();
+    saveLeader() {
         var leader = this.state;
         var errors = this.validateLeader(leader);
         if (!errors) {
-            if (this.props.onSave) {
-                this.props.onSave(leader);
+            if (this.props.params.id) {
+                leader.id = this.props.params.id;
+                actions.update(leader);
             } else {
-                leader.dataType = 'leader';
-                this.props.params.id ? actions.update(leader) : actions.add(leader);
-                browserHistory.push('/leaders');
+                actions.add(leader);
             }
         }
-    },
+    }
 
-    deleteLeader: function(e) {
-        e.preventDefault();
-        actions.destroy({ id: this.props.params.id, dataType: 'leader' });
+    deleteLeader() {
+        var confirmed = confirm("Delete this record?");
+        if (confirmed) {
+            actions.destroy({ id: this.props.params.id, dataType: 'leader' });
+        }
+    }
+
+    navBack() {
         browserHistory.push('/leaders');
-    },
+    }
 
-    render: function() {
+    render() {
         return(
             <div id="LeaderForm">
                 <SubHeader heading={ this.props.params.id ? 'Edit' : 'New leader' }>
@@ -127,12 +126,12 @@ var LeaderForm = React.createClass({
                     :
                         <Link to="/leaders"><span className="nav-button">back</span></Link>
                     }
-                    { this.props.params.id && !this.props.onClose ? <a><span className="nav-button" onClick={ this.deleteLeader }>Delete</span></a> : '' }
-                    <a><span className="nav-button" onClick={ this.saveLeader }>Save</span></a>
+                    { this.props.params.id && !this.props.onClose ? <a><span className="nav-button" onClick={ this.deleteLeader.bind(this) }>Delete</span></a> : '' }
+                    <a><span className="nav-button" onClick={ this.saveLeader.bind(this) }>Save</span></a>
                 </SubHeader>
 
                 <PageContent>
-                    <div className="form" onSubmit={ this.saveLeader }>
+                    <div className="form">
                         <h3>Leader details</h3>
                         <div className="form-group">
                             <label className="control-label" htmlFor="title">Title:</label>
@@ -228,6 +227,4 @@ var LeaderForm = React.createClass({
             </div>
         )
     }
-})
-
-export default LeaderForm;
+}

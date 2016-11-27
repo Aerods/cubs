@@ -71,6 +71,7 @@ exports.update = function(data, done) {
         data.postcode,
         data.id
     ];
+    if (!data.password) values.splice(6, 1);
     action_log.create('leaders', 'update', data, function() {
         db.get().query('                \
             update leaders set          \

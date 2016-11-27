@@ -5,42 +5,91 @@ import SelectInput from '../widgets/SelectInput';
 import ValidationError from '../widgets/ValidationError';
 import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
-var actions = require('../Actions');
-var store = require('../store');
+import * as actions from '../Actions';
+import Store from '../store';
+import FormGroup from '../widgets/FormGroup';
 
-var ParentForm = React.createClass({
-    getDefaultProps: function() {
-      return {
-          params: { id: null },
-          parent: null,
-          cub: {},
-          onClose: null
-      }
-    },
-    getInitialState: function() {
-      return {
-          dataType: 'parent',
-          id: this.props.params.id,
-          title: '',
-          forename: '',
-          surname: (this.props.cub.surname || ''),
-          relationship: '',
-          lives_with_cub: (Object.keys(this.props.cub).length ? true : false),
-          phone_1: (this.props.cub.phone || ''),
-          phone_2: '',
-          email: '',
-          address_1: (this.props.cub.address_1 || ''),
-          address_2: (this.props.cub.address_2 || ''),
-          address_3: (this.props.cub.address_3 || ''),
-          town: (this.props.cub.town || ''),
-          postcode: (this.props.cub.postcode || ''),
-          cub_id: null,
-          uuid: null,
-          validation: {}
-      }
-    },
+export default class ParentForm extends React.Component {
+    constructor() {
+        super();
+        this.setParent = this.setParent.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.state = {
+            dataType: 'parent',
+            title: '',
+            forename: '',
+            surname: '',
+            relationship: '',
+            lives_with_cub: false,
+            phone_1: '',
+            phone_2: '',
+            email: '',
+            address_1: '',
+            address_2: '',
+            address_3: '',
+            town: '',
+            postcode: '',
+            cub_id: null,
+            uuid: null,
+            validation: {},
+            hasCubData: 0
+        }
+    }
 
-    handleInputChange: function(e) {
+    componentWillMount() {
+        if (this.props.cub) {
+            this.setState({
+                hasCubData: 1,
+                surname: this.props.cub.surname,
+                lives_with_cub: (Object.keys(this.props.cub).length ? true : false),
+                phone_1: this.props.cub.phone,
+                address_1: this.props.cub.address_1,
+                address_2: this.props.cub.address_2,
+                address_3: this.props.cub.address_3,
+                town: this.props.cub.town,
+                postcode: this.props.cub.postcode,
+            });
+        }
+
+        if (this.props.params.id) {
+            actions.get({ dataType: 'parent', id: this.props.params.id });
+        } else if (this.props.parent) {
+            var parent = this.props.parent;
+            this.setParent(parent);
+        }
+        Store.on('parent-get', this.setParent);
+        Store.on('parent-add', this.navBack);
+        Store.on('parent-update', this.navBack);
+    }
+
+    componentWillUnmount() {
+        Store.removeListener('parent-get', this.setParent);
+        Store.on('parent-destroy', this.navBack);
+    }
+
+    setParent(parent) {
+        if (!parent) parent = Store.data[0];
+        this.setState({
+            id: parent.id,
+            title: parent.title,
+            forename: parent.forename,
+            surname: parent.surname,
+            relationship: parent.relationship,
+            lives_with_cub: parent.lives_with_cub,
+            phone_1: parent.phone_1,
+            phone_2: parent.phone_2,
+            email: parent.email,
+            address_1: parent.address_1,
+            address_2: parent.address_2,
+            address_3: parent.address_3,
+            town: parent.town,
+            postcode: parent.postcode,
+            cub_id: parent.cub_id,
+            uuid: parent.uuid
+        });
+    }
+
+    handleInputChange(e) {
         var name = e.target.name;
         var state = this.state;
         state[name] = e.target.value;
@@ -63,43 +112,9 @@ var ParentForm = React.createClass({
             state.postcode = '';
         }
         this.setState(state);
-    },
+    }
 
-    setParent: function(parent) {
-        this.setState({
-            id: parent.id,
-            title: parent.title,
-            forename: parent.forename,
-            surname: parent.surname,
-            relationship: parent.relationship,
-            lives_with_cub: parent.lives_with_cub,
-            phone_1: parent.phone_1,
-            phone_2: parent.phone_2,
-            email: parent.email,
-            address_1: parent.address_1,
-            address_2: parent.address_2,
-            address_3: parent.address_3,
-            town: parent.town,
-            postcode: parent.postcode,
-            cub_id: parent.cub_id,
-            uuid: parent.uuid
-        });
-    },
-
-    componentDidMount: function() {
-        var self = this;
-        if (this.props.params.id) {
-            store.onChange({ dataType: 'parent', id: this.props.params.id }, function(parents) {
-                var parent = parents[0];
-                self.setParent(parent);
-            });
-        } else if (this.props.parent) {
-            var parent = this.props.parent;
-            self.setParent(parent);
-        }
-    },
-
-    validateParent: function(data) {
+    validateParent(data) {
         var err = {};
         if (!data.title) err.title = 'Please select a title';
         if (!data.forename) err.forename = 'Please enter a first name';
@@ -107,9 +122,9 @@ var ParentForm = React.createClass({
         if (!data.relationship) err.relationship = 'Please select a relationship';
         this.setState({ validation: err });
         return Object.keys(err).length;
-    },
+    }
 
-    saveParent: function(e) {
+    saveParent(e) {
         e.preventDefault();
         var parent = this.state;
         var errors = this.validateParent(parent);
@@ -118,19 +133,28 @@ var ParentForm = React.createClass({
                 this.props.onSave(parent);
             } else {
                 parent.dataType = 'parent';
-                this.props.params.id ? actions.update(parent) : actions.add(parent);
-                browserHistory.push('/parents');
+                if (this.props.params.id) {
+                    parent.id = this.props.params.id;
+                    actions.update(parent);
+                } else {
+                    actions.add(parent);
+                }
             }
         }
-    },
+    }
 
-    deleteParent: function(e) {
-        e.preventDefault();
-        actions.destroy({ id: this.props.params.id, dataType: 'parent' });
+    deleteParent() {
+        var confirmed = confirm("Delete this record?");
+        if (confirmed) {
+            actions.destroy({ id: this.props.params.id, dataType: 'parent' });
+        }
+    }
+
+    navBack() {
         browserHistory.push('/parents');
-    },
+    }
 
-    render: function() {
+    render() {
         return(
             <div id="ParentForm">
                 <SubHeader heading={ this.props.params.id ? 'Edit' : 'New parent' }>
@@ -140,88 +164,34 @@ var ParentForm = React.createClass({
                     :
                         <Link to="/parents"><span className="nav-button">back</span></Link>
                     }
-                    { this.props.params.id && !this.props.onClose ? <a><span className="nav-button" onClick={ this.deleteParent }>Delete</span></a> : '' }
-                    <a><span className="nav-button" onClick={ this.saveParent }>Save</span></a>
+                    { this.props.params.id && !this.props.onClose ? <a><span className="nav-button" onClick={ this.deleteParent.bind(this) }>Delete</span></a> : '' }
+                    <a><span className="nav-button" onClick={ this.saveParent.bind(this) }>Save</span></a>
                 </SubHeader>
 
                 <PageContent isModal={ this.props.onClose }>
 
-                    <div className="form" onSubmit={ this.saveParent }>
+                    <div className="form" onSubmit={ this.saveParent.bind(this) }>
                         <h3>Parent details</h3>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="title">Title:</label>
-                            <SelectInput
-                                data={ ['Mr', 'Mrs', 'Miss', 'Ms', 'Dr'] }
-                                selected={ this.state.title }
-                                name="title"
-                                onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.title } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="forename">First name:</label>
-                            <input type="text" className="form-control" id="forename" name="forename" value={ this.state.forename } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.forename } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="surname">Last name:</label>
-                            <input type="text" className="form-control" id="surname" name="surname" value={ this.state.surname } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.surname } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="relationship">Relationship:</label>
-                            <input type="text" className="form-control" id="relationship" name="relationship" value={ this.state.relationship } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.relationship } />
-                        </div>
-                        { Object.keys(this.props.cub).length ? <div className="form-group">
+                        <FormGroup name="title" type="select" value={ this.state.title } data={ ['Mr', 'Mrs', 'Miss', 'Ms', 'Dr'] } onChange={ this.handleInputChange } error={ this.state.validation.title} />
+                        <FormGroup name="forename" label="First name:" value={ this.state.forename } onChange={ this.handleInputChange } error={ this.state.validation.forename } />
+                        <FormGroup name="surname" label="Last name:" value={ this.state.surname } onChange={ this.handleInputChange } error={ this.state.validation.surname } />
+                        <FormGroup name="relationship" label="Relationship:" value={ this.state.relationship } onChange={ this.handleInputChange } error={ this.state.validation.relationship } />
+                        { this.state.hasCubData ? <div className="form-group">
                             <label className="control-label" htmlFor="lives_with_cub">Lives with cub:</label>
                             <CheckboxInput name="lives_with_cub" checked={ this.state.lives_with_cub } onChange={ this.handleInputChange } />
                             <ValidationError error={ this.state.validation.lives_with_cub } />
                         </div> : '' }
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="phone_1">Home phone:</label>
-                            <input type="text" className="form-control small" id="phone_1" name="phone_1" value={ this.state.phone_1 } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.phone_1 } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="phone_2">Mobile phone:</label>
-                            <input type="text" className="form-control small" id="phone_2" name="phone_2" value={ this.state.phone_2 } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.phone_2 } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="email">Email address:</label>
-                            <input type="text" className="form-control" id="email" name="email" value={ this.state.email } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.email } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="address_1">Address line 1:</label>
-                            <input type="text" className="form-control" id="address_1" name="address_1" value={ this.state.address_1 } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.address_1 } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="address_2">Address line 2:</label>
-                            <input type="text" className="form-control" id="address_2" name="address_2" value={ this.state.address_2 } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.address_2 } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="address_3">Address line 3:</label>
-                            <input type="text" className="form-control" id="address_3" name="address_3" value={ this.state.address_3 } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.address_3 } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="town">Town:</label>
-                            <input type="text" className="form-control" id="town" name="town" value={ this.state.town } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.town } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="post">Postcode:</label>
-                            <input type="text" className="form-control small" id="postcode" name="postcode" value={ this.state.postcode } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.postcode } />
-                        </div>
+                        <FormGroup name="phone_1" type="small" label="Home phone:" value={ this.state.phone_1 } onChange={ this.handleInputChange } />
+                        <FormGroup name="phone_2" type="small" label="Mobile phone:" value={ this.state.phone_2 } onChange={ this.handleInputChange } />
+                        <FormGroup name="email" label="Email address:" value={ this.state.email } onChange={ this.handleInputChange } />
+                        <FormGroup name="address_1" label="Address line 1:" value={ this.state.address_1 } onChange={ this.handleInputChange } />
+                        <FormGroup name="address_2" label="Address line 2:" value={ this.state.address_2 } onChange={ this.handleInputChange } />
+                        <FormGroup name="address_3" label="Address line 3:" value={ this.state.address_3 } onChange={ this.handleInputChange } />
+                        <FormGroup name="town" value={ this.state.town } onChange={ this.handleInputChange } />
+                        <FormGroup name="postcode" type="small" value={ this.state.postcode } onChange={ this.handleInputChange } />
                     </div>
                 </PageContent>
             </div>
         )
     }
-})
-
-export default ParentForm;
+}

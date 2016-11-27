@@ -3,8 +3,8 @@ import { Link, browserHistory } from 'react-router';
 import BadgeDisplay from '../components/BadgeDisplay';
 import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
-var actions = require('../Actions');
-var store = require('../store');
+import * as actions from '../Actions';
+import Store from '../store';
 
 var ViewBadge = React.createClass({
     getDefaultProps: function() {
@@ -15,8 +15,11 @@ var ViewBadge = React.createClass({
 
     deleteBadge: function(e) {
         e.preventDefault();
-        actions.destroy({ id: this.props.params.id, dataType: 'badge' });
-        browserHistory.push('/badges');
+        var confirmed = confirm("Delete this record?");
+        if (confirmed) {
+            actions.destroy({ id: this.props.params.id, dataType: 'badge' });
+            browserHistory.push('/badges');
+        }
     },
 
     render: function() {

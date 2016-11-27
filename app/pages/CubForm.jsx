@@ -1,24 +1,19 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
-var actions = require('../Actions');
-var store = require('../store');
-var moment = require('moment');
-import DataTable from '../widgets/DataTable';
+import * as actions from '../Actions';
+import Store from '../store';
+import moment from 'moment';
 import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
 import FormGroup from '../widgets/FormGroup';
 
-var CubForm = React.createClass({
-    getDefaultProps: function() {
-        return {
-            id: null,
-            params: { id: null }
-        }
-    },
-    getInitialState: function() {
-        return {
+export default class CubForm extends React.Component {
+    constructor() {
+        super();
+        this.setCub = this.setCub.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.state = {
             dataType: 'cub',
-            id: this.props.params.id,
             forename: '',
             surname: '',
             date_of_birth: '',
@@ -45,39 +40,45 @@ var CubForm = React.createClass({
             parent: {},
             validation: {}
         }
-    },
+    }
 
-    componentDidMount: function() {
-        var self = this;
+    componentWillMount() {
         if (this.props.params.id) {
-            store.onChange({ dataType: 'cub', id: this.props.params.id }, function(cubs) {
-                var cub = cubs[0];
-                self.setState({
-                    forename: cub.forename,
-                    surname: cub.surname,
-                    date_of_birth: cub.date_of_birth,
-                    gender: cub.gender,
-                    rank: cub.rank,
-                    six: cub.six,
-                    phone: cub.phone,
-                    address_1: cub.address_1,
-                    address_2: cub.address_2,
-                    address_3: cub.address_3,
-                    town: cub.town,
-                    postcode: cub.postcode,
-                    start_date: cub.start_date,
-                    from_beavers: cub.from_beavers,
-                    invested: cub.invested,
-                    previous_group: cub.previous_group,
-                    medical_information: cub.medical_information,
-                    notes: cub.notes,
-                    to_scouts: cub.to_scouts
-                });
-            });
+            actions.get({ dataType: 'cub', id: this.props.params.id });
+            Store.on('cub-get', this.setCub);
         };
-    },
+    }
 
-    validateCub: function(data) {
+    componentWillUnmount() {
+        Store.removeListener('cub-get', this.setCub);
+    }
+
+    setCub() {
+        var cub = Store.data[0];
+        this.setState({
+            forename:               (cub.forename || ''),
+            surname:                (cub.surname || ''),
+            date_of_birth:          (cub.date_of_birth || ''),
+            gender:                 (cub.gender || ''),
+            rank:                   (cub.rank || ''),
+            six:                    (cub.six || ''),
+            phone:                  (cub.phone || ''),
+            address_1:              (cub.address_1 || ''),
+            address_2:              (cub.address_2 || ''),
+            address_3:              (cub.address_3 || ''),
+            town:                   (cub.town || ''),
+            postcode:               (cub.postcode || ''),
+            start_date:             (cub.start_date || ''),
+            from_beavers:           (cub.from_beavers || ''),
+            invested:               (cub.invested || ''),
+            previous_group:         (cub.previous_group || ''),
+            medical_information:    (cub.medical_information || ''),
+            notes:                  (cub.notes || ''),
+            to_scouts:              (cub.to_scout || '')
+        });
+    }
+
+    validateCub(data) {
         var err = {};
         if (!data.forename) err.forename = 'Please enter a first name';
         if (!data.surname) err.surname = 'Please enter a last name';
@@ -89,42 +90,45 @@ var CubForm = React.createClass({
         if (data.to_scouts && moment(data.to_scouts, 'DD/MM/YYYY').format() == 'Invalid date') err.to_scouts = 'Please enter a date in DD/MM/YYYY format';
         this.setState({ validation: err });
         return Object.keys(err).length;
-    },
+    }
 
-    saveCub: function(e) {
+    saveCub(e) {
         e.preventDefault();
         var cub = this.state;
         var errors = this.validateCub(cub);
         if (!errors) {
             if (this.props.params.id) {
-                actions.update(cub, function(data) {
-                    browserHistory.push('/cubs/'+data.id);
-                });
+                cub.id = this.props.params.id;
+                actions.update(cub);
+                Store.on('cub-update', this.navToCub);
             } else {
-                actions.add(cub, function(data) {
-                    browserHistory.push('/cubs/'+data.id);
-                });
+                actions.add(cub);
+                Store.on('cub-add', this.navToCub);
             }
         }
-    },
+    }
 
-    handleInputChange: function(e) {
+    navToCub() {
+        browserHistory.push('/cubs/'+Store.data.id);
+    }
+
+    handleInputChange(e) {
       var name = e.target.name;
       var state = this.state;
       state[name] = e.target.value;
       state.validation[name] = '';
       this.setState(state);
-    },
+    }
 
-    render: function() {
+    render() {
         return(
             <div id="CubForm">
                 <SubHeader heading={ this.props.params.id ? 'Edit cub' : 'New cub' }>
                     <Link to={ this.props.params.id ? "/cubs/"+this.props.params.id : "/cubs" }><span className="nav-button">back</span></Link>
-                    <a><span className="nav-button" onClick={ this.saveCub }>Save</span></a>
+                    <a><span className="nav-button" onClick={ this.saveCub.bind(this) }>Save</span></a>
                 </SubHeader>
                 <PageContent>
-                    <div className="form" onSubmit={ this.saveCub }>
+                    <div className="form" onSubmit={ this.saveCub.bind(this) }>
                         <h3>Cub details</h3>
                         <FormGroup name="forename" label="First name:" value={ this.state.forename } onChange={ this.handleInputChange } error={ this.state.validation.forename } />
                         <FormGroup name="surname" label="Last name:" value={ this.state.surname } onChange={ this.handleInputChange } error={ this.state.validation.surname } />
@@ -150,6 +154,4 @@ var CubForm = React.createClass({
             </div>
         )
     }
-})
-
-export default CubForm;
+}

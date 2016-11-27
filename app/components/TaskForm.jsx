@@ -1,7 +1,5 @@
 import React from 'react';
 import ValidationError from '../widgets/ValidationError';
-var actions = require('../Actions');
-var store = require('../store');
 
 var TaskForm = React.createClass({
     getDefaultProps: function() {

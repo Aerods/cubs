@@ -1,69 +1,66 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
-var store = require('../store');
+import * as actions from '../Actions';
+import Store from '../store';
 import Modal from '../widgets/Modal';
 import SelectActivity from '../components/SelectActivity';
 import BadgeGrid from '../components/BadgeGrid';
 import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
 
-var Badges = React.createClass({
-    getInitialState: function() {
-        return {
+export default class Badges extends React.Component {
+    constructor() {
+        super();
+        this.setBadges = this.setBadges.bind(this);
+        this.state = {
             badges: [],
             isModalOpen: false
-        }
-    },
-
-    componentDidMount: function() {
-        var self = this;
-        this.getData();
-        socket.on('badgesUpdate', function () {
-            self.getData();
+        };
+    }
+    componentWillMount() {
+        actions.get({ dataType: 'badge' });
+        socket.on('badgesUpdate', () => {
+            actions.get({ dataType: 'badge' });
         });
-    },
+        Store.on('badge-get', this.setBadges);
+    }
 
-    getData: function() {
-        var self = this;
-        store.onChange({ dataType: 'badge' }, function(badges) {
-            if (self.isMounted()) self.setState({ badges: badges });
-        });
-    },
+    componentWillUnmount() {
+        Store.removeListener('badge-get', this.setBadges);
+    }
 
-    addActivity: function() {
-    },
+    setBadges() {
+        this.setState({ badges: Store.data });
+    }
 
-    openModal: function() {
+    openModal() {
         this.setState({ isModalOpen: true });
-    },
-    closeModal: function() {
+    }
+    closeModal() {
         this.setState({ isModalOpen: false });
-    },
-
-    handleClick: function(badge) {
+    }
+    handleClick(badge) {
         browserHistory.push('/badges/'+badge.id);
-    },
+    }
 
-    render: function() {
+    render() {
         return (
             <div id="Badges">
                 <SubHeader heading="Badges">
                     <Link to="/badges/new"><span className="nav-button">Add</span></Link>
-                    <a><span className="nav-button hidden-sm hidden-md hidden-lg" onClick={ this.openModal }>Activity</span></a>
-                    <a><span className="nav-button hidden-xs" onClick={ this.openModal }>Complete activity</span></a>
+                    <a><span className="nav-button hidden-sm hidden-md hidden-lg" onClick={ this.openModal.bind(this) }>Activity</span></a>
+                    <a><span className="nav-button hidden-xs" onClick={ this.openModal.bind(this) }>Complete activity</span></a>
                     <Link to="/badges/progress"><span className="nav-button hidden-xs hidden-sm">Badge progress</span></Link>
                 </SubHeader>
 
                 <PageContent>
-                    <BadgeGrid badges={ this.state.badges } onClick={ this.handleClick } search={ true } />
+                    <BadgeGrid badges={ this.state.badges } onClick={ this.handleClick.bind(this) } search={ true } />
 
                     <Modal isOpen={ this.state.isModalOpen }>
-                        <SelectActivity addActivity={ this.addActivity } closeModal={ this.closeModal } />
+                        <SelectActivity closeModal={ this.closeModal.bind(this) } />
                     </Modal>
                 </PageContent>
             </div>
         )
     }
-});
-
-export default Badges;
+}

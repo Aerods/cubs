@@ -1,39 +1,41 @@
 import React from 'react';
 import { browserHistory, Link } from 'react-router';
-var store = require('../store');
+import * as actions from '../Actions';
+import Store from '../store';
 import PageContent from '../widgets/PageContent';
 import DataTable from '../widgets/DataTable';
 import SubHeader from '../widgets/SubHeader';
 
-var Parents = React.createClass({
-    getInitialState: function() {
-      return { parents: [] }
-    },
+export default class Parents extends React.Component {
+    constructor() {
+        super();
+        this.setParents = this.setParents.bind(this);
+        this.state = {
+            parents: []
+        };
+    }
 
-    componentDidMount: function() {
-        var self = this;
-        this.getData();
-        socket.on('parentsUpdate', function () {
-            self.getData();
+    componentWillMount() {
+        actions.get({ dataType: 'parent' });
+        socket.on('parentsUpdate', () => {
+            actions.get({ dataType: 'parent' });
         });
-    },
+        Store.on('parent-get', this.setParents);
+    }
 
-    getData: function() {
-        var self = this;
-        store.onChange({ dataType: 'parent' }, function(parents) {
-            if (self.isMounted()) self.setState({ parents: parents });
-        });
-    },
+    componentWillUnmount() {
+        Store.removeListener('parent-get', this.setParents);
+    }
 
-    handleClick: function(parent) {
-        if (this.props.onClick) {
-            this.props.onClick(parent);
-        } else {
-            browserHistory.push('/parents/'+parent.id+'/edit');
-        }
-    },
+    setParents() {
+        this.setState({ parents: Store.data });
+    }
 
-    render: function() {
+    handleClick(parent) {
+        browserHistory.push('/parents/'+parent.id+'/edit');
+    }
+
+    render() {
         var headers = {
             title: 'Title',
             forename: 'First name',
@@ -50,11 +52,9 @@ var Parents = React.createClass({
                     <Link to="/parents/new"><span className="nav-button">Add</span></Link>
                 </SubHeader>
                 <PageContent>
-                    <DataTable headers={ headers } classes={ classes } data={ this.state.parents } onClick={ this.handleClick } height="tall" />
+                    <DataTable headers={ headers } classes={ classes } data={ this.state.parents } onClick={ this.handleClick.bind(this) } height="tall" />
                 </PageContent>
             </div>
         )
     }
-});
-
-export default Parents;
+}

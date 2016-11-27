@@ -1,70 +1,63 @@
 import React from 'react';
-var store = require('../store');
-var actions = require('../Actions');
+import Store from '../store';
+import * as actions from '../Actions';
 import SelectBadge from './SelectBadge';
 import Modal from '../widgets/Modal';
 import CriteriaList from './CriteriaList';
 import DataTable from '../widgets/DataTable';
 
-var SelectActivity = React.createClass({
-    getDefaultProps: function() {
-        return {
-            addActivity: null,
-            closeModal: null
-        }
-    },
-
-    getInitialState: function() {
-        return {
+export default class SelectActivity extends React.Component {
+    constructor() {
+        super();
+        this.setCubs = this.setCubs.bind(this);
+        this.setBadges = this.setBadges.bind(this);
+        this.state = {
             isModalOpen: false,
             badges: [],
             badge_criteria: [],
             cubs: [],
             badge: {}
-        }
-    },
+        };
+    }
 
-    componentDidMount: function() {
-        var self = this;
-        store.onChange({ dataType: 'badge' }, function(badges) {
-            var badgesWithCriteria = badges.map(function(badge) {
-                store.onChange({ dataType: 'criteria', badge_id: badge.id }, function(badge_criteria) {
-                    var criteriaWithTasks = badge_criteria.map(function(criteria) {
-                        store.onChange({ dataType: 'task', badge_criteria_id: criteria.id }, function(badge_tasks) {
-                            var tasks = badge_tasks.map(function(task) {
-                                return task;
-                            });
-                            criteria.badge_tasks = tasks;
-                        });
-                        return criteria;
-                    });
-                    badge.badge_criteria = criteriaWithTasks;
-                });
-                return badge;
-            });
-            self.setState({ badges: badgesWithCriteria });
-        });
-        store.onChange({ dataType: 'cub' }, function(cubs) {
-            self.setState({ cubs: cubs });
-        });
-    },
+    componentWillMount() {
+        actions.get({ dataType: 'cub' });
+        Store.on('cub-get', this.setCubs);
 
-    addBadge: function(badge) {
+        actions.get({ dataType: 'badgesWithCriteria' });
+        Store.on('badgesWithCriteria-get', this.setBadges);
+    }
+
+    componentWillUnmount() {
+        Store.removeListener('cub-get', this.setCubs);
+        Store.removeListener('badgesWithCriteria-get', this.setBadges);
+    }
+
+    setCubs() {
+        this.setState({ cubs: Store.data });
+    }
+
+    setBadges() {
+        var badges = Store.data;
+        this.setState({ badges: badges });
+    }
+
+    addBadge(badge) {
         this.setState({
             badge: badge,
             badge_criteria: badge.badge_criteria,
             isModalOpen: false
         });
-    },
+    }
 
-    openModal: function() {
+    openModal() {
         this.setState({ isModalOpen: true });
-    },
-    closeModal: function() {
+    }
+    closeModal() {
         this.setState({ isModalOpen: false });
-    },
+    }
 
-    clickCriteria: function(criteria) {
+    clickCriteria(criteria) {
         var badge_criteria = this.state.badge_criteria;
         var new_badge_criteria = [];
         badge_criteria.map(function(b_criteria) {
@@ -82,9 +75,9 @@ var SelectActivity = React.createClass({
             new_badge_criteria.push(b_criteria);
         });
         this.setState({ badge_criteria: new_badge_criteria });
-    },
+    }
 
-    clickTask: function(task) {
+    clickTask(task) {
         var badge_criteria = this.state.badge_criteria;
         var new_badge_criteria = [];
         var allSelected = 1;
@@ -107,9 +100,9 @@ var SelectActivity = React.createClass({
             new_badge_criteria.push(b_criteria);
         });
         this.setState({ badge_criteria: new_badge_criteria });
-    },
+    }
 
-    selectCub: function(cub) {
+    selectCub(cub) {
         var cubs = this.state.cubs;
         var new_cubs = [];
         cubs.map(function(new_cub) {
@@ -119,25 +112,25 @@ var SelectActivity = React.createClass({
             new_cubs.push(new_cub);
         });
         this.setState({ cubs: new_cubs });
-    },
+    }
 
-    selectAll: function() {
+    selectAll() {
         var new_cubs = this.state.cubs.map(function(cub) {
             cub.selected = 1;
             return cub;
         });
         this.setState({ cubs: new_cubs });
-    },
+    }
 
-    deselectAll: function() {
+    deselectAll() {
         var new_cubs = this.state.cubs.map(function(cub) {
             cub.selected = 0;
             return cub;
         });
         this.setState({ cubs: new_cubs });
-    },
+    }
 
-    completeActivity: function() {
+    completeActivity() {
         var data = {
             badge_criteria: this.state.badge_criteria,
             cubs: this.state.cubs,
@@ -145,9 +138,9 @@ var SelectActivity = React.createClass({
         };
         actions.add(data);
         this.props.closeModal();
-    },
+    }
 
-    render: function() {
+    render() {
         var badgeName;
         var badge = this.state.badge;
         if (badge.name) {
@@ -163,36 +156,34 @@ var SelectActivity = React.createClass({
                 <h3>Complete activity</h3>
                 <div className="spacer" />
 
-                <a><span className="nav-button" onClick={ this.openModal }>{ this.state.badge_criteria.length ? 'Change badge' : 'Select badge' }</span></a>
+                <a><span className="nav-button" onClick={ this.openModal.bind(this) }>{ this.state.badge_criteria.length ? 'Change badge' : 'Select badge' }</span></a>
                 <div className="spacer" />
                 { badgeName }
 
                 <Modal isOpen={ this.state.isModalOpen }>
-                    <SelectBadge badges={ this.state.badges } addBadge={ this.addBadge } closeModal={ this.closeModal } />
+                    <SelectBadge badges={ this.state.badges } addBadge={ this.addBadge.bind(this) } closeModal={ this.closeModal.bind(this) } />
                 </Modal>
 
                 <div className="select-activity">
                     <CriteriaList
                         badge_criteria={ this.state.badge_criteria }
                         onClick={ function() {} }
-                        clickCriteria={ this.clickCriteria }
-                        clickTask={ this.clickTask } />
+                        clickCriteria={ this.clickCriteria.bind(this) }
+                        clickTask={ this.clickTask.bind(this) } />
                 </div>
                 <div className="spacer" />
 
                 <h4>Cubs</h4>
                 <div className="spacer" />
-                <a><span className="nav-button" onClick={ this.selectAll }>select all</span></a>
-                <a><span className="nav-button" onClick={ this.deselectAll }>deselect all</span></a>
+                <a><span className="nav-button" onClick={ this.selectAll.bind(this) }>select all</span></a>
+                <a><span className="nav-button" onClick={ this.deselectAll.bind(this) }>deselect all</span></a>
                 <div className="spacer" />
-                <DataTable headers={ headers } data={ this.state.cubs } onClick={ this.selectCub } height="short" />
+                <DataTable headers={ headers } data={ this.state.cubs } onClick={ this.selectCub.bind(this) } height="short" />
                 <div className="spacer" />
 
-                <a><span className="nav-button" onClick={ this.props.closeModal }>cancel</span></a>
-                <a><span className="nav-button" onClick={ this.completeActivity }>complete</span></a>
-           </div>
-       )
-   }
-});
-
-export default SelectActivity;
+                <a><span className="nav-button" onClick={ this.props.closeModal.bind(this) }>cancel</span></a>
+                <a><span className="nav-button" onClick={ this.completeActivity.bind(this) }>complete</span></a>
+            </div>
+        )
+    }
+}

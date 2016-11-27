@@ -37,9 +37,9 @@ exports.create = function(data, done) {
 exports.update = function(data, done) {
     if (data.mark) {
         data.cub.selected = 1;
-        completeTask(data.task_id, [data.cub]);
+        completeTask(data.task_id, [data.cub], done);
     } else {
-        uncompleteTask(data.task_id, data.cub.id);
+        uncompleteTask(data.task_id, data.cub.id, done);
     }
 }
 

@@ -33,6 +33,7 @@
     "react": "^15.1.0-alpha.1",
     "react-cookie": "^0.4.8",
     "react-dom": "^15.1.0-alpha.1",
+    "react-mixin": "^2.0.2",
     "react-router": "^2.3.0",
     "react-window-mixins": "0.0.7",
     "socket.io": "^1.4.5",

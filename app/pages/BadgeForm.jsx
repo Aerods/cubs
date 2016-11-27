@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
-var actions = require('../Actions');
-var store = require('../store');
+import * as actions from '../Actions';
+import Store from '../store';
 import CriteriaList from '../components/CriteriaList';
 import Modal from '../widgets/Modal';
 import CriteriaForm from '../components/CriteriaForm';

@@ -40,7 +40,7 @@ exports.get = function(data, done) {
                 resolve(0);
             }
         }).then(function(progress) {
-            done(null, progress);
+            done(null, { badge_id: data.badge_id, progress: progress });
         })
     })
 }

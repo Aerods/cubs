@@ -1,38 +1,35 @@
-var axios = require("axios");
-var promise = require("es6-promise");
-var resourceUrl = "http://localhost:8080/api/database";
+import axios from "axios";
 import Cookies from './cookies.js';
+var resourceUrl = "http://localhost:8080/api/database";
 
-module.exports = {
-    get: function (data) {
-        data.actionType = 'get';
-        data.token = Cookies.token;
-        return axios.put(resourceUrl, data).then((response) => {
-            return response.data;
-        });
-    },
+export function get(data, callback) {
+    data.actionType = 'get';
+    data.token = Cookies.token;
+    return axios.put(resourceUrl, data).then((response) => {
+        callback(response.data);
+    });
+}
 
-    add: function (data, callback) {
-        data.actionType = 'update';
-        data.token = Cookies.token;
-        return axios.post(resourceUrl, data).then((response) => {
-            callback(response.data);
-        });
-    },
+export function add(data, callback) {
+    data.actionType = 'update';
+    data.token = Cookies.token;
+    return axios.post(resourceUrl, data).then((response) => {
+        callback(response.data);
+    });
+}
 
-    update: function (data, callback) {
-        data.actionType = 'update';
-        data.token = Cookies.token;
-        return axios.put(resourceUrl, data).then((response) => {
-            callback(response.data);
-        });
-    },
+export function update(data, callback) {
+    data.actionType = 'update';
+    data.token = Cookies.token;
+    return axios.put(resourceUrl, data).then((response) => {
+        callback(response.data);
+    });
+}
 
-    destroy: function (data, callback) {
-        data.actionType = 'delete';
-        data.token = Cookies.token;
-        return axios.put(resourceUrl, data).then((response) => {
-            callback(response.data);
-        });
-    }
+export function destroy(data, callback) {
+    data.actionType = 'delete';
+    data.token = Cookies.token;
+    return axios.put(resourceUrl, data).then((response) => {
+        callback(response.data);
+    });
 }

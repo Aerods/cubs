@@ -1,6 +1,4 @@
 import React from 'react';
-var actions = require('../Actions');
-var store = require('../store');
 import Modal from '../widgets/Modal';
 import TaskForm from './TaskForm';
 import ValidationError from '../widgets/ValidationError';

@@ -1,35 +1,41 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
-var store = require('../store');
+import * as actions from '../Actions';
+import Store from '../store';
 import DataTable from '../widgets/DataTable';
 import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
 
-var Cubs = React.createClass({
-    getInitialState: function() {
-      return { cubs: [] }
-    },
+export default class Cubs extends React.Component {
+    constructor() {
+        super();
+        this.setCubs = this.setCubs.bind(this);
+        this.state = {
+            cubs: []
+        };
+    }
 
-    componentDidMount: function() {
-        var self = this;
-        this.getData();
-        socket.on('cubsUpdate', function () {
-            self.getData();
+    componentWillMount() {
+        actions.get({ dataType: 'cub' });
+        socket.on('cubsUpdate', () => {
+            actions.get({ dataType: 'cub' });
         });
-    },
+        Store.on('cub-get', this.setCubs);
+    }
 
-    getData: function() {
-        var self = this;
-        store.onChange({ dataType: 'cub' }, function(cubs) {
-            if (self.isMounted()) self.setState({ cubs: cubs });
-        });
-    },
+    componentWillUnmount() {
+        Store.removeListener('cub-get', this.setCubs);
+    }
 
-    selectCub: function(cub) {
+    setCubs() {
+        this.setState({ cubs: Store.data });
+    }
+
+    selectCub(cub) {
         browserHistory.push('/cubs/'+cub.id);
-    },
+    }
 
-    render: function() {
+    render() {
         var headers = {
             forename: 'First name',
             surname: 'Last name',
@@ -56,6 +62,4 @@ var Cubs = React.createClass({
             </div>
         )
     }
-});
-
-export default Cubs;
+}

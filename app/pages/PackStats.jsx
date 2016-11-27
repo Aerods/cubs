@@ -1,24 +1,34 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
-var store = require('../store');
-var actions = require('../Actions');
+import * as actions from '../Actions';
+import Store from '../store';
 import DataTable from '../widgets/DataTable';
 import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
 
-var PackStats = React.createClass({
-    getInitialState: function() {
-      return { stats: [] }
-    },
+export default class PackStats extends React.Component {
+    constructor() {
+        super();
+        this.setStats = this.setStats.bind(this);
+        this.state = {
+            stats: []
+        };
+    }
 
-    componentDidMount: function() {
-        var self = this;
-        store.onChange({ dataType: 'stats' }, function(stats) {
-            if (self.isMounted()) self.setState({ stats: stats });
-        });
-    },
+    componentWillMount() {
+        actions.get({ dataType: 'stats' });
+        Store.on('stats-get', this.setStats);
+    }
 
-    render: function() {
+    componentWillUnmount() {
+        Store.removeListener('stats-get', this.setStats);
+    }
+
+    setStats() {
+        this.setState({ stats: Store.data });
+    }
+
+    render() {
         var headers = {
             group_name: 'Group',
             count: 'Number of cubs',
@@ -33,9 +43,7 @@ var PackStats = React.createClass({
                 <PageContent>
                     <DataTable headers={ headers } data={ this.state.stats } height="tall" search={ 0 } />
                 </PageContent>
-           </div>
-       )
+            </div>
+        )
    }
-});
-
-export default PackStats;
+}
