@@ -17,9 +17,9 @@ export default class Cubs extends React.Component {
 
     componentWillMount() {
         actions.get({ dataType: 'cub' });
-        socket.on('cubsUpdate', () => {
-            actions.get({ dataType: 'cub' });
-        });
+        // socket.on('cubsUpdate', () => {
+        //     actions.get({ dataType: 'cub' });
+        // });
         Store.on('cub-get', this.setCubs);
     }
 
