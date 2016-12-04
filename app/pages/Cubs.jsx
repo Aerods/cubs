@@ -35,6 +35,10 @@ export default class Cubs extends React.Component {
         browserHistory.push('/cubs/'+cub.id);
     }
 
+    exportData() {
+        actions.get({ dataType: 'dataExport' });
+    }
+
     render() {
         var headers = {
             forename: 'First name',
@@ -55,6 +59,7 @@ export default class Cubs extends React.Component {
                 <SubHeader heading="Cubs">
                     <Link to="/cubs/new"><span className="nav-button">Add</span></Link>
                     <Link to="/cubs/stats"><span className="nav-button">Stats</span></Link>
+                    <a><span className="nav-button" onClick={ this.exportData.bind(this) }>Export</span></a>
                 </SubHeader>
                 <PageContent>
                     <DataTable headers={ headers } classes={ classes } data={ this.state.cubs } onClick={ this.selectCub } height="tall" />
