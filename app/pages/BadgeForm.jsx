@@ -11,92 +11,144 @@ import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
 import Cookies from '../cookies.js';
 
-var BadgeForm = React.createClass({
-    getDefaultProps: function() {
-      return {
-          params: { id: null }
-      }
-    },
-    getInitialState: function() {
-      return {
-          dataType: 'badge',
-          id: this.props.params.id,
-          name: '',
-          type: '',
-          stage: '',
-          image: '',
-          badge_criteria: [],
-          criteria: null,
-          isFormOpen: false,
-          validation: {}
-      }
-    },
+export default class BadgeForm extends React.Component {
+    constructor() {
+        super();
+        this.setBadge = this.setBadge.bind(this);
+        this.setCriteria = this.setCriteria.bind(this);
+        this.setTasks = this.setTasks.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.state = {
+            dataType: 'badge',
+            name: '',
+            type: '',
+            stage: '',
+            image: '',
+            badge_criteria: [],
+            criteria: null,
+            isFormOpen: false,
+            validation: {}
+        }
+    }
 
-    handleInputChange: function(e) {
+    componentWillMount() {
+        if (this.props.params.id) {
+            actions.get({ dataName: 'badgeForm', dataType: 'badge', id: this.props.params.id });
+            Store.on('badgeForm-get', this.setBadge);
+
+            actions.get({ dataType: 'criteria', badge_id: this.props.params.id });
+            Store.on('criteria-get', this.setCriteria);
+            Store.on('task-get', this.setTasks);
+        }
+    }
+
+    componentWillUnmount() {
+        Store.removeListener('badgeForm-get', this.setBadge);
+        Store.removeListener('criteria-get', this.setCriteria);
+        Store.removeListener('task-get', this.setTasks);
+    }
+
+    setBadge() {
+        var badge = Store.data[0];
+        this.setState({
+            name: badge.name,
+            type: badge.type,
+            stage: badge.stage,
+            image: badge.image
+        });
+    }
+
+    setCriteria() {
+        var badge_criteria = Store.data.map( (criteria, cKey) => {
+            criteria.uuid = cKey + 1;
+            criteria.badge_tasks = [];
+            actions.get({ dataType: 'task', badge_criteria_id: criteria.id, cub_id: this.props.cub_id });
+            return criteria;
+        });
+        this.setState({ badge_criteria: badge_criteria });
+    }
+
+    setTasks() {
+        criteriaWithTasks = this.state.badge_criteria;
+        var badge_tasks = Store.data;
+
+        var tasks = badge_tasks.map(function(task, tKey) {
+            task.uuid = tKey + 1;
+            return task;
+        });
+
+        var criteriaWithTasks = this.state.badge_criteria.map( (criteria) => {
+            if (criteria.id == tasks[0].badge_criteria_id) criteria.badge_tasks = tasks;
+            return criteria;
+        });
+
+        this.setState({ badge_criteria: criteriaWithTasks });
+    }
+
+    // componentDidMount() {
+    //     var self = this;
+    //     if (this.props.params.id) {
+    //         store.onChange({ dataType: 'badge', id: this.props.params.id }, function(badges) {
+    //             var badge = badges[0];
+    //             self.setState({
+    //                 name: badge.name,
+    //                 type: badge.type,
+    //                 stage: badge.stage,
+    //                 image: badge.image
+    //             });
+    //         });
+    //         store.onChange({ dataType: 'criteria', badge_id: this.props.params.id }, function(badge_criteria) {
+    //             badge_criteria.map(function(criteria, cKey) {
+    //                 criteria.uuid = cKey + 1;
+    //                 var criteriaWithTasks = self.state.badge_criteria;
+    //                 store.onChange({ dataType: 'task', badge_criteria_id: criteria.id }, function(badge_tasks) {
+    //                     var tasks = badge_tasks.map(function(task, tKey) {
+    //                         task.uuid = tKey + 1;
+    //                         return task;
+    //                     });
+    //                     criteria.badge_tasks = tasks;
+    //                     criteriaWithTasks.push(criteria);
+    //                     self.setState({ badge_criteria: criteriaWithTasks });
+    //                 });
+    //             });
+    //         });
+    //     }
+    // }
+
+    handleInputChange(e) {
       var name = e.target.name;
       var state = this.state;
       state[name] = e.target.value;
       state.validation[name] = '';
       this.setState(state);
-    },
+    }
 
-    componentDidMount: function() {
-        var self = this;
-        if (this.props.params.id) {
-            store.onChange({ dataType: 'badge', id: this.props.params.id }, function(badges) {
-                var badge = badges[0];
-                self.setState({
-                    name: badge.name,
-                    type: badge.type,
-                    stage: badge.stage,
-                    image: badge.image
-                });
-            });
-            store.onChange({ dataType: 'criteria', badge_id: this.props.params.id }, function(badge_criteria) {
-                badge_criteria.map(function(criteria, cKey) {
-                    criteria.uuid = cKey + 1;
-                    var criteriaWithTasks = self.state.badge_criteria;
-                    store.onChange({ dataType: 'task', badge_criteria_id: criteria.id }, function(badge_tasks) {
-                        var tasks = badge_tasks.map(function(task, tKey) {
-                            task.uuid = tKey + 1;
-                            return task;
-                        });
-                        criteria.badge_tasks = tasks;
-                        criteriaWithTasks.push(criteria);
-                        self.setState({ badge_criteria: criteriaWithTasks });
-                    });
-                });
-            });
-        }
-    },
-
-    validateBadge: function(data) {
+    validateBadge(data) {
         var err = {};
         if (!data.name) err.name = 'Please enter the name of the badge';
         if (!data.type) err.type = 'Please select the type of badge';
         if (data.type == 'Staged' && !data.stage) err.stage = 'Please enter the stage of the badge';
         this.setState({ validation: err });
         return Object.keys(err).length;
-    },
+    }
 
-    saveBadge: function(e) {
+    saveBadge(e) {
         e.preventDefault();
         var badge = this.state;
         var errors = this.validateBadge(badge);
         if (!errors) {
             if (this.props.params.id) {
-                actions.update(badge, function(data) {
-                    browserHistory.push('/badges/'+data.id);
-                });
+                badge.id = this.props.params.id;
+                actions.update(badge);
+                Store.on('badge-update', this.navToBadge);
             } else {
-                actions.add(badge, function(data) {
-                    browserHistory.push('/badges/'+data.id);
-                });
+                actions.add(badge);
+                Store.on('badge-add', this.navToBadge);
             }
         }
-    },
+    }
 
-    addCriteria: function(criteria) {
+    addCriteria(criteria) {
         var badge_criteria = this.state.badge_criteria;
         if (criteria) {
             if (criteria.uuid) {
@@ -114,30 +166,34 @@ var BadgeForm = React.createClass({
             isFormOpen: false,
             badge_criteria: badge_criteria
         });
-    },
+    }
 
-    editCriteria: function(criteria) {
+    navToBadge() {
+        browserHistory.push('/badges/'+Store.data.id);
+    }
+
+    editCriteria(criteria) {
         this.setState({ criteria: criteria });
         this.openForm();
-    },
-    openForm: function() {
+    }
+    openForm() {
         this.setState({ isFormOpen: true });
-    },
-    closeForm: function() {
+    }
+    closeForm() {
         this.setState({ isFormOpen: false });
         this.setState({ criteria: null });
-    },
+    }
 
-    render: function() {
+    render() {
         return(
             <div id="BadgeForm">
                 <SubHeader heading={ this.props.params.id ? 'Edit badge' : 'New badge' }>
                     <Link to={ this.props.params.id ? "/badges/"+this.props.params.id : "/badges" }><span className="nav-button">back</span></Link>
-                    <a><span className="nav-button" onClick={ this.saveBadge }>Save</span></a>
+                    <a><span className="nav-button" onClick={ this.saveBadge.bind(this) }>Save</span></a>
                 </SubHeader>
 
                 <PageContent>
-                    <div className="form badge-form" onSubmit={ this.saveBadge }>
+                    <div className="form badge-form" onSubmit={ this.saveBadge.bind(this) }>
                         <h3>Badge details</h3>
                         { this.state.image ? <img className="badge-image" src={ Cookies.host+"/images/badges/"+this.state.image } /> : '' }
 
@@ -168,19 +224,17 @@ var BadgeForm = React.createClass({
                         <h3>Badge criteria</h3>
 
                         <div className="form-buttons">
-                            <a><span className="nav-button" onClick={ this.openForm }>Add</span></a>
+                            <a><span className="nav-button" onClick={ this.openForm.bind(this) }>Add</span></a>
                         </div>
 
                         <Modal isOpen={this.state.isFormOpen}>
-                            <CriteriaForm onClose={ this.closeForm } onSave={ this.addCriteria } criteria={ this.state.criteria } />
+                            <CriteriaForm onClose={ this.closeForm.bind(this) } onSave={ this.addCriteria.bind(this) } criteria={ this.state.criteria } />
                         </Modal>
 
-                        <CriteriaList badge_criteria={ this.state.badge_criteria } onClick={ this.editCriteria } />
+                        <CriteriaList badge_criteria={ this.state.badge_criteria } onClick={ this.editCriteria.bind(this) } />
                     </div>
                 </PageContent>
             </div>
         )
     }
-})
-
-export default BadgeForm;
+}
