@@ -107,7 +107,14 @@ var DataTable = React.createClass({
                     width = 60;
                     className += ' image';
                 } else {
-                    val = row[value] ? row[value].toString('utf8') : '-';
+                    var valueString = row[value];
+                    if (valueString) {
+                        var buffer = new Buffer( valueString );
+                        valueString = buffer.toString('utf8');
+                    } else {
+                        valueString = '-';
+                    }
+                    val = valueString;
                 }
                 return (<td key={ key } className={ className } width={ width }>{ val }</td>);
             })
