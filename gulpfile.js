@@ -5,7 +5,6 @@ var source = require('vinyl-source-stream');
 var less = require('gulp-less');
 var path = require('path');
 var concat = require('gulp-concat');
-var autoprefixer = require('gulp-autoprefixer');
 var rename = require('gulp-rename');
 var minifyCSS = require('gulp-minify-css');
 
@@ -29,7 +28,6 @@ gulp.task("copy", ["build", "less"], function () {
     return gulp.src('app/styles/css/*.css')
         .pipe(minifyCSS())
         .pipe(concat('style.min.css'))
-        .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9'))
         .pipe(gulp.dest('app/dist'))
 });
 
