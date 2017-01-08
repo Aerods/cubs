@@ -3,6 +3,7 @@ import { Link, browserHistory } from 'react-router';
 import CriteriaList from './CriteriaList';
 import * as actions from '../Actions';
 import Store from '../store';
+import Cookies from '../cookies.js';
 
 export default class BadgeDisplay extends React.Component {
     constructor() {
@@ -151,7 +152,7 @@ export default class BadgeDisplay extends React.Component {
 
                     <div className="view-row">
                         <div className="view-image">
-                            <img src={ 'http://localhost:8080/images/badges/'+this.state.image } />
+                            <img src={ Cookies.host+'/images/badges/'+this.state.image } />
                         </div>
                         <div className="view-col">
                             <div className="field-group">

@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from '../cookies.js';
 var moment = require('moment');
 var OnResize = require("react-window-mixins").OnResize;
 
@@ -102,7 +103,7 @@ var DataTable = React.createClass({
                 if (sixes.indexOf(row[value]) != -1) className += row[value].toLowerCase();
                 var val;
                 if (value == 'image') {
-                    val = (<img src={ 'http://localhost:8080/images/badges/'+row[value] } width="60" />);
+                    val = (<img src={ Cookies.host+'/images/badges/'+row[value] } width="60" />);
                     width = 60;
                     className += ' image';
                 } else {

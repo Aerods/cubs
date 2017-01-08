@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from '../cookies.js';
 
 var BadgeGrid = React.createClass({
     getDefaultProps: function() {
@@ -56,7 +57,7 @@ var BadgeGrid = React.createClass({
             if (notEarned) imageClass += ' not-earned'; // Annoying special case...
             if (matches.indexOf(0) == -1 || !self.props.search || !self.state.search) return (
                 <div key={ key } className="badge-grid-item" onClick={ clickBadge }>
-                    <div className={ imageClass }><img src={ "http://localhost:8080/images/badges/"+badge.image } /></div>
+                    <div className={ imageClass }><img src={ Cookies.host+"/images/badges/"+badge.image } /></div>
                     <div className="badge-name">{ badge.name + (badge.type == 'Staged' ? ' ' + badge.stage : '') }</div>
                     { notEarned ? <span className="percentage">{ badge.progress + '%' }</span> : '' }
                 </div>);

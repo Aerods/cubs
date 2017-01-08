@@ -9,6 +9,7 @@ import SelectInput from '../widgets/SelectInput';
 import ValidationError from '../widgets/ValidationError';
 import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
+import Cookies from '../cookies.js';
 
 var BadgeForm = React.createClass({
     getDefaultProps: function() {
@@ -138,7 +139,7 @@ var BadgeForm = React.createClass({
                 <PageContent>
                     <div className="form badge-form" onSubmit={ this.saveBadge }>
                         <h3>Badge details</h3>
-                        { this.state.image ? <img className="badge-image" src={ "http://localhost:8080/images/badges/"+this.state.image } /> : '' }
+                        { this.state.image ? <img className="badge-image" src={ Cookies.host+"/images/badges/"+this.state.image } /> : '' }
 
                         <div className="form-group">
                             <label className="control-label" htmlFor="name">Name:</label>
