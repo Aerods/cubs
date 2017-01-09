@@ -3,12 +3,12 @@ import { browserHistory } from 'react-router';
 
 var CriteriaList = React.createClass({
     getDefaultProps: function() {
-      return {
-          badge_criteria: [],
-          onClick: null,
-          clickCriteria: null,
-          clickTask: null
-      }
+        return {
+            badge_criteria: [],
+            onClick: null,
+            clickCriteria: null,
+            clickTask: null
+        }
     },
     render: function() {
         var self = this;

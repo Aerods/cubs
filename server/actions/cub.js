@@ -32,7 +32,9 @@ exports.create = function(data, done) {
         data.previous_group,
         data.medical_information,
         data.notes,
-        (to_scouts == 'Invalid date' ? null : to_scouts)
+        (to_scouts == 'Invalid date' ? null : to_scouts),
+        data.section,
+        data.group
     ];
     action_log.create('cubs', 'insert', data, function() {
         db.get().query('                                        \
@@ -55,9 +57,11 @@ exports.create = function(data, done) {
                 previous_group,                                 \
                 medical_information,                            \
                 notes,                                          \
-                to_scouts                                       \
+                to_scouts,                                      \
+                section,                                        \
+                `group`                                         \
             )                                                   \
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)    \
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)    \
         ', values, function(err, result) {
             if (err) return done(err)
             server.emitSocket('cubsUpdate');
@@ -145,12 +149,14 @@ function saveParents(data, cub_id, done) {
                 parentActions.update(parent, function(err, updatedParent) {
                     if (!parent.cub_id) {
                         addCubParent(cub_id, parent.id, function(err, id) {
+                            updateParentSection(parent.id);
                         });
                     }
                 });
             } else {
                 parentActions.create(parent, function(err, parent) {
                     addCubParent(cub_id, parent.id, function(err, id) {
+                        updateParentSection(parent.id);
                     });
                 });
             }
@@ -169,6 +175,22 @@ function addCubParent(cub_id, parent_id, done) {
     ', [cub_id, parent_id], function(err, result) {
         if (err) return done(err)
         done(null, result.insertId)
+    })
+}
+
+function updateParentSection(parent_id) {
+    db.get().query('        \
+        SELECT GROUP_CONCAT(DISTINCT(c.section)) as section \
+        FROM parents p      \
+        LEFT JOIN cub_parents cp ON p.id=cp.parent_id   \
+        LEFT JOIN cubs c ON c.id=cp.cub_id              \
+        WHERE p.id = ?      \
+    ', [parent_id], function (err, rows) {
+        db.get().query('            \
+            UPDATE parents          \
+            SET section = ?         \
+            WHERE id = ?            \
+        ', [rows[0].section, parent_id]);
     })
 }
 

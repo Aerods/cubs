@@ -6,7 +6,9 @@ var _ = require('underscore');
 
 exports.get = function(data, done) {
     var where = 'WHERE b.deleted = 0';
-    if (data.id) { where += (' and b.id =' + data.id); }
+    var values = [];
+    if (data.id) { where += ' and b.id = ?'; values.push(data.id); }
+    if (data.section) { where += ' and (b.section = ? or b.section is null)'; values.push(data.section); }
     if (data.purpose == 'progress') where += ' and b.type != "core"';
 
     var query = '                                                       \
@@ -28,7 +30,7 @@ exports.get = function(data, done) {
         LEFT JOIN badge_tasks bt ON bc.id=bt.badge_criteria_id          \
         ' + where + '                                                   \
     ';
-    db.get().query(query, function (err, rows) {
+    db.get().query(query, values, function (err, rows) {
         if (err) return done(err)
         return new Promise(function (resolve, reject) {
             if (rows.length) {

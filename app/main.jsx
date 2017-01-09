@@ -31,10 +31,10 @@ var MainLayout = React.createClass({
         var path = this.props.location.pathname.split('/');
         if (!Cookies.token) browserHistory.push('/login');
         return (
-            <div id="MainLayout">
+            <div id="MainLayout" className={ 'section-'+Cookies.section }>
                 <div className="topbar hidden-xs">
-                    <Link className="topbar-brand" to="/">Cub Database</Link>
-                    <Link className={ "topbar-nav" + ((path[1] == 'cubs' || !path[1]) ? ' active' : '') } to="/cubs">Cubs</Link>
+                    <Link className="topbar-brand" to="/">{ Cookies.member } Database</Link>
+                    <Link className={ "topbar-nav" + ((path[1] == 'cubs' || !path[1]) ? ' active' : '') } to="/cubs">{ Cookies.section }</Link>
                     <Link className={ "topbar-nav" + (path[1] == 'parents' ? ' active' : '') } to="/parents">Parents</Link>
                     <Link className={ "topbar-nav" + (path[1] == 'leaders' ? ' active' : '') } to="/leaders">Leaders</Link>
                     <Link className={ "topbar-nav" + (path[1] == 'badges' ? ' active' : '') } to="/badges">Badges</Link>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { browserHistory, Link } from 'react-router';
 import * as actions from '../Actions';
+import Cookies from '../cookies.js';
 import Store from '../store';
 import DataTable from '../widgets/DataTable';
 import PageContent from '../widgets/PageContent';
@@ -41,9 +42,9 @@ export default class Leaders extends React.Component {
             title: 'Title',
             forename: 'First name',
             surname: 'Last name',
-            position: 'Position',
-            cub_name: 'Cub name'
+            position: 'Position'
         };
+        if (Cookies.section == 'Cubs') headers.cub_name = 'Cub name';
         var classes = {
             title: 'hidden-xs',
             position: 'hidden-xs'

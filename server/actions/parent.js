@@ -19,7 +19,9 @@ exports.create = function(data, done) {
         data.address_2,
         data.address_3,
         data.town,
-        data.postcode
+        data.postcode,
+        data.section,
+        data.group
     ];
     action_log.create('parents', 'insert', data, function() {
         db.get().query('                        \
@@ -35,9 +37,11 @@ exports.create = function(data, done) {
                 address_2,                      \
                 address_3,                      \
                 town,                           \
-                postcode                        \
+                postcode,                       \
+                section,                        \
+                `group`                         \
             )                                   \
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) \
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) \
         ', values, function(err, result) {
             if (err) return done(err);
             server.emitSocket('parentsUpdate');

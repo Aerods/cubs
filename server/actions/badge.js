@@ -10,7 +10,8 @@ exports.create = function(data, done) {
         data.name,
         data.type,
         data.stage || null,
-        data.image
+        data.image,
+        data.section
     ];
     action_log.create('badges', 'insert', data, function() {
         db.get().query('                        \
@@ -18,9 +19,10 @@ exports.create = function(data, done) {
                 name,                           \
                 type,                           \
                 stage,                          \
-                image                           \
+                image,                          \
+                section                         \
             )                                   \
-            VALUES(?, ?, ?, ?)                  \
+            VALUES(?, ?, ?, ?, ?)                  \
         ', values, function(err, result) {
             if (err) return done(err);
             server.emitSocket('badgesUpdate');

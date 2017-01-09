@@ -3,7 +3,10 @@ var server = require('../server.js')
 
 exports.get = function(data, done) {
     var where = 'WHERE deleted = 0';
-    if (data.id) { where += (' and id =' + data.id); }
+    var values = [];
+    if (data.id) { where += ' and id = ?'; values.push(data.id); }
+    if (data.section) { where += ' and section = ?'; values.push(data.section); }
+    if (data.group) { where += ' and `group` = ?'; values.push(data.group); }
     var orderBy = ' ORDER BY dob';
     if (data.orderBy == 'name') orderBy = ' ORDER BY forename, surname';
 
@@ -33,7 +36,7 @@ exports.get = function(data, done) {
             DATE_FORMAT(to_scouts, "%d/%m/%Y") as to_scouts               \
         FROM cubs                   \
     ' + where + orderBy;
-    db.get().query(query, function (err, rows) {
+    db.get().query(query, values, function (err, rows) {
         if (err) return done(err)
         done(null, rows)
     })

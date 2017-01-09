@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
+import Cookies from '../cookies.js';
 import * as actions from '../Actions';
 import Store from '../store';
 import moment from 'moment';
@@ -123,19 +124,23 @@ export default class CubForm extends React.Component {
     render() {
         return(
             <div id="CubForm">
-                <SubHeader heading={ this.props.params.id ? 'Edit cub' : 'New cub' }>
+                <SubHeader heading={ this.props.params.id ? 'Edit '+Cookies.member : 'New '+Cookies.member }>
                     <Link to={ this.props.params.id ? "/cubs/"+this.props.params.id : "/cubs" }><span className="nav-button">back</span></Link>
                     <a><span className="nav-button" onClick={ this.saveCub.bind(this) }>Save</span></a>
                 </SubHeader>
                 <PageContent>
                     <div className="form" onSubmit={ this.saveCub.bind(this) }>
-                        <h3>Cub details</h3>
+                        <h3>{ Cookies.member } details</h3>
                         <FormGroup name="forename" label="First name:" value={ this.state.forename } onChange={ this.handleInputChange } error={ this.state.validation.forename } />
                         <FormGroup name="surname" label="Last name:" value={ this.state.surname } onChange={ this.handleInputChange } error={ this.state.validation.surname } />
                         <FormGroup name="date_of_birth" type="small" value={ this.state.date_of_birth } onChange={ this.handleInputChange } error={ this.state.validation.date_of_birth } />
                         <FormGroup name="gender" type="select" value={ this.state.gender } data={ ['Male', 'Female'] } onChange={ this.handleInputChange } error={ this.state.validation.gender } />
-                        <FormGroup name="rank" type="select" value={ this.state.rank } data={ ['None', 'Sixer', 'Seconder'] } onChange={ this.handleInputChange } />
-                        <FormGroup name="six" type="select" value={ this.state.six } data={ ['Red', 'Blue', 'Green', 'Yellow'] } onChange={ this.handleInputChange } />
+                        { Cookies.section == 'Cubs' ? <FormGroup name="rank" type="select" value={ this.state.rank } data={ ['None', 'Sixer', 'Seconder'] } onChange={ this.handleInputChange } /> : '' }
+                        { Cookies.section == 'Cubs' ? (
+                            <FormGroup name="six" type="select" value={ this.state.six } data={ ['Red', 'Blue', 'Green', 'Yellow'] } onChange={ this.handleInputChange } />
+                        ) : (
+                            <FormGroup name="six" label="Lodge" type="select" value={ this.state.six } data={ ['Ducks', 'Otters', 'Turtles'] } onChange={ this.handleInputChange } />
+                        ) }
                         <FormGroup name="phone" label="Home phone:" value={ this.state.phone } onChange={ this.handleInputChange } />
                         <FormGroup name="address_1" label="Address line 1:" value={ this.state.address_1 } onChange={ this.handleInputChange } />
                         <FormGroup name="address_2" label="Address line 2:" value={ this.state.address_2 } onChange={ this.handleInputChange } />
@@ -143,12 +148,12 @@ export default class CubForm extends React.Component {
                         <FormGroup name="town" value={ this.state.town } onChange={ this.handleInputChange } />
                         <FormGroup name="postcode" type="small" value={ this.state.postcode } onChange={ this.handleInputChange } />
                         <FormGroup name="start_date" type="small" value={ this.state.start_date } onChange={ this.handleInputChange } error={ this.state.validation.start_date } />
-                        <FormGroup name="from_beavers" type="small" value={ this.state.from_beavers } onChange={ this.handleInputChange } error={ this.state.validation.from_beavers } />
+                        { Cookies.section == 'Cubs' ? <FormGroup name="from_beavers" type="small" value={ this.state.from_beavers } onChange={ this.handleInputChange } error={ this.state.validation.from_beavers } /> : '' }
                         <FormGroup name="invested" type="small" value={ this.state.invested } onChange={ this.handleInputChange } error={ this.state.validation.invested } />
                         <FormGroup name="previous_group" value={ this.state.previous_group } onChange={ this.handleInputChange } />
                         <FormGroup name="medical_information" label="Medical info:" type="textarea" value={ this.state.medical_information } onChange={ this.handleInputChange } />
                         <FormGroup name="notes" type="textarea" value={ this.state.notes } onChange={ this.handleInputChange } />
-                        <FormGroup name="to_scouts" type="small" value={ this.state.to_scouts } onChange={ this.handleInputChange } error={ this.state.validation.to_scouts } />
+                        { Cookies.section == 'Cubs' ? <FormGroup name="to_scouts" type="small" value={ this.state.to_scouts } onChange={ this.handleInputChange } error={ this.state.validation.to_scouts } /> : '' }
                     </div>
                 </PageContent>
             </div>

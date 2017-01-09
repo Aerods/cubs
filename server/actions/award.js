@@ -85,15 +85,14 @@ function checkCriteriaMet(cub, criteria, done) {
     })
 }
 
-exports.checkDueBadges = function(done) {
+exports.checkDueBadges = function(data, done) {
     return new Promise(function (resolve, reject) {
-        db.get().query('SELECT * from cubs where deleted != 1', function(err, cubs) {
+        db.get().query('SELECT * from cubs WHERE deleted != 1 AND section = ? AND `group` = ?', [data.section, data.group], function(err, cubs) {
             resolve(cubs);
         });
     }).then(function(cubs) {
         return new Promise(function (resolve, reject) {
-
-            db.get().query('SELECT * from badges where deleted != 1', function(err, badges) {
+            db.get().query('SELECT * from badges where deleted != 1 and (section = ? or section is null)', [data.section], function(err, badges) {
                 var badgesLooped = 0;
                 var badgesWithCriteria = [];
                 badges.map(function(badge) {

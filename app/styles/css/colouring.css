@@ -1,0 +1,94 @@
+#Login .nav-button {
+  background-color: #2ea33a;
+}
+#Login .nav-button:hover {
+  background-color: #217329;
+}
+#MainLayout.section-Beavers .topbar {
+  background-color: #1896ca;
+}
+#MainLayout.section-Beavers .nav-button {
+  background-color: #147ba6;
+}
+#MainLayout.section-Beavers .nav-button:hover {
+  background-color: #0d526f;
+}
+#MainLayout.section-Beavers .badge-form ul li:hover,
+#MainLayout.section-Beavers .badge-form ol li:hover {
+  background-color: #8ad3f1;
+}
+#MainLayout.section-Beavers #ViewCub ol li span:hover,
+#MainLayout.section-Beavers .select-activity ol li span:hover {
+  background-color: #8ad3f1;
+}
+#MainLayout.section-Beavers #ViewCub ol li span.selected,
+#MainLayout.section-Beavers .select-activity ol li span.selected {
+  background-color: #46b9e9;
+}
+#MainLayout.section-Beavers #ViewCub ul li:hover,
+#MainLayout.section-Beavers .select-activity ul li:hover {
+  background-color: #8ad3f1;
+}
+#MainLayout.section-Beavers #ViewCub ul li.selected,
+#MainLayout.section-Beavers .select-activity ul li.selected {
+  background-color: #46b9e9;
+}
+#MainLayout.section-Beavers #BadgeGrid .badge-grid-item:hover {
+  background-color: #8ad3f1;
+}
+#MainLayout.section-Beavers table thead {
+  background-color: #1896ca;
+}
+#MainLayout.section-Beavers table tbody tr:nth-child(even) {
+  background-color: white;
+}
+#MainLayout.section-Beavers table tbody tr:nth-child(odd) {
+  background-color: #8ad3f1;
+}
+#MainLayout.section-Beavers table tbody tr:hover {
+  background-color: #46b9e9;
+}
+#MainLayout.section-Cubs .topbar {
+  background-color: #37c345;
+}
+#MainLayout.section-Cubs .nav-button {
+  background-color: #2ea33a;
+}
+#MainLayout.section-Cubs .nav-button:hover {
+  background-color: #217329;
+}
+#MainLayout.section-Cubs .badge-form ul li:hover,
+#MainLayout.section-Cubs .badge-form ol li:hover {
+  background-color: #ace7b2;
+}
+#MainLayout.section-Cubs #ViewCub ol li span:hover,
+#MainLayout.section-Cubs .select-activity ol li span:hover {
+  background-color: #ace7b2;
+}
+#MainLayout.section-Cubs #ViewCub ol li span.selected,
+#MainLayout.section-Cubs .select-activity ol li span.selected {
+  background-color: #70d77a;
+}
+#MainLayout.section-Cubs #ViewCub ul li:hover,
+#MainLayout.section-Cubs .select-activity ul li:hover {
+  background-color: #ace7b2;
+}
+#MainLayout.section-Cubs #ViewCub ul li.selected,
+#MainLayout.section-Cubs .select-activity ul li.selected {
+  background-color: #70d77a;
+}
+#MainLayout.section-Cubs #BadgeGrid .badge-grid-item:hover {
+  background-color: #ace7b2;
+}
+#MainLayout.section-Cubs table thead {
+  background-color: #37c345;
+}
+#MainLayout.section-Cubs table tbody tr:nth-child(even) {
+  background-color: white;
+}
+#MainLayout.section-Cubs table tbody tr:nth-child(odd) {
+  background-color: #ace7b2;
+}
+#MainLayout.section-Cubs table tbody tr:hover {
+  background-color: #70d77a;
+}

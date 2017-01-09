@@ -22,7 +22,9 @@ exports.create = function(data, done) {
         data.address_2,
         data.address_3,
         data.town,
-        data.postcode
+        data.postcode,
+        data.section,
+        data.group
     ];
     action_log.create('leaders', 'insert', data, function() {
         db.get().query('                        \
@@ -41,9 +43,11 @@ exports.create = function(data, done) {
                 address_2,                      \
                 address_3,                      \
                 town,                           \
-                postcode                        \
+                postcode,                        \
+                section,                        \
+                `group`                        \
             )                                   \
-            VALUES(?, ?, ?, ?, ?, ?, '+(data.password ? 'SHA1(?),' : '')+' ?, ?, ?, ?, ?, ?, ?, ?) \
+            VALUES(?, ?, ?, ?, ?, ?, '+(data.password ? 'SHA1(?),' : '')+' ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) \
         ', values, function(err, result) {
             if (err) return done(err);
             server.emitSocket('leadersUpdate');
@@ -110,9 +114,9 @@ exports.delete = function(data, done) {
 }
 
 exports.login = function(data, done) {
-    db.get().query('SELECT id from leaders WHERE username = ? AND password = SHA1(?) AND deleted=0 LIMIT 1', [data.username, data.password], function(err, result) {
+    db.get().query('SELECT id, section, `group` from leaders WHERE username = ? AND password = SHA1(?) AND deleted=0 LIMIT 1', [data.username, data.password], function(err, result) {
         if (err) return done(err);
-        else if (result[0]) done(null, { result: 'success', token: 'P3X-595', leader_id: result[0].id });
-        else done(null, { result: 'Fail' });
+        else if (result[0]) done(null, { result: 'success', token: 'P3X-595', leader_id: result[0].id, section: result[0].section, group: result[0].group });
+        else done(null, { result: 'Fail' });    
     })
 }

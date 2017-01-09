@@ -6,14 +6,18 @@ var csv = require('csv');
 var moment = require('moment');
 
 exports.get = function(data, done) {
+    var where = 'WHERE deleted != 1 AND date_of_birth IS NOT NULL';
+    var values = [];
+    if (data.id) { where += ' and id = ?'; values.push(data.id); }
+    if (data.section) { where += ' and section = ?'; values.push(data.section); }
+    if (data.group) { where += ' and `group` = ?'; values.push(data.group); }
     var query = '                               \
         SELECT id, CONCAT(forename, " ", surname) as name, date_of_birth, invested, phone                \
         FROM cubs                               \
-        WHERE deleted != 1                      \
-        AND date_of_birth IS NOT NULL           \
+        '+where+'                               \
         ORDER BY date_of_birth                  \
     ';
-    db.get().query(query, function (err, cubs) {
+    db.get().query(query, values, function (err, cubs) {
         var obj = csv();
         var exportData = [];
 

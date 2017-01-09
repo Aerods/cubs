@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
+import Cookies from '../cookies.js';
 import * as actions from '../Actions';
 import Store from '../store';
 var moment = require('moment');
@@ -27,8 +28,8 @@ export default class ProgrammeForm extends React.Component {
             type: 'Standard',
             location: '',
             details: '',
-            start_time: '18:30',
-            end_time: '20:00',
+            start_time: (Cookies.section == 'Cubs' ? '18:30' : '17:15'),
+            end_time: (Cookies.section == 'Cubs' ? '20:00' : '18:15'),
             end_date: '',
             validation: {},
             isModalOpen: false,

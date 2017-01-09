@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
+import Cookies from '../cookies.js';
 import * as actions from '../Actions';
 import Store from '../store';
 import DataTable from '../widgets/DataTable';
@@ -44,21 +45,26 @@ export default class Cubs extends React.Component {
             forename: 'First name',
             surname: 'Last name',
             date_of_birth: 'Date of birth',
-            invested: 'Invested',
-            rank: 'Rank',
-            six: 'Six'
+            invested: 'Invested'
         };
+        if (Cookies.section == 'Beavers') {
+            headers.six = 'Lodge';
+        } else if (Cookies.section == 'Cubs') {
+            headers.rank = 'Rank';
+            headers.six = 'Six';
+        }
         var classes = {
             date_of_birth: '',
             invested: 'hidden-xs hidden-sm',
             rank: 'hidden-xs hidden-sm',
+            lodge: 'hidden-xs',
             six: 'hidden-xs'
         };
         return (
             <div id="Cubs">
-                <SubHeader heading="Cubs">
+                <SubHeader heading={ Cookies.section }>
                     <Link to="/cubs/new"><span className="nav-button">Add</span></Link>
-                    <Link to="/cubs/stats"><span className="nav-button">Stats</span></Link>
+                    { Cookies.section ? <Link to="/cubs/stats"><span className="nav-button">Stats</span></Link> : '' }
                     <a><span className="nav-button" onClick={ this.exportData.bind(this) }>Export</span></a>
                 </SubHeader>
                 <PageContent>

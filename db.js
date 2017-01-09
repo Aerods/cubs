@@ -11,7 +11,7 @@ exports.connect = function(mode, done) {
     port: '3306',
     user: process.env.NODE_DB_USER || 'test',
     password: process.env.NODE_DB_PASSWORD || 'test',
-    database: process.env.NODE_DB
+    database: process.env.NODE_DB || 'cub_database'
   })
 
   state.mode = mode

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
+import Cookies from '../cookies.js';
 import * as actions from '../Actions';
 import Store from '../store';
 import moment from 'moment';
@@ -62,7 +63,7 @@ export default class ViewCub extends React.Component {
         actions.get({ dataName: 'cubParents', dataType: 'parent', cub_id: this.props.params.id });
         Store.on('cubParents-get', this.setCubParents);
 
-        actions.get({ dataName: 'allParents', dataType: 'parent' });
+        actions.get({ dataName: 'allParents', dataType: 'parent', allSections: 1 });
         Store.on('allParents-get', this.setAllParents);
 
         this.getBadgeProgress();
@@ -224,7 +225,7 @@ export default class ViewCub extends React.Component {
         var address_3 = (<div>{ this.state.address_3 }</div>);
         return(
             <div id="ViewCub">
-                <SubHeader heading="View cub">
+                <SubHeader heading={ "View "+Cookies.member }>
                     <Link to="/cubs"><span className="nav-button">back</span></Link>
                     { this.props.params.id ? <a><span className="nav-button" onClick={ this.deleteCub.bind(this) }>Delete</span></a> : '' }
                 </SubHeader>
@@ -233,7 +234,7 @@ export default class ViewCub extends React.Component {
 
                     <div className="view-sheet">
                         <div className="view-group">
-                            <h3>Cub details</h3>
+                            <h3>{ Cookies.member } details</h3>
                             <Link to={ "/cubs/"+this.props.params.id+"/edit" }><span className="nav-button">Edit</span></Link>
 
                             <div className="view-row">
@@ -264,7 +265,7 @@ export default class ViewCub extends React.Component {
                                     <div className="field-value">{ this.state.gender }</div>
                                 </div>
                                 <div className="field-group">
-                                    <div className="field-name">Six:</div>
+                                    <div className="field-name">{ Cookies.section == 'Cubs' ? 'Six:' : 'Lodge:' }</div>
                                     <div className="field-value">{ this.state.six }</div>
                                 </div>
                             </div>
@@ -274,10 +275,17 @@ export default class ViewCub extends React.Component {
                                     <div className="field-name">Home Phone:</div>
                                     <div className="field-value">{ this.state.phone }</div>
                                 </div>
-                                <div className="field-group">
-                                    <div className="field-name">Rank:</div>
-                                    <div className="field-value">{ this.state.rank || '-' }</div>
-                                </div>
+                                { Cookies.section == 'Cubs' ? (
+                                    <div className="field-group">
+                                        <div className="field-name">Rank:</div>
+                                        <div className="field-value">{ this.state.rank || '-' }</div>
+                                    </div>
+                                ) : (
+                                    <div className="field-group">
+                                        <div className="field-name">To Cubs:</div>
+                                        <div className="field-value">{ this.state.to_cubs || '-' }</div>
+                                    </div>
+                                ) }
                             </div>
 
                             <div className="view-col">
@@ -298,14 +306,18 @@ export default class ViewCub extends React.Component {
                                     <div className="field-name">Previous group:</div>
                                     <div className="field-value">{ this.state.previous_group || '-' }</div>
                                 </div>
-                                <div className="field-group">
-                                    <div className="field-name">From Beavers:</div>
-                                    <div className="field-value">{ this.state.from_beavers || '-' }</div>
-                                </div>
-                                <div className="field-group">
-                                    <div className="field-name">To Scouts:</div>
-                                    <div className="field-value">{ this.state.to_scouts || '-' }</div>
-                                </div>
+                                { Cookies.section == 'Cubs' ? (
+                                    <div className="field-group">
+                                        <div className="field-name">From Beavers:</div>
+                                        <div className="field-value">{ this.state.from_beavers || '-' }</div>
+                                    </div>
+                                ) : '' }
+                                { Cookies.section == 'Cubs' ? (
+                                    <div className="field-group">
+                                        <div className="field-name">To Scouts:</div>
+                                        <div className="field-value">{ this.state.to_scouts || '-' }</div>
+                                    </div>
+                                ) : '' }
                             </div>
 
                             <div className="view-row">

@@ -161,10 +161,10 @@ export default class LeaderForm extends React.Component {
                                 onChange={ this.handleInputChange } />
                             <ValidationError error={ this.state.validation.position } />
                         </div>
-                        <div className="form-group">
+                        { Cookies.section == 'Cubs' ? <div className="form-group">
                             <label className="control-label" htmlFor="cub_name">Cub name:</label>
                             <input type="text" className="form-control" id="cub_name" name="cub_name" value={ this.state.cub_name } onChange={ this.handleInputChange } />
-                        </div>
+                        </div> : '' }
                         { Cookies.leader_id == this.props.params.id ? <div>
                             <div className="form-group">
                                 <label className="control-label" htmlFor="username">Username:</label>

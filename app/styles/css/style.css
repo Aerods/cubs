@@ -11,21 +11,14 @@
   }
 }
 .nav-button {
-  background-color: #2ea33a;
   padding: 5px 15px;
   margin: 5px;
   color: white;
-  cursor: pointer;
 }
 .nav-button:hover {
-  background-color: #217329;
   cursor: pointer;
   text-decoration: none !important;
   color: white;
-}
-.badge-form ul li:hover,
-.badge-form ol li:hover {
-  background-color: #ace7b2;
 }
 #ViewCub ul,
 .select-activity ul,
@@ -46,11 +39,6 @@
 #ViewCub ol li span:hover,
 .select-activity ol li span:hover {
   cursor: pointer;
-  background-color: #ace7b2;
-}
-#ViewCub ol li span.selected,
-.select-activity ol li span.selected {
-  background-color: #70d77a;
 }
 #ViewCub ul li,
 .select-activity ul li {
@@ -59,11 +47,6 @@
 #ViewCub ul li:hover,
 .select-activity ul li:hover {
   cursor: pointer;
-  background-color: #ace7b2;
-}
-#ViewCub ul li.selected,
-.select-activity ul li.selected {
-  background-color: #70d77a;
 }
 #BadgeForm .badge-image {
   width: 100px;
@@ -348,7 +331,6 @@
 }
 #BadgeGrid .badge-grid-wrapper .badge-grid .badge-grid-item:hover {
   cursor: pointer;
-  background-color: #ace7b2;
 }
 #BadgeGrid .badge-grid-wrapper .badge-grid .badge-grid-item .badge-image img {
   width: 85px;

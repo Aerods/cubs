@@ -5,7 +5,10 @@ var Promise = promise.Promise;
 
 exports.get = function(data, done) {
     var where = 'WHERE deleted = 0';
-    if (data.id) { where += (' and id =' + data.id); }
+    var values = [];
+    if (data.id) { where += ' and id = ?'; values.push(data.id); }
+    if (data.section) { where += ' and section = ?'; values.push(data.section); }
+    if (data.group) { where += ' and `group` = ?'; values.push(data.group); }
 
     var query = '                   \
         SELECT                      \
@@ -14,7 +17,7 @@ exports.get = function(data, done) {
             surname                \
         FROM cubs                   \
     ' + where + ' ORDER BY date_of_birth';
-    db.get().query(query, function (err, cubs) {
+    db.get().query(query, values, function (err, cubs) {
         return new Promise(function (resolve1, reject) {
             cubs.map(function(cub, i) {
                 cubs[i].badge_tasks = {};

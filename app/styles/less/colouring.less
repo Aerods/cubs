@@ -1,0 +1,143 @@
+#Login {
+    @primary: #37c345;
+    @dark-primary: darken(@primary, 8%);
+    @darker-primary: darken(@primary, 20%);
+    .nav-button {
+        background-color: @dark-primary;
+        &:hover {
+            background-color: @darker-primary;
+        }
+    }
+}
+
+#MainLayout.section-Beavers {
+    @primary: #1896ca;
+    @lightest-primary: lighten(@primary, 30%);
+    @light-primary: lighten(@primary, 15%);
+    @dark-primary: darken(@primary, 8%);
+    @darker-primary: darken(@primary, 20%);
+    @darkest-primary: darken(@primary, 32%);
+
+    .topbar {
+        background-color: @primary;
+    }
+    .nav-button {
+        background-color: @dark-primary;
+        &:hover {
+            background-color: @darker-primary;
+        }
+    }
+    .badge-form {
+        ul, ol {
+            li:hover {
+                background-color: @lightest-primary;
+            }
+        }
+    }
+    #ViewCub, .select-activity {
+        ol li {
+            span:hover {
+                background-color: @lightest-primary;
+            }
+            span.selected {
+                background-color: @light-primary;
+            }
+        }
+        ul li {
+            &:hover {
+                background-color: @lightest-primary;
+            }
+            &.selected {
+                background-color: @light-primary;
+            }
+        }
+    }
+
+    #BadgeGrid {
+        .badge-grid-item:hover {
+            background-color: @lightest-primary;
+        }
+    }
+    table {
+        thead {
+            background-color: @primary;
+        }
+        tbody tr {
+            &:nth-child(even) {
+                background-color: white;
+            }
+            &:nth-child(odd) {
+                background-color: @lightest-primary;
+            }
+            &:hover {
+                background-color: @light-primary;
+            }
+        }
+    }
+}
+
+#MainLayout.section-Cubs {
+    @primary: #37c345;
+    @lightest-primary: lighten(@primary, 30%);
+    @light-primary: lighten(@primary, 15%);
+    @dark-primary: darken(@primary, 8%);
+    @darker-primary: darken(@primary, 20%);
+    @darkest-primary: darken(@primary, 32%);
+
+    .topbar {
+        background-color: @primary;
+    }
+    .nav-button {
+        background-color: @dark-primary;
+        &:hover {
+            background-color: @darker-primary;
+        }
+    }
+    .badge-form {
+        ul, ol {
+            li:hover {
+                background-color: @lightest-primary;
+            }
+        }
+    }
+    #ViewCub, .select-activity {
+        ol li {
+            span:hover {
+                background-color: @lightest-primary;
+            }
+            span.selected {
+                background-color: @light-primary;
+            }
+        }
+        ul li {
+            &:hover {
+                background-color: @lightest-primary;
+            }
+            &.selected {
+                background-color: @light-primary;
+            }
+        }
+    }
+
+    #BadgeGrid {
+        .badge-grid-item:hover {
+            background-color: @lightest-primary;
+        }
+    }
+    table {
+        thead {
+            background-color: @primary;
+        }
+        tbody tr {
+            &:nth-child(even) {
+                background-color: white;
+            }
+            &:nth-child(odd) {
+                background-color: @lightest-primary;
+            }
+            &:hover {
+                background-color: @light-primary;
+            }
+        }
+    }
+}

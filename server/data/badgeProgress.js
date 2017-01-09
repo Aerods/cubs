@@ -4,8 +4,8 @@ var promise = require("es6-promise");
 var Promise = promise.Promise;
 
 exports.get = function(data, done) {
-    var where = 1;
-    if (data.cub_id) { where += (' and cub_id =' + data.cub_id); }
+    var where = "WHERE b.id = ?";
+    var values = [data.cub_id, data.cub_id, data.badge_id];
 
     var query = '                                                       \
         SELECT                                                          \
@@ -15,13 +15,13 @@ exports.get = function(data, done) {
         LEFT JOIN badge_criteria bc ON b.id=bc.badge_id                 \
         LEFT JOIN badge_tasks bt ON bc.id=bt.badge_criteria_id          \
         LEFT JOIN cub_badge_criteria cbc ON bc.id=cbc.badge_criteria_id \
-            AND cbc.cub_id='+data.cub_id+'                              \
+            AND cbc.cub_id = ?                                          \
         LEFT JOIN cub_badge_tasks cbt ON bt.id=cbt.badge_task_id        \
-            AND cbt.cub_id='+data.cub_id+'                              \
-        WHERE b.id='+data.badge_id+'                                    \
+            AND cbt.cub_id = ?                                          \
+        '+ where +'                                                     \
         GROUP BY bc.id                                                  \
     ';
-    db.get().query(query, function (err, rows) {
+    db.get().query(query, values, function (err, rows) {
         if (err) return done(err)
         var completed = 0;
         var to_complete = 0;

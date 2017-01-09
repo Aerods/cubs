@@ -17,7 +17,9 @@ exports.create = function(data, done) {
         data.details,
         data.start_time,
         data.end_time,
-        (end_date == 'Invalid date' ? null : end_date)
+        (end_date == 'Invalid date' ? null : end_date),
+        data.section,
+        data.group
     ];
     action_log.create('programme', 'insert', values, function() {
         db.get().query('                        \
@@ -29,9 +31,11 @@ exports.create = function(data, done) {
                 details,                        \
                 start_time,                     \
                 end_time,                       \
-                end_date                        \
+                end_date,                       \
+                section,                        \
+                `group`                         \
             )                                   \
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?)      \
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)      \
         ', values, function(err, result) {
             addBadgeWork(result.insertId, data.badges, data.cubs);
             if (err) return done(err);
