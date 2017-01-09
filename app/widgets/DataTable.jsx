@@ -109,8 +109,10 @@ var DataTable = React.createClass({
                 } else {
                     var valueString = row[value];
                     if (valueString) {
-                        var buffer = new Buffer( valueString );
-                        valueString = buffer.toString('utf8');
+                        if (typeof valueString == 'string') {
+                            var buffer = new Buffer( valueString );
+                            valueString = buffer.toString('utf8');
+                        }
                     } else {
                         valueString = '-';
                     }
