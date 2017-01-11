@@ -14,7 +14,6 @@ exports.create = function(data, done) {
         data.position,
         data.cub_name,
         data.username,
-        data.password,
         data.phone_1,
         data.phone_2,
         data.email,
@@ -35,7 +34,6 @@ exports.create = function(data, done) {
                 position,                       \
                 cub_name,                       \
                 username,                       \
-                '+(data.password ? 'password,' : '')+'\
                 phone_1,                        \
                 phone_2,                        \
                 email,                          \
@@ -47,7 +45,7 @@ exports.create = function(data, done) {
                 section,                        \
                 `group`                        \
             )                                   \
-            VALUES(?, ?, ?, ?, ?, ?, '+(data.password ? 'SHA1(?),' : '')+' ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) \
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) \
         ', values, function(err, result) {
             if (err) return done(err);
             server.emitSocket('leadersUpdate');
@@ -117,6 +115,6 @@ exports.login = function(data, done) {
     db.get().query('SELECT id, section, `group` from leaders WHERE username = ? AND password = SHA1(?) AND deleted=0 LIMIT 1', [data.username, data.password], function(err, result) {
         if (err) return done(err);
         else if (result[0]) done(null, { result: 'success', token: 'P3X-595', leader_id: result[0].id, section: result[0].section, group: result[0].group });
-        else done(null, { result: 'Fail' });    
+        else done(null, { result: 'Fail' });
     })
 }

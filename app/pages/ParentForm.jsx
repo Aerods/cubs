@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
 import CheckboxInput from '../widgets/CheckboxInput';
+import Cookies from '../cookies.js';
 import SelectInput from '../widgets/SelectInput';
 import ValidationError from '../widgets/ValidationError';
 import PageContent from '../widgets/PageContent';
@@ -177,7 +178,7 @@ export default class ParentForm extends React.Component {
                         <FormGroup name="surname" label="Last name:" value={ this.state.surname } onChange={ this.handleInputChange } error={ this.state.validation.surname } />
                         <FormGroup name="relationship" label="Relationship:" value={ this.state.relationship } onChange={ this.handleInputChange } error={ this.state.validation.relationship } />
                         { this.state.hasCubData ? <div className="form-group">
-                            <label className="control-label" htmlFor="lives_with_cub">Lives with cub:</label>
+                            <label className="control-label" htmlFor="lives_with_cub">{ 'Lives with ' + Cookies.member.toLowerCase() }:</label>
                             <CheckboxInput name="lives_with_cub" checked={ this.state.lives_with_cub } onChange={ this.handleInputChange } />
                             <ValidationError error={ this.state.validation.lives_with_cub } />
                         </div> : '' }
