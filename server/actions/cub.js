@@ -65,7 +65,7 @@ exports.create = function(data, done) {
         ', values, function(err, result) {
             if (err) return done(err)
             server.emitSocket('cubsUpdate');
-            saveParents(data.parents, result.insertId, function(err) {
+            saveParents(data.parents, data.group, result.insertId, function(err) {
                 cubBadgeActions.save(data.cub_badges, result.insertId, function(err) {
                     if (err) return done(err);
                     done(null, { id: result.insertId });
@@ -130,7 +130,7 @@ exports.update = function(data, done) {
         ', values, function(err, result) {
             if (err) return done(err);
             server.emitSocket('cubsUpdate');
-            saveParents(data.parents, data.id, function(err) {
+            saveParents(data.parents, data.group, data.id, function(err) {
                 cubBadgeActions.save(data.cub_badges, data.id, function(err) {
                     if (err) return done(err);
                     done(null, { id: data.id });
@@ -140,11 +140,12 @@ exports.update = function(data, done) {
     })
 }
 
-function saveParents(data, cub_id, done) {
+function saveParents(data, group, cub_id, done) {
     var promise = require("es6-promise");
     var Promise = promise.Promise;
     return new Promise(function (resolve, reject) {
         data.map(function(parent, key) {
+            parent.group = group;
             if (parent.id) {
                 parentActions.update(parent, function(err, updatedParent) {
                     if (!parent.cub_id) {
