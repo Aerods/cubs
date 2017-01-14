@@ -24,7 +24,7 @@ export default class ProgrammePrint extends React.Component {
     }
 
     componentWillMount() {
-        actions.get({ dataType: 'cub' });
+        actions.get({ dataType: 'cub', orderBy: 'name' });
         actions.get({ dataType: 'programme', id: this.props.params.id });
         Store.on('cub-get', this.setCubs);
         Store.on('programme-get', this.setMeeting);
