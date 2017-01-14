@@ -82,13 +82,13 @@ exports.update = function(data, done) {
 
 function addBadgeWork(programme_id, badges, cubs) {
     removeOldBadgeWork(programme_id, function() {
+        cubs.map(function(cub) {
+            if (cub.selected) {
+                addCub(programme_id, cub.id);
+            }
+        });
         badges.map(function(badge, i) {
             addBadge(programme_id, badge.id);
-            cubs.map(function(cub) {
-                if (cub.selected) {
-                    addCub(programme_id, cub.id);
-                }
-            });
             activityActions.create({ badge_criteria: badge.badge_criteria, cubs: cubs }, function() {});
             badge.badge_criteria.map(function(criteria, i) {
                 if (criteria.selected) {

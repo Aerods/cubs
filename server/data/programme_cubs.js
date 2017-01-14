@@ -3,6 +3,9 @@ var server = require('../server.js')
 
 exports.get = function(data, done) {
     var where = 'WHERE c.deleted = 0';
+    var values = [];
+    if (data.section) { where += ' AND (section = ? OR pc.id IS NOT NULL)'; values.push(data.section); }
+    if (data.group) { where += ' AND `group` = ?'; values.push(data.group); }
     var query = '                           \
         SELECT                              \
             c.id,                           \
@@ -18,7 +21,7 @@ exports.get = function(data, done) {
             AND pc.programme_id='+data.programme_id+'                   \
         '+where+'                           \
         ORDER BY date_of_birth';
-    db.get().query(query, function (err, rows) {
+    db.get().query(query, values, function (err, rows) {
         if (err) return done(err)
         done(null, rows)
     })
