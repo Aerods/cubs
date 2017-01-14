@@ -52,13 +52,22 @@ export default class Programme extends React.Component {
             start_time: 'hidden-xs',
             end_time: 'hidden-xs hidden-sm'
         };
+        var filtering = [
+            { field: 'old', label: 'Show old meetings', type: 'checkbox', value: 0 }
+        ];
         return (
             <div id="Programme">
                 <SubHeader heading="Programme">
                     <Link to="/programme/new"><span className="nav-button">Add</span></Link>
                 </SubHeader>
                 <PageContent>
-                    <DataTable headers={ headers } classes={ classes } data={ this.state.programme } onClick={ this.handleClick.bind(this) } height="tall" />
+                    <DataTable
+                        headers={ headers }
+                        classes={ classes }
+                        filtering={ filtering }
+                        data={ this.state.programme }
+                        onClick={ this.handleClick.bind(this) }
+                        height="tall" />
                 </PageContent>
             </div>
         )

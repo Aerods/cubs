@@ -62,6 +62,10 @@ table {
                 background-color: @yellow !important;
                 border-top: 1px solid grey;
             }
+            &.old {
+                background-color: #c5c5c5 !important;
+                border-top: 1px solid grey;
+            }
             td {
                 padding: 8px;
                 @media screen and (max-width: 520px) {
@@ -84,6 +88,16 @@ table {
                     text-align: center;
                 }
             }
+        }
+    }
+}
+
+.table-controls {
+    display: flex;
+    .filter {
+        display: flex;
+        input {
+            margin: 4px;
         }
     }
 }

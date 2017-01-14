@@ -57,6 +57,10 @@ table tbody tr.awarded {
   background-color: #E4FD4B !important;
   border-top: 1px solid grey;
 }
+table tbody tr.old {
+  background-color: #c5c5c5 !important;
+  border-top: 1px solid grey;
+}
 table tbody tr td {
   padding: 8px;
   border-right: 1px solid black;
@@ -80,4 +84,13 @@ table tbody tr td.yellow {
 }
 table tbody tr td.image {
   text-align: center;
+}
+.table-controls {
+  display: flex;
+}
+.table-controls .filter {
+  display: flex;
+}
+.table-controls .filter input {
+  margin: 4px;
 }

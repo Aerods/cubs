@@ -1,5 +1,6 @@
 import React from 'react';
 import Cookies from '../cookies.js';
+import CheckboxInput from './CheckboxInput';
 var moment = require('moment');
 var OnResize = require("react-window-mixins").OnResize;
 
@@ -10,6 +11,7 @@ var DataTable = React.createClass({
         return {
             headers: {},
             classes: {},
+            filtering: [],
             data: [],
             height: null,
             search: true,
@@ -22,7 +24,17 @@ var DataTable = React.createClass({
             sortBy: null,
             sortAscending: 1,
             search: '',
+            filters: {}
         }
+    },
+
+    componentWillMount: function() {
+        var self = this;
+        self.props.filtering.map(function(filter, key) {
+            var filters = self.state.filters;
+            filters[filter.field] = filter.value;
+            self.setState({ filters: filters });
+        });
     },
 
     handleSearch: function(e) {
@@ -123,11 +135,33 @@ var DataTable = React.createClass({
             var rowClass;
             if (row.selected) rowClass = 'selected';
             if (row.awarded) rowClass = 'awarded';
-            if (matches.indexOf(0) == -1 || !self.props.search || !self.state.search) return (
+            if (row.old) rowClass = 'old';
+
+            // Apply filters
+            var passFiltering = Object.keys(self.state.filters).map(function(filter, key) {
+                return (((row[filter] ? 1 : 0) == self.state.filters[filter]) || !row[filter] ? 1 : 0);
+            });
+
+            if ((matches.indexOf(0) == -1 || !self.props.search || !self.state.search) && passFiltering.indexOf(0) == -1) return (
                 <tr key={ key } onClick={ clickRow } className={ rowClass }>
                     { values }
                 </tr>
             );
+        });
+
+        // Add filter controls
+        var filtering = self.props.filtering.map(function(filter, key) {
+            function filterChange(e) {
+                var filters = self.state.filters;
+                filters[filter.field] = e.target.checked;
+                self.setState({ filters: filters });
+            };
+            return(
+                <div className="filter" key={ key }>
+                    <label>{ filter.label }</label>
+                    <CheckboxInput checked={ filter.value } onChange={ filterChange } />
+                </div>
+            )
         });
 
         if (this.props.height) {
@@ -136,7 +170,11 @@ var DataTable = React.createClass({
             return(
                 <div className="table-widget">
                     <div className="row">
-                        { this.props.search ? <input type="text" className="search-input" name="search" placeholder="search" value={ this.state.search } onChange={ this.handleSearch } /> : '' }
+                        <div className="table-controls">
+                            { filtering }
+                            <div className="grow" />
+                            { this.props.search ? <input type="text" className="search-input" name="search" placeholder="search" value={ this.state.search } onChange={ this.handleSearch } /> : '' }
+                        </div>
                         <table className="header">
                             <thead>
                                 <tr>{ headers }</tr>
@@ -156,7 +194,10 @@ var DataTable = React.createClass({
             return(
                 <div className="table-widget">
                     <div className="row">
-                        { this.props.search ? <input type="text" className="search-input" name="search" placeholder="search" value={ this.state.search } onChange={ this.handleSearch } /> : '' }
+                        <div className="table-controls">
+                            { filtering }
+                            { this.props.search ? <input type="text" className="search-input" name="search" placeholder="search" value={ this.state.search } onChange={ this.handleSearch } /> : '' }
+                        </div>
                         <table>
                             <thead>
                                 <tr>{ headers }</tr>
