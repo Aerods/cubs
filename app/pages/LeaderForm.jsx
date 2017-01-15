@@ -155,7 +155,7 @@ export default class LeaderForm extends React.Component {
                         <div className="form-group">
                             <label className="control-label" htmlFor="position">Position:</label>
                             <SelectInput
-                                data={ ['SL', 'ASL', 'SA', 'PA', 'YL'] }
+                                data={ Cookies.section == 'Cubs' ? ['CSL', 'ACSL', 'SA', 'PA', 'YL'] : ['BSL', 'ABSL', 'SA', 'PA', 'YL'] }
                                 selected={ this.state.position }
                                 name="position"
                                 onChange={ this.handleInputChange } />
