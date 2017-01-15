@@ -5,7 +5,10 @@ var BUILD_DIR = path.resolve(__dirname, 'app/dist');
 var APP_DIR = path.resolve(__dirname, 'app');
 
 var config = {
-    entry: APP_DIR + '/main.jsx',
+    entry: [
+        APP_DIR + '/main.jsx',
+        APP_DIR + '/styles/main.less',
+    ],
     output: {
     path: BUILD_DIR,
     filename: 'bundle.js'
@@ -19,7 +22,11 @@ module : {
         test : /\.jsx?/,
         include : APP_DIR,
         loader : 'babel'
-        }
+        },
+        {
+        test: /\.less$/,
+        loader: "style!css!autoprefixer!less"
+        },
     ],
 },
 plugins: [

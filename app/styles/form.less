@@ -1,0 +1,88 @@
+@error-red: #FFCDCD;
+
+.form {
+    .form-group {
+        margin-bottom: 15px;
+        label {
+            width: 20%;
+            padding-right: 10px;
+            text-align: right;
+            float: left;
+            padding-top: 6px;
+            @media screen and (max-width: 680px) {
+                width: 28%;
+            }
+            @media screen and (max-width: 520px) {
+                padding-top: 9px;
+                width: 34%;
+            }
+            @media screen and (max-width: 400px) {
+                width: 40%;
+            }
+        }
+        .form-control {
+            display: inline-block;
+            height: 34px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            width: 50%;
+            &.small {
+                width: 20%;
+                @media screen and (max-width: 680px) {
+                    width: 26%;
+                }
+            }
+            @media screen and (max-width: 520px) {
+                height: 40px;
+                width: 60%;
+                &.small {
+                    width: 30%;
+                }
+            }
+        }
+        textarea {
+            font-size: inherit;
+            font-family: inherit;
+            height: 55px !important;
+        }
+        .form-radio-buttons {
+            display: inline-block;
+            width: 50%;
+            padding-top: 5px;
+        }
+    }
+    .form-buttons, h2, h3 {
+        margin-left: 20%;
+        margin-bottom: 20px;
+    }
+    h4 {
+        margin-left: 20%;
+    }
+    ul, ol {
+        margin-bottom: 20px;
+        margin-left: 20%;
+        li:hover {
+            cursor: pointer;
+        }
+        ul {
+            margin-left: 0 !important;
+        }
+    }
+    ol li {
+        margin-bottom: 20px;
+    }
+    ul li {
+        margin-bottom: 0px !important;
+    }
+    .validation-error {
+        background-color: @error-red;
+        padding: 5px 10px;
+        width: 50%;
+        margin-left: 20%;
+    }
+}

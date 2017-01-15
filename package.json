@@ -1,16 +1,17 @@
 {
   "name": "cubs",
-  "version": "1.0.0",
-  "description": "this is a demo application made with react, express, mysql and nodejs,",
+  "version": "0.9.0",
+  "description": "A database web application made with react, express, mysql and nodejs, designed to manage data within Scouting.",
   "main": "index.js",
   "scripts": {
     "dev": "webpack -d --watch",
-    "build" : "webpack -p"
+    "build": "webpack -p"
   },
-  "author": "nishant",
+  "author": "James Morris",
   "license": "ISC",
   "dependencies": {
     "async": "^2.0.0-rc.3",
+    "autoprefixer-loader": "^3.2.0",
     "axios": "^0.15.2",
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
@@ -20,18 +21,14 @@
     "babelify": "^7.3.0",
     "body-parser": "^1.14.2",
     "browserify": "^12.0.1",
+    "css-loader": "^0.26.1",
     "es6-promise": "^3.0.2",
     "express": "^4.13.3",
     "flux": "^3.1.0",
-    "guid": "0.0.12",
-    "gulp": "^3.9.0",
-    "gulp-concat": "^2.6.0",
-    "gulp-less": "^3.0.5",
-    "gulp-minify-css": "^1.2.4",
-    "gulp-rename": "^1.2.2",
+    "less": "^2.7.2",
+    "less-loader": "^2.2.3",
     "moment": "^2.13.0",
     "mysql": "^2.5.4",
-    "orchestrator": "^0.3.7",
     "react": "^15.1.0-alpha.1",
     "react-cookie": "^0.4.8",
     "react-dom": "^15.1.0-alpha.1",
@@ -39,6 +36,7 @@
     "react-router": "^2.3.0",
     "react-window-mixins": "0.0.7",
     "socket.io": "^1.4.5",
+    "style-loader": "^0.13.1",
     "underscore": "^1.8.3",
     "v": "0.0.9",
     "vinyl-fs": "^2.4.3",
@@ -48,5 +46,15 @@
   "devDependencies": {
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13"
+  },
+  "babel": {
+    "env": {
+      "production": {
+        "plugins": [
+          "transform-react-constant-elements",
+          "transform-react-inline-elements"
+        ]
+      }
+    }
   }
 }

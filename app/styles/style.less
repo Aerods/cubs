@@ -1,0 +1,392 @@
+@yellow: #E4FD4B;
+@error-red: #FFCDCD;
+@light-gray: #f2f2f2;
+
+.search-input {
+    margin-bottom: 10px;
+    float: right;
+    padding-left: 5px;
+    @media screen and (max-width: 520px) {
+        height: 40px;
+        width: 50%;
+        border: 2px solid #c1c1c1;
+    }
+}
+
+.nav-button {
+    padding: 5px 15px;
+    margin: 5px;
+    color: white;
+    &:hover {
+        cursor: pointer;
+        text-decoration: none !important;
+        color: white;
+    }
+}
+
+#ViewCub, .select-activity {
+    ul, ol {
+        margin-bottom: 20px;
+        ul {
+            margin-left: 0 !important;
+        }
+    }
+    ol li {
+        margin-bottom: 20px;
+        span:hover {
+            cursor: pointer;
+        }
+        span.selected {
+        }
+    }
+    ul li {
+        margin-bottom: 0px !important;
+        &:hover {
+            cursor: pointer;
+        }
+        &.selected {
+        }
+    }
+}
+
+#BadgeForm {
+    .badge-image {
+        width: 100px;
+        margin-left: 23%;
+        margin-bottom: 20px;
+        @media screen and (min-width: 1200px) {
+            margin-left: 22%;
+        }
+    }
+}
+
+#BadgeProgress {
+    .cub-names {
+        -ms-transform: rotate(270deg); /* IE 9 */
+        -webkit-transform: rotate(270deg); /* Chrome, Safari, Opera */
+        transform: rotate(270deg);
+        width: 150px;
+        height: 75px;
+        position: absolute;
+        left: 293px;
+    }
+    .cub-name {
+        width: 152px;
+        height: 25px;
+        border-bottom: 1px solid black;
+        cursor: pointer;
+        padding-left: 2px;
+    }
+    .badges {
+        height: 389px;
+        overflow-y: scroll;
+        position: absolute;
+        left: -60px;
+        top: 275px;
+        border-top: 3px solid black;
+        .badge-row {
+            border-bottom: 3px solid black;
+            width: 1090px;
+            .badge-details {
+                width: 400px;
+                min-height: 185px;
+                white-space: nowrap;
+                position: relative;
+                .badge-name {
+                    -ms-transform: rotate(270deg); /* IE 9 */
+                    -webkit-transform: rotate(270deg); /* Chrome, Safari, Opera */
+                    transform: rotate(270deg);
+                    position: absolute;
+                    left: -13px;
+                    bottom: 85px;
+                    width: 175px;
+                    cursor: pointer;
+                }
+                .badge-criteria {
+                    position: relative;
+                    left: 90px;
+                    border-bottom: 1px solid black;
+                    border-left: 1px solid black;
+                    &:last-child {
+                        border-bottom: none;
+                    }
+                    .criteria-text {
+                        -ms-transform: rotate(270deg); /* IE 9 */
+                        -webkit-transform: rotate(270deg); /* Chrome, Safari, Opera */
+                        transform: rotate(270deg);
+                        position: absolute;
+                        bottom: 20px;
+                        width: 50px;
+                        height: 22px;
+                        left: -10px;
+                        cursor: pointer;
+                    }
+                    .task, .single-task {
+                        position: absolute;
+                        left: 25px;
+                        border-bottom: 1px solid black;
+                        border-left: 1px solid black;
+                        width: 274px;
+                        min-width: 274px;
+                        padding-left: 5px;
+                        overflow: hidden;
+                        cursor: pointer;
+                        &.single-task {
+                            left: -1px;
+                            border-left: 0;
+                            width: 300px;
+                            min-width: 300px;
+                        }
+                        &:hover {
+                            width: auto;
+                            background: #feffb8;
+                            z-index: 100;
+                            border: 1px solid black;
+                        }
+                        &:last-child {
+                            border-bottom: none;
+                        }
+                    }
+                    .cell-row {
+                        position: absolute;
+                        left: 299px;
+                        &:last-child {
+                            border-bottom: 1px solid black;
+                        }
+                        .cell {
+                            display: inline-block;
+                            width: 25px;
+                            height: 21px;
+                            border: 1px solid black;
+                            cursor: pointer;
+                            &.done {
+                                background-color: green;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#ProgrammePrint {
+    #sign-in-sheet {
+        width: 675px;
+        height: 975px;
+        padding: 10px;
+        h3 {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        .meeting-details {
+            float: right;
+        }
+    }
+    table {
+        margin-bottom: -1px;
+        thead {
+            tr {
+                text-align: center;
+                color: black;
+            }
+        }
+        tr {
+            background-color: white;
+            border-bottom: 1px solid black;
+            td {
+                padding: 6px;
+            }
+        }
+    }
+}
+
+#ViewBadge {
+    .view-col {
+        padding-top: 13px;
+        margin-left: 15px;
+    }
+}
+.view-sheet {
+    background-color: white;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    @media screen and (min-width: 990px) {
+        width: 940px;
+    }
+
+    .view-group {
+        background-color: #f2f2f2;
+        padding: 25px;
+        margin-bottom: 10px;
+        h3 {
+            display: inline-block;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+        .view-image {
+            padding: 5px;
+            img {
+                height: 100px;
+            }
+        }
+        .nav-button {
+            float: right;
+        }
+        .view-row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .field-group {
+            border-bottom: 1px solid #CCC;
+            padding: 10px;
+            margin-bottom: 5px;
+            width: 48%;
+            @media screen and (max-width: 520px) {
+                width: 100%;
+            }
+            margin-right: 2%;
+            display: inline-block;
+            &.wide {
+                width: 98%;
+            }
+            .field-name {
+                width: 125px;
+                display: inline-table;
+                font-weight: bold;
+            }
+            .field-value {
+                display: inline-table;
+                @media screen and (min-width: 520px) {
+                    width: 250px;
+                }
+                &.wide {
+                    width: 0;
+                }
+            }
+        }
+        .view-col {
+            display: inline-table;
+            width: 100%;
+            @media screen and (min-width: 520px) {
+                width: 48%;
+            }
+            margin-right: 2%;
+            .field-group {
+                display: block;
+                width: 100%;
+                &.tall {
+                    height: 127px;
+                    @media screen and (min-width: 990px) {
+                        height: 133px;
+                    }
+                    .field-name {
+                        @media screen and (min-width: 990px) {
+                            height: 130px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    ol li {
+        margin-bottom: 20px;
+    }
+    ul li {
+        margin-bottom: 0px !important;
+    }
+}
+
+#BadgeGrid {
+    .badge-grid-wrapper {
+        margin-top: 40px;
+        @media screen and (max-width: 520px) {
+            margin-top: 50px;
+        }
+        .badge-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            .badge-grid-item {
+                position: relative;
+                text-align: center;
+                width: 95px;
+                @media screen and (max-width: 520px) {
+                    width: 85px;
+                }
+                margin: 5px;
+                padding: 5px;
+                &:hover {
+                    cursor: pointer;
+                }
+                .badge-image {
+                    img {
+                        width: 85px;
+                        @media screen and (max-width: 520px) {
+                            width: 75px;
+                        }
+                    }
+                    &.not-earned {
+                        img {
+                            opacity: 0.2;
+                            -webkit-filter: grayscale(50%);
+                        }
+                    }
+                    &.moving-on {
+                        height: 84px;
+                        padding-top: 22px;
+                    }
+                }
+                .badge-name {
+                    display: table-cell;
+                    vertical-align: middle;
+                    line-height: 14px;
+                    padding: 2px 1px;
+                    height: 32px;
+                    width: 85px;
+                }
+                .percentage {
+                    display: none;
+                    position: absolute;
+                    left: 29px;
+                    top: 35px;
+                    font-size: 22px;
+                    font-weight: bold;
+                }
+                &:hover {
+                    .percentage {
+                        display: block;
+                    }
+                }
+            }
+        }
+    }
+}
+#Login {
+    overflow-y: hidden;
+    .login-box {
+        width: 300px;
+        margin: 15% auto;
+        border: 1px solid black;
+        padding: 15px;
+        h3 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .form-group {
+            margin-bottom: 5px;
+            label {
+                width: 85px;
+            }
+            input {
+                padding: 2px;
+            }
+        }
+        .nav-button {
+            width: 62px;
+            margin-top: 10px;
+            margin-left: 105px;
+        }
+    }
+}
