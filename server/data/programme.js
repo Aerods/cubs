@@ -11,6 +11,7 @@ exports.get = function(data, done) {
     var query = '                                       \
         SELECT                                          \
             p.id,                                         \
+            DATE_FORMAT(date, "%Y%m%d") as orderByDate,    \
             DATE_FORMAT(date, "%d/%m/%Y") as date,      \
             title,                                      \
             type,                                       \
@@ -24,7 +25,7 @@ exports.get = function(data, done) {
         LEFT JOIN programme_cubs pc ON p.id=pc.programme_id \
         WHERE '+where+'                                 \
         GROUP BY p.id                                     \
-        ORDER BY date                                     \
+        ORDER BY orderByDate                                     \
     ';
     db.get().query(query, values, function (err, rows) {
         if (err) return done(err)

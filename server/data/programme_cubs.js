@@ -20,7 +20,7 @@ exports.get = function(data, done) {
         LEFT JOIN programme_cubs pc on c.id=pc.cub_id                   \
             AND pc.programme_id='+data.programme_id+'                   \
         '+where+'                           \
-        ORDER BY date_of_birth';
+        ORDER BY forename, surname';
     db.get().query(query, values, function (err, rows) {
         if (err) return done(err)
         done(null, rows)
