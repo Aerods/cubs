@@ -64,17 +64,17 @@ function completeTask(task_id, cubs, done) {
         });
         resolve(ids);
     }).then(function(ids) {
-        done(ids);
+        done(null, ids);
     });
 }
 
-function uncompleteTask(task_id, cub_id) {
+function uncompleteTask(task_id, cub_id, done) {
     var values = [cub_id, task_id];
     db.get().query('                        \
         DELETE FROM cub_badge_tasks         \
         WHERE cub_id = ? AND badge_task_id = ?    \
     ', values, function(err, result) {
-        return result;
+        done(null, result);
     });
 }
 
