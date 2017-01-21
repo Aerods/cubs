@@ -261,7 +261,7 @@ export default class ViewCub extends React.Component {
 
                             <div className="view-row">
                                 <div className="field-group">
-                                    <div className="field-name">Gener:</div>
+                                    <div className="field-name">Gender:</div>
                                     <div className="field-value">{ this.state.gender }</div>
                                 </div>
                                 <div className="field-group">

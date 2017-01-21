@@ -4,6 +4,7 @@ import DataTable from '../widgets/DataTable';
 import SubHeader from '../widgets/SubHeader';
 import Store from '../store';
 import * as actions from '../Actions';
+import Cookies from '../cookies.js';
 
 export default class AwardBadges extends React.Component {
     constructor() {
@@ -54,7 +55,7 @@ export default class AwardBadges extends React.Component {
 
     render() {
         var headers = {
-            cub_name: 'Cub name',
+            cub_name: Cookies.member + ' name',
             badge_name: 'Badge',
             image: 'Image',
             type: 'Type'

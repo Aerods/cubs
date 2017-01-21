@@ -339,7 +339,7 @@ export default class ProgrammeForm extends React.Component {
 
                         { meetingInPast ? <div>
                             <div className="spacer" />
-                            <h3>Cubs</h3>
+                            <h3>{ Cookies.section }</h3>
                             <a><span className="nav-button" onClick={ this.selectAll.bind(this) }>select all</span></a>
                             <a><span className="nav-button" onClick={ this.deselectAll.bind(this) }>deselect all</span></a>
                             <DataTable headers={ headers } data={ this.state.cubs } onClick={ this.selectCub.bind(this) } height="short" />
