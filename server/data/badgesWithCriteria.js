@@ -23,12 +23,15 @@ exports.get = function(data, done) {
             bc.text,                                                    \
             bc.complete_all,                                            \
             bc.complete_x,                                              \
+            bc.ordering as criteria_ordering,                           \
             bt.id as badge_task_id,                                     \
-            bt.task                                                     \
+            bt.task,                                                    \
+            bt.ordering as task_ordering                                \
         FROM badges b                                                   \
         LEFT JOIN badge_criteria bc ON b.id=bc.badge_id                 \
         LEFT JOIN badge_tasks bt ON bc.id=bt.badge_criteria_id          \
         ' + where + '                                                   \
+        ORDER BY b.ordering, bc.ordering, bc.id, bt.ordering, bt.id     \
     ';
     db.get().query(query, values, function (err, rows) {
         if (err) return done(err)
@@ -61,6 +64,7 @@ exports.get = function(data, done) {
                             complete_all: row.complete_all,
                             complete_x: row.complete_x,
                             badge_tasks: {},
+                            ordering: row.criteria_ordering,
                             selected: 0
                         };
                     }
@@ -70,6 +74,7 @@ exports.get = function(data, done) {
                             id: row.badge_task_id,
                             task: row.task,
                             badge_criteria_id: badge_criteria_id,
+                            ordering: row.task_ordering,
                             selected: 0
                         };
                     }

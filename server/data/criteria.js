@@ -13,6 +13,7 @@ exports.get = function(data, done) {
             FROM badge_criteria bc                                                                          \
             LEFT JOIN cub_badge_criteria cbc ON bc.id=cbc.badge_criteria_id and cbc.cub_id='+data.cub_id+'  \
             ' + where + '                                                                                   \
+            ORDER BY bc.ordering, bc.id                                                                     \
         ';
     } else {
         query = 'SELECT * FROM badge_criteria bc ' + where;

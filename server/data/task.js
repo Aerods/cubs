@@ -9,10 +9,11 @@ exports.get = function(data, done) {
     var query;
     if (data.cub_id) {
         query = '                                                                                           \
-            SELECT bt.*, IF(cbt.id, 1, 0) as selected                                                       \
+            SELECT bt.*, IF(cbt.id, 1, 0) AS selected                                                       \
             FROM badge_tasks bt                                                                             \
-            LEFT JOIN cub_badge_tasks cbt ON bt.id=cbt.badge_task_id and cbt.cub_id='+data.cub_id+'  \
+            LEFT JOIN cub_badge_tasks cbt ON bt.id=cbt.badge_task_id AND cbt.cub_id='+data.cub_id+'  \
             ' + where + '                                                                                   \
+            ORDER BY bt.ordering, bt.id                                                                     \
         ';
     } else {
         query = 'SELECT * FROM badge_tasks bt' + where;

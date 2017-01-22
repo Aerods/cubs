@@ -56,8 +56,18 @@ export default class BadgeProgress extends React.Component {
         });
         var badgeRows = this.state.badges.map(function(badge, key) {
             var badgeName = badge.type == 'Staged' ? badge.name + ' - stage ' + badge.stage : badge.name;
-            var criteria = badge.badge_criteria.map(function(criteria, cKey) {
-                var tasks = criteria.badge_tasks.map(function(task, tKey) {
+
+            function compare(a, b) {
+                if (a.ordering < b.ordering) return -1;
+                if (a.ordering > b.ordering) return 1;
+                return 0;
+            }
+            var criteria = badge.badge_criteria;
+            criteria.sort(compare);
+            criteria = criteria.map(function(criteria, cKey) {
+                var tasks = criteria.badge_tasks;
+                tasks.sort(compare);
+                tasks = tasks.map(function(task, tKey) {
                     var taskClass = criteria.complete_all ? 'single-task' : 'task';
                     var cells = self.state.cubs.map(function(cub, cellKey) {
                         function handleClick() {

@@ -12,8 +12,18 @@ var CriteriaList = React.createClass({
     },
     render: function() {
         var self = this;
-        var badge_criteria = this.props.badge_criteria.map(function(criteria, key) {
-            var badge_tasks = criteria.badge_tasks.map(function(task, key) {
+        function compare(a, b) {
+            if (a.ordering < b.ordering) return -1;
+            if (a.ordering > b.ordering) return 1;
+            return 0;
+        }
+        var badge_criteria = this.props.badge_criteria;
+        badge_criteria.sort(compare);
+
+        badge_criteria = this.props.badge_criteria.map(function(criteria, key) {
+            var badge_tasks = criteria.badge_tasks;
+            badge_tasks.sort(compare);
+            badge_tasks = criteria.badge_tasks.map(function(task, key) {
                 function clickTask() {
                     if (self.props.clickTask) self.props.clickTask(task);
                 }

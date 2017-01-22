@@ -18,9 +18,11 @@ exports.get = function(data, done) {
             bc.text,                                                    \
             bc.complete_all,                                            \
             bc.complete_x,                                              \
+            bc.ordering as criteria_ordering,                           \
             IF(pc.id, 1, 0) as criteria_selected,                       \
             bt.id as badge_task_id,                                     \
             bt.task,                                                    \
+            bt.ordering as task_ordering,                               \
             IF(pt.id, 1, 0) as task_selected                            \
         FROM badges b                                                   \
         LEFT JOIN badge_criteria bc ON b.id=bc.badge_id                 \
@@ -31,6 +33,7 @@ exports.get = function(data, done) {
         LEFT JOIN programme_badge_tasks pt ON bt.id = pt.badge_task_id              \
             AND pt.programme_id = ?                                     \
         WHERE pb.programme_id = ?                                       \
+        ORDER BY b.ordering, bc.ordering, bc.id, bt.ordering, bt.id     \
     ';
     db.get().query(query, values, function (err, rows) {
         if (err) return done(err)
@@ -63,6 +66,7 @@ exports.get = function(data, done) {
                             complete_all: row.complete_all,
                             complete_x: row.complete_x,
                             badge_tasks: {},
+                            ordering: row.criteria_ordering,
                             selected: row.criteria_selected
                         };
                     }
@@ -72,6 +76,7 @@ exports.get = function(data, done) {
                             id: row.badge_task_id,
                             task: row.task,
                             badge_criteria_id: badge_criteria_id,
+                            ordering: row.task_ordering,
                             selected: row.task_selected
                         };
                     }
