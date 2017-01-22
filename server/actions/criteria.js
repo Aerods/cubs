@@ -9,16 +9,18 @@ exports.save = function(data, done) {
             data.badge_id,
             data.text,
             data.complete_all,
-            data.complete_x || null
+            data.complete_x || null,
+            data.ordering || 1
         ];
         db.get().query('                    \
             INSERT INTO badge_criteria (    \
                 badge_id,                   \
                 text,                       \
                 complete_all,               \
-                complete_x                  \
+                complete_x,                 \
+                ordering                    \
             )                               \
-            VALUES(?, ?, ?, ?)              \
+            VALUES(?, ?, ?, ?, ?)           \
         ', values, function(err, result) {
             if (err) return done(err);
             saveTasks(data.badge_tasks, result.insertId, function(err) {
@@ -32,13 +34,15 @@ exports.save = function(data, done) {
             data.text,
             data.complete_all,
             data.complete_x || null,
+            data.ordering || 1,
             data.id
         ];
         db.get().query('                \
             UPDATE badge_criteria SET   \
                 text = ?,               \
                 complete_all = ?,       \
-                complete_x = ?          \
+                complete_x = ?,         \
+                ordering = ?            \
             WHERE id = ?                \
         ', values, function(err, result) {
             if (err) return done(err)
@@ -57,6 +61,7 @@ function saveTasks(data, badge_criteria_id, done) {
     var Promise = promise.Promise;
     return new Promise(function (resolve, reject) {
         data.map(function(task, key) {
+            task.ordering = key + 1;
             if (task.id || !task.deleted) {
                 task.badge_criteria_id = badge_criteria_id;
                 taskActions.save(task, function(){});

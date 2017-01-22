@@ -66,6 +66,7 @@ exports.update = function(data, done) {
 function saveCriteria(data, badge_id, done) {
     return new Promise(function (resolve, reject) {
         data.map(function(criteria, key) {
+            criteria.ordering = key + 1;
             if (criteria.id || !criteria.deleted) {
                 criteria.badge_id = badge_id;
                 criteriaActions.save(criteria, function(){});
