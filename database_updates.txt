@@ -4,3 +4,5 @@ ALTER TABLE `cubs` ADD COLUMN `section` VARCHAR(20) NULL DEFAULT NULL AFTER `to_
 ALTER TABLE `programme` ADD COLUMN `section` VARCHAR(20) NULL DEFAULT NULL AFTER `end_date`, ADD COLUMN `group` VARCHAR(60) NULL DEFAULT NULL AFTER `section`;
 ALTER TABLE `badges` ADD COLUMN `section` VARCHAR(20) NULL DEFAULT NULL AFTER `ordering`;
 ALTER TABLE `parents` ADD COLUMN `section` VARCHAR(60) NULL DEFAULT NULL AFTER `postcode`, ADD COLUMN `group` VARCHAR(60) NULL DEFAULT NULL AFTER `section`;
+ALTER TABLE `cub_database`.`badge_criteria` ADD COLUMN `ordering` INT(11) NOT NULL DEFAULT 1 AFTER `complete_x`;
+ALTER TABLE `cub_database`.`badge_tasks` ADD COLUMN `ordering` INT(11) NOT NULL DEFAULT 1 AFTER `task`;
