@@ -90,16 +90,18 @@ function addBadgeWork(programme_id, badges, cubs) {
         badges.map(function(badge, i) {
             addBadge(programme_id, badge.id);
             activityActions.create({ badge_criteria: badge.badge_criteria, cubs: cubs }, function() {});
-            badge.badge_criteria.map(function(criteria, i) {
-                if (criteria.selected) {
-                    addCriteria(programme_id, criteria.id);
-                }
-                criteria.badge_tasks.map(function(task) {
-                    if (task.selected) {
-                        addTask(programme_id, task.id);
+            if (badge.badge_criteria) {
+                badge.badge_criteria.map(function(criteria, i) {
+                    if (criteria.selected) {
+                        addCriteria(programme_id, criteria.id);
                     }
+                    criteria.badge_tasks.map(function(task) {
+                        if (task.selected) {
+                            addTask(programme_id, task.id);
+                        }
+                    });
                 });
-            });
+            }
         });
     });
 }
