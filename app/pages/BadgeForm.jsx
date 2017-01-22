@@ -85,36 +85,6 @@ export default class BadgeForm extends React.Component {
         this.setState({ badge_criteria: criteriaWithTasks });
     }
 
-    // componentDidMount() {
-    //     var self = this;
-    //     if (this.props.params.id) {
-    //         store.onChange({ dataType: 'badge', id: this.props.params.id }, function(badges) {
-    //             var badge = badges[0];
-    //             self.setState({
-    //                 name: badge.name,
-    //                 type: badge.type,
-    //                 stage: badge.stage,
-    //                 image: badge.image
-    //             });
-    //         });
-    //         store.onChange({ dataType: 'criteria', badge_id: this.props.params.id }, function(badge_criteria) {
-    //             badge_criteria.map(function(criteria, cKey) {
-    //                 criteria.uuid = cKey + 1;
-    //                 var criteriaWithTasks = self.state.badge_criteria;
-    //                 store.onChange({ dataType: 'task', badge_criteria_id: criteria.id }, function(badge_tasks) {
-    //                     var tasks = badge_tasks.map(function(task, tKey) {
-    //                         task.uuid = tKey + 1;
-    //                         return task;
-    //                     });
-    //                     criteria.badge_tasks = tasks;
-    //                     criteriaWithTasks.push(criteria);
-    //                     self.setState({ badge_criteria: criteriaWithTasks });
-    //                 });
-    //             });
-    //         });
-    //     }
-    // }
-
     handleInputChange(e) {
       var name = e.target.name;
       var state = this.state;

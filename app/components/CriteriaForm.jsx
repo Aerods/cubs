@@ -15,7 +15,7 @@ var CriteriaForm = React.createClass({
       return {
           id: null,
           text: '',
-          complete_all: '',
+          complete_all: 1,
           complete_x: '',
           uuid: null,
           badge_tasks: [],

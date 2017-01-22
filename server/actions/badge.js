@@ -27,9 +27,9 @@ exports.create = function(data, done) {
             if (err) return done(err);
             server.emitSocket('badgesUpdate');
             if (!data.badge_criteria.length) done(null, { id: result.insertId });
-            saveCriteria(data.badge_criteria, result.insertId, function(err) {
+            saveCriteria(data.badge_criteria, result.insertId, function(err, badge_id) {
                 if (err) return done(err);
-                done(null, { id: result.insertId });
+                done(null, { id: badge_id });
             })
         })
     })
@@ -71,6 +71,7 @@ function saveCriteria(data, badge_id, done) {
                 criteria.badge_id = badge_id;
                 criteriaActions.save(criteria, function(){});
             }
+            if (key+1 == data.length) resolve();
         })
     }).then(function() {
         done(null, badge_id);
