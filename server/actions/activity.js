@@ -13,7 +13,7 @@ exports.create = function(data, done) {
                             return cub_task_id;
                         });
                     } else if (data.deleteUnselected) {
-                        uncompleteTask(task.id, data.cubs[0].id);
+                        uncompleteTask(task.id, data.cubs[0].id, function(){});
                     }
                 });
                 resolve();

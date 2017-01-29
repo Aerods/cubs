@@ -27,12 +27,15 @@ exports.get = function(data, done) {
         var to_complete = 0;
         return new Promise(function (resolve, reject) {
             if (rows.length) {
+                var percentages = 0;
                 rows.map(function(row, i) {
-                    completed += row.completed;
-                    to_complete += row.to_complete;
+                    var criteriaPercentage = (row.completed / row.to_complete) * 100;
+                    if (criteriaPercentage > 100) criteriaPercentage = 100;
+                    percentages += criteriaPercentage;
                     if (i+1 == rows.length) {
-                        var percentage = (completed / to_complete) * 100;
+                        var percentage = percentages / rows.length;
                         percentage = Math.round(percentage);
+                        if (!percentage) percentage = 0;
                         resolve(percentage);
                     }
                 })

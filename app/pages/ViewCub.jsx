@@ -7,7 +7,6 @@ import moment from 'moment';
 import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
 import DataTable from '../widgets/DataTable';
-import CubBadgeList from '../components/CubBadgeList';
 import Modal from '../widgets/Modal';
 import AddCubParent from '../components/AddCubParent';
 import SelectBadge from '../components/SelectBadge';
