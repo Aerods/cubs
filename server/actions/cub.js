@@ -148,7 +148,11 @@ function saveParents(data, group, cub_id, done) {
             parent.group = group;
             if (parent.id) {
                 parentActions.update(parent, function(err, updatedParent) {
-                    if (!parent.cub_id) {
+                    if (parent.remove) {
+                        removeCubParent(cub_id, parent.id, function() {
+                            updateParentSection(parent.id);
+                        });
+                    } else if (!parent.cub_id) {
                         addCubParent(cub_id, parent.id, function(err, id) {
                             updateParentSection(parent.id);
                         });
@@ -176,6 +180,16 @@ function addCubParent(cub_id, parent_id, done) {
     ', [cub_id, parent_id], function(err, result) {
         if (err) return done(err)
         done(null, result.insertId)
+    })
+}
+
+function removeCubParent(cub_id, parent_id, done) {
+    db.get().query('            \
+        DELETE FROM cub_parents \
+        WHERE cub_id = ?        \
+        AND parent_id = ?       \
+    ', [cub_id, parent_id], function(err, result) {
+        done();
     })
 }
 

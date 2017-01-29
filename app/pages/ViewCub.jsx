@@ -6,11 +6,11 @@ import Store from '../store';
 import moment from 'moment';
 import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
-import DataTable from '../widgets/DataTable';
 import Modal from '../widgets/Modal';
 import AddCubParent from '../components/AddCubParent';
 import SelectBadge from '../components/SelectBadge';
 import ParentForm from './ParentForm';
+import ParentGrid from '../components/ParentGrid';
 import BadgeGrid from '../components/BadgeGrid';
 import BadgeDisplay from '../components/BadgeDisplay';
 
@@ -149,6 +149,18 @@ export default class ViewCub extends React.Component {
     }
     closeForm() {
         this.setState({ isFormOpen: false });
+    }
+    removeParent(parent) {
+        this.setState({ isFormOpen: false });
+        var cub = this.state;
+        cub.id = this.props.params.id;
+        cub.parents = cub.cub_parents;
+        actions.update(cub);
+        var cub_parents = [];
+        this.state.cub_parents.map( (cub_parent, key) => {
+            if (parent.id != cub_parent.id) cub_parents.push(cub_parent);
+        });
+        this.setState({ cub_parents: cub_parents });
     }
 
     openParentModal() {
@@ -348,12 +360,7 @@ export default class ViewCub extends React.Component {
                                 <ParentForm onClose={ this.closeForm.bind(this) } onSave={ this.addParent.bind(this) } parent={ this.state.parent } params={ {} } />
                             </Modal>
 
-                            <DataTable
-                                headers={ parentHeaders }
-                                classes={ {title: 'hidden-xs', relationship: 'hidden-xs'} }
-                                data={ this.state.cub_parents }
-                                onClick={ this.editParent.bind(this) }
-                                search={ false } />
+                            <ParentGrid parents={ this.state.cub_parents } onEdit={ this.editParent.bind(this) } onRemove={ this.removeParent.bind(this) } />
                         </div>
 
                         <div className="view-group">
