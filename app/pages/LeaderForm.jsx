@@ -42,9 +42,6 @@ export default class LeaderForm extends React.Component {
             actions.get({ dataType: 'leader', id: this.props.params.id });
         }
         Store.on('leader-get', this.setLeader);
-        Store.on('leader-destroy', this.navBack);
-        Store.on('leader-add', this.navBack);
-        Store.on('leader-update', this.navBack);
     }
 
     componentWillUnmount() {
@@ -100,21 +97,16 @@ export default class LeaderForm extends React.Component {
             if (this.props.params.id) {
                 leader.id = this.props.params.id;
                 actions.update(leader);
+                Store.on('leader-update', this.navToLeader);
             } else {
                 actions.add(leader);
+                Store.on('leader-add', this.navToLeader);
             }
         }
     }
 
-    deleteLeader() {
-        var confirmed = confirm("Delete this record?");
-        if (confirmed) {
-            actions.destroy({ id: this.props.params.id, dataType: 'leader' });
-        }
-    }
-
-    navBack() {
-        browserHistory.push('/leaders');
+    navToLeader() {
+        browserHistory.push('/leaders/'+Store.data.id);
     }
 
     render() {
@@ -124,9 +116,8 @@ export default class LeaderForm extends React.Component {
                     { this.props.onClose ?
                         <a><span className="nav-button" onClick={ this.props.onClose }>Cancel</span></a>
                     :
-                        <Link to="/leaders"><span className="nav-button">back</span></Link>
+                        <Link to={ this.props.params.id ? "/leaders/"+this.props.params.id : "/leaders" }><span className="nav-button">back</span></Link>
                     }
-                    { this.props.params.id && !this.props.onClose ? <a><span className="nav-button" onClick={ this.deleteLeader.bind(this) }>Delete</span></a> : '' }
                     <a><span className="nav-button" onClick={ this.saveLeader.bind(this) }>Save</span></a>
                 </SubHeader>
 
@@ -155,7 +146,7 @@ export default class LeaderForm extends React.Component {
                         <div className="form-group">
                             <label className="control-label" htmlFor="position">Position:</label>
                             <SelectInput
-                                data={ Cookies.section == 'Cubs' ? ['CSL', 'ACSL', 'SA', 'PA', 'YL'] : ['BSL', 'ABSL', 'SA', 'PA', 'YL'] }
+                                data={ Cookies.section == 'Cubs' ? ['CSL', 'ACSL', 'SA', 'OH', 'YL'] : ['BSL', 'ABSL', 'SA', 'OH', 'YL'] }
                                 selected={ this.state.position }
                                 name="position"
                                 onChange={ this.handleInputChange } />

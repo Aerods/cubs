@@ -5,6 +5,7 @@ import Store from '../store';
 import DataTable from '../widgets/DataTable';
 import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
+import Cookies from '../cookies.js';
 
 export default class Programme extends React.Component {
     constructor() {
@@ -58,7 +59,7 @@ export default class Programme extends React.Component {
         return (
             <div id="Programme">
                 <SubHeader heading="Programme">
-                    <Link to="/programme/new"><span className="nav-button">Add</span></Link>
+                    { Cookies.parent_id ? '' : <Link to="/programme/new"><span className="nav-button">Add</span></Link> }
                 </SubHeader>
                 <PageContent>
                     <DataTable
@@ -66,7 +67,7 @@ export default class Programme extends React.Component {
                         classes={ classes }
                         filtering={ filtering }
                         data={ this.state.programme }
-                        onClick={ this.handleClick.bind(this) }
+                        onClick={ Cookies.parent_id ? '' : this.handleClick.bind(this) }
                         height="tall" />
                 </PageContent>
             </div>

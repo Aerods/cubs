@@ -103,7 +103,7 @@ exports.update = function(data, done) {
 
 exports.delete = function(data, done) {
     action_log.create('leaders', 'delete', data, function() {
-        db.get().query('UPDATE leaders SET deleted = 1 where id = ?', data.id, function(err, result) {
+        db.get().query('UPDATE leaders SET deleted = 1 WHERE id = ?', data.id, function(err, result) {
             if (err) return done(err)
             server.emitSocket('leadersUpdate');
             done(null, { id: result.affectedRows })
@@ -112,9 +112,17 @@ exports.delete = function(data, done) {
 }
 
 exports.login = function(data, done) {
-    db.get().query('SELECT id, section, `group` from leaders WHERE username = ? AND password = SHA1(?) AND deleted=0 LIMIT 1', [data.username, data.password], function(err, result) {
+    db.get().query('SELECT id, section, `group` FROM leaders WHERE (username = ? or email = ?) AND password = SHA1(?) AND deleted=0 LIMIT 1', [data.username, data.username, data.password], function(err, result) {
         if (err) return done(err);
         else if (result[0]) done(null, { result: 'success', token: 'P3X-595', leader_id: result[0].id, section: result[0].section, group: result[0].group });
-        else done(null, { result: 'Fail' });
+        else {
+            db.get().query('SELECT id, section, `group` FROM parents WHERE email = ? AND password = SHA1(?) AND deleted=0 LIMIT 1', [data.username, data.password], function(err, result) {
+                if (err) return done(err);
+                else if (result[0]) done(null, { result: 'success', token: 'P3X-595', parent_id: result[0].id, section: result[0].section, group: result[0].group });
+                else {
+                    done(null, { result: 'Fail' });
+                }
+            });
+        }
     })
 }

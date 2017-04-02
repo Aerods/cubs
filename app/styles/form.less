@@ -3,25 +3,25 @@
 .form {
     .form-group {
         margin-bottom: 15px;
-        label {
-            width: 20%;
+        display: flex;
+        flex-wrap: wrap;
+        .control-label {
+            flex: 0 0 20%;
             padding-right: 10px;
             text-align: right;
-            float: left;
             padding-top: 6px;
             @media screen and (max-width: 680px) {
-                width: 28%;
+                flex: 0 0 28%;
             }
             @media screen and (max-width: 520px) {
                 padding-top: 9px;
-                width: 34%;
+                flex: 0 0 34%;
             }
             @media screen and (max-width: 400px) {
-                width: 40%;
+                flex: 0 0 40%;
             }
         }
         .form-control {
-            display: inline-block;
             height: 34px;
             padding: 6px 12px;
             font-size: 14px;
@@ -30,19 +30,41 @@
             background-color: #fff;
             background-image: none;
             border: 1px solid #ccc;
-            width: 50%;
+            flex: 0 0 50%;
             &.small {
-                width: 20%;
+                flex: 0 0 20%;
                 @media screen and (max-width: 680px) {
-                    width: 26%;
+                    flex: 0 0 26%;
                 }
             }
             @media screen and (max-width: 520px) {
                 height: 40px;
-                width: 60%;
+                flex: 0 0 60%;
                 &.small {
-                    width: 30%;
+                    flex: 0 0 30%;
                 }
+            }
+        }
+        .control-label-right {
+            text-align: left;
+            padding-left: 10px;
+            font-size: 12px;
+            margin: 0;
+            line-height: 35px;
+            flex: 0 1 50%;
+            &.check {
+                line-height: normal;
+                margin-top: 10px;
+            }
+            @media screen and (max-width: 680px) {
+                flex: 0 0 28%;
+            }
+            @media screen and (max-width: 520px) {
+                padding-top: 9px;
+                flex: 0 0 34%;
+            }
+            @media screen and (max-width: 400px) {
+                flex: 0 0 40%;
             }
         }
         textarea {
@@ -51,8 +73,7 @@
             min-height: 55px !important;
         }
         .form-radio-buttons {
-            display: inline-block;
-            width: 50%;
+            flex: 0 0 50%;
             padding-top: 5px;
         }
     }
@@ -79,10 +100,16 @@
     ul li {
         margin-bottom: 0px !important;
     }
-    .validation-error {
-        background-color: @error-red;
-        padding: 5px 10px;
-        width: 50%;
-        margin-left: 20%;
+    .checkbox {
+        margin-top: 10px;
+    }
+    .ValidationError {
+        flex: 0 0 100%;
+        .validation-error {
+            background-color: @error-red;
+            padding: 5px 10px;
+            width: 50%;
+            margin-left: 20%;
+        }
     }
 }

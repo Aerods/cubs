@@ -122,13 +122,14 @@ export default class CubForm extends React.Component {
     }
 
     render() {
+        var apply = this.props.params.apply;
         return(
-            <div id="CubForm">
+            <div id="CubForm" className={ apply ? 'apply '+apply : '' }>
                 <SubHeader heading={ this.props.params.id ? 'Edit '+Cookies.member : 'New '+Cookies.member }>
                     <Link to={ this.props.params.id ? "/cubs/"+this.props.params.id : "/cubs" }><span className="nav-button">back</span></Link>
                     <a><span className="nav-button" onClick={ this.saveCub.bind(this) }>Save</span></a>
                 </SubHeader>
-                <PageContent>
+                <PageContent apply={ apply }>
                     <div className="form" onSubmit={ this.saveCub.bind(this) }>
                         <h3>{ Cookies.member } details</h3>
                         <FormGroup name="forename" label="First name:" value={ this.state.forename } onChange={ this.handleInputChange } error={ this.state.validation.forename } />

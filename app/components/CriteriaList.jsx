@@ -27,7 +27,7 @@ var CriteriaList = React.createClass({
                 function clickTask() {
                     if (self.props.clickTask) self.props.clickTask(task);
                 }
-               if (!task.deleted) return (<li key={ key } className={ task.selected ? 'selected' : '' } onClick={ clickTask }>{ task.task }</li>);
+                if (!task.deleted) return (<li key={ key } className={ task.selected ? 'selected' : '' } onClick={ clickTask }>{ task.task }</li>);
             });
             function onClick() {
                 if (self.props.onClick) self.props.onClick(criteria);

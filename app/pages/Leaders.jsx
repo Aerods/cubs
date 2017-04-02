@@ -34,7 +34,7 @@ export default class Leaders extends React.Component {
 
 
     handleClick(leader) {
-        browserHistory.push('/leaders/'+leader.id+'/edit');
+        browserHistory.push('/leaders/'+leader.id);
     }
 
     render() {
@@ -52,7 +52,7 @@ export default class Leaders extends React.Component {
         return (
             <div id="Leaders">
                 <SubHeader heading="Leaders">
-                    <Link to="/leaders/new"><span className="nav-button">Add</span></Link>
+                    { Cookies.parent_id ? '' : <Link to="/leaders/new"><span className="nav-button">Add</span></Link> }
                 </SubHeader>
                 <PageContent>
                     <DataTable headers={ headers } classes={ classes } data={ this.state.leaders } onClick={ this.handleClick.bind(this) } height="tall" />

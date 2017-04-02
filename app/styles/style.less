@@ -22,6 +22,18 @@
         text-decoration: none !important;
         color: white;
     }
+    &.submit {
+        margin-left: 20%;
+        @media screen and (max-width: 680px) {
+            margin-left: 28%;
+        }
+        @media screen and (max-width: 520px) {
+            margin-left: 34%;
+        }
+        @media screen and (max-width: 400px) {
+            margin-left: 40%;
+        }
+    }
 }
 
 #ViewCub, .select-activity {
@@ -357,7 +369,7 @@
         }
     }
 }
-#Login {
+#Login, #Apply {
     overflow-y: hidden;
     .login-box {
         width: 300px;
@@ -419,4 +431,59 @@
             }
         }
     }
+}
+
+#Apply {
+    text-align: center;
+    @media screen and (min-width: 880px) {
+        padding-top: 50px;
+    }
+    .sections {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+
+        @media screen and (min-width: 1000px) {
+            margin: 0 50px;
+        }
+        @media screen and (min-width: 1200px) {
+            margin: 0 150px;
+        }
+        .section {
+            padding: 0 50px 20px 50px;
+            border: 1px solid black;
+            margin-bottom: 20px;
+
+            @media screen and (min-width: 880px) {
+                margin-top: 60px;
+            }
+            @media screen and (max-width: 880px) {
+                flex: 0 0 60%;
+            }
+            @media screen and (max-width: 500px) {
+                flex: 0 0 280px;
+            }
+            .logo {
+                height: 115px;
+                margin-top: 30px;
+                &.cubs {
+                    padding-top: 14px;
+                }
+                &.scouts {
+                    padding-top: 28px;
+                }
+                img {
+                    width: 180px;
+                }
+            }
+            .nav-button {
+                margin-top: 20px;
+            }
+        }
+    }
+}
+
+.application-submitted {
+    margin-top: 15px;
+    font-size: 20px;
 }

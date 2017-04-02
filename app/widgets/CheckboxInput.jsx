@@ -20,6 +20,7 @@ var CheckboxInput = React.createClass({
                     checked={ this.state.checked }
                     onClick={ this.handleClick }
                     onChange={ this.solveReactError }
+                    className="checkbox"
                     value={ this.props.value } />
                 { this.props.label }
             </span>

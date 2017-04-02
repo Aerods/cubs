@@ -23,6 +23,7 @@ export default class ViewCub extends React.Component {
         this.setBadges = this.setBadges.bind(this);
         this.setBadgeProgress = this.setBadgeProgress.bind(this);
         this.state = {
+            id: null,
             dataType: 'cub',
             forename: '',
             surname: '',
@@ -85,6 +86,7 @@ export default class ViewCub extends React.Component {
     setCub() {
         var cub = Store.data[0];
         this.setState({
+            id: cub.id,
             forename: cub.forename,
             surname: cub.surname,
             date_of_birth: cub.date_of_birth,
@@ -227,12 +229,11 @@ export default class ViewCub extends React.Component {
     }
 
     render() {
-        var parentHeaders = {
-            title: 'Title',
-            forename: 'First name',
-            surname: 'Last name',
-            relationship: 'Relationship'
-        };
+        if (this.props.params.id != this.state.id && this.state.id) {
+            actions.get({ dataType: 'cub', id: this.props.params.id });
+            Store.on('cub-get', this.setCub);
+            Store.removeListener('cub-get', this.setCub);
+        }
         var address_3 = (<div>{ this.state.address_3 }</div>);
         return(
             <div id="ViewCub">

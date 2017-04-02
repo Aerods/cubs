@@ -140,7 +140,7 @@ exports.update = function(data, done) {
     })
 }
 
-function saveParents(data, group, cub_id, done) {
+exports.saveParents = function(data, group, cub_id, done) {
     var promise = require("es6-promise");
     var Promise = promise.Promise;
     return new Promise(function (resolve, reject) {

@@ -34,6 +34,9 @@ var FormGroup = React.createClass({
                 <div className="form-group">
                     <label className="control-label" htmlFor={ this.props.name }>{ label }</label>
                     <input type={ this.props.type } className={ classes } id={ name } name={ name } value={ this.props.value } onChange={ this.props.onChange } />
+                    { this.props.labelRight ? (
+                        <label className="control-label-right">{ this.props.labelRight }</label>
+                    ) : '' }
                     <ValidationError error={ this.props.error } />
                 </div>
             );

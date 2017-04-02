@@ -2,13 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, Link, browserHistory } from 'react-router';
 import Login from './pages/Login';
+import Apply from './pages/Apply';
 import Cubs from './pages/Cubs';
 import PackStats from './pages/PackStats';
 import ViewCub from './pages/ViewCub'
 import CubForm from './pages/CubForm'
+import ApplyForm from './pages/ApplyForm'
 import Parents from './pages/Parents';
 import ParentForm from './pages/ParentForm';
 import Leaders from './pages/Leaders';
+import ViewLeader from './pages/ViewLeader'
 import LeaderForm from './pages/LeaderForm';
 import Badges from './pages/Badges';
 import ViewBadge from './pages/ViewBadge';
@@ -18,31 +21,17 @@ import ProgrammeForm from './pages/ProgrammeForm';
 import ProgrammePrint from './pages/ProgrammePrint';
 import AwardBadges from './pages/AwardBadges';
 import BadgeProgress from './pages/BadgeProgress';
+import TopBar from './components/TopBar';
 import Cookies from './cookies.js';
 import cookie from 'react-cookie';
 
 var MainLayout = React.createClass({
-    logout: function () {
-        Cookies.token = '';
-        cookie.remove('token');
-        browserHistory.push('/login');
-    },
     render: function() {
         var path = this.props.location.pathname.split('/');
-        if (!Cookies.token) browserHistory.push('/login');
+        if (!Cookies.token && path[0] != 'apply') browserHistory.push('/login');
         return (
             <div id="MainLayout" className={ 'section-'+Cookies.section }>
-                <div className="topbar hidden-xs">
-                    <Link className="topbar-brand" to="/">{ Cookies.member } Database</Link>
-                    <Link className={ "topbar-nav" + ((path[1] == 'cubs' || !path[1]) ? ' active' : '') } to="/cubs">{ Cookies.section }</Link>
-                    <Link className={ "topbar-nav" + (path[1] == 'parents' ? ' active' : '') } to="/parents">Parents</Link>
-                    <Link className={ "topbar-nav" + (path[1] == 'leaders' ? ' active' : '') } to="/leaders">Leaders</Link>
-                    <Link className={ "topbar-nav" + (path[1] == 'badges' ? ' active' : '') } to="/badges">Badges</Link>
-                    <Link className={ "topbar-nav" + (path[1] == 'programme' ? ' active' : '') } to="/programme">Programme</Link>
-                    <Link className={ "topbar-nav" + (path[1] == 'award' ? ' active' : '') } to="/award">Award</Link>
-                    <div className="grow" />
-                    <div className="topbar-nav hidden-sm" onClick={ this.logout }>Log out</div>
-                </div>
+                <TopBar path={ path } />
                 { this.props.children }
             </div>
         )
@@ -52,6 +41,8 @@ var MainLayout = React.createClass({
 ReactDOM.render((
     <Router history={ browserHistory }>
         <Route path="/login" component={ Login } />
+        <Route path="/apply" component={ Apply } />
+        <Route path="/apply/:apply" component={ ApplyForm } />
         <Route path="/programmePrint/:id" component={ ProgrammePrint } />
         <Route component={ MainLayout }>
             <Route path="/" component={ Cubs } />
@@ -65,6 +56,7 @@ ReactDOM.render((
             <Route path="/parents/:id/edit" component={ ParentForm } />
             <Route path="/leaders" component={ Leaders } />
             <Route path="/leaders/new" component={ LeaderForm } />
+            <Route path="/leaders/:id" component={ ViewLeader } />
             <Route path="/leaders/:id/edit" component={ LeaderForm } />
             <Route path="/badges" component={ Badges } />
             <Route path="/badges/new" component={ BadgeForm } />

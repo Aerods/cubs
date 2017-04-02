@@ -1,4 +1,4 @@
-#Login {
+#Login, #Apply {
     @primary: #37c345;
     @dark-primary: darken(@primary, 8%);
     @darker-primary: darken(@primary, 20%);
@@ -147,6 +147,38 @@
             }
             &:hover {
                 background-color: @light-primary;
+            }
+        }
+    }
+}
+
+#CubForm {
+    &.apply {
+        &.beavers {
+            .SubHeader {
+                background-color: #1896ca;
+                color: white;
+            }
+            .nav-button {
+                background-color: #1896ca;
+            }
+        }
+        &.cubs {
+            .SubHeader {
+                background-color: #37c345;
+                color: white;
+            }
+            .nav-button {
+                background-color: #37c345;
+            }
+        }
+        &.scouts {
+            .SubHeader {
+                background-color: #003b45;
+                color: white;
+            }
+            .nav-button {
+                background-color: #003b45;
             }
         }
     }
