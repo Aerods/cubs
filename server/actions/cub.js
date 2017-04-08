@@ -171,6 +171,37 @@ exports.saveParents = function(data, group, cub_id, done) {
         done(null, cub_id);
     })
 }
+function saveParents(data, group, cub_id, done) {
+    var promise = require("es6-promise");
+    var Promise = promise.Promise;
+    return new Promise(function (resolve, reject) {
+        data.map(function(parent, key) {
+            parent.group = group;
+            if (parent.id) {
+                parentActions.update(parent, function(err, updatedParent) {
+                    if (parent.remove) {
+                        removeCubParent(cub_id, parent.id, function() {
+                            updateParentSection(parent.id);
+                        });
+                    } else if (!parent.cub_id) {
+                        addCubParent(cub_id, parent.id, function(err, id) {
+                            updateParentSection(parent.id);
+                        });
+                    }
+                });
+            } else {
+                parentActions.create(parent, function(err, parent) {
+                    addCubParent(cub_id, parent.id, function(err, id) {
+                        updateParentSection(parent.id);
+                    });
+                });
+            }
+        })
+        resolve();
+    }).then(function() {
+        done(null, cub_id);
+    })
+}
 
 function addCubParent(cub_id, parent_id, done) {
     db.get().query('            \
