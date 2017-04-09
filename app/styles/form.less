@@ -5,20 +5,24 @@
         margin-bottom: 15px;
         display: flex;
         flex-wrap: wrap;
+        @media screen and (max-width: 520px) {
+            font-size: 18px;
+        }
         .control-label {
-            flex: 0 0 20%;
+            flex: 0 0 15%;
             padding-right: 10px;
             text-align: right;
             padding-top: 6px;
-            @media screen and (max-width: 680px) {
-                flex: 0 0 28%;
+            @media screen and (max-width: 1150px) {
+                flex: 0 0 25%;
+            }
+            @media screen and (max-width: 750px) {
+                flex: 0 0 32%;
             }
             @media screen and (max-width: 520px) {
+                text-align: left;
                 padding-top: 9px;
-                flex: 0 0 34%;
-            }
-            @media screen and (max-width: 400px) {
-                flex: 0 0 40%;
+                flex: 0 0 100%;
             }
         }
         .form-control {
@@ -30,18 +34,31 @@
             background-color: #fff;
             background-image: none;
             border: 1px solid #ccc;
-            flex: 0 0 50%;
+            flex: 0 1 350px;
             &.small {
-                flex: 0 0 20%;
-                @media screen and (max-width: 680px) {
-                    flex: 0 0 26%;
+                flex: 0 0 175px;
+                &.SelectInput {
+                    flex: 0 0 195px;
+                }
+            }
+            @media screen and (max-width: 600px) {
+                flex: 0 1 280px;
+                &.small {
+                    flex: 0 0 140px;
+                    width: 160px;
+                    &.SelectInput {
+                        flex: 0 0 160px;
+                    }
                 }
             }
             @media screen and (max-width: 520px) {
                 height: 40px;
-                flex: 0 0 60%;
+                flex: 0 0 100%;
                 &.small {
-                    flex: 0 0 30%;
+                    flex: 0 0 180px;
+                    &.SelectInput {
+                        flex: 0 0 180px;
+                    }
                 }
             }
         }
@@ -49,22 +66,21 @@
             text-align: left;
             padding-left: 10px;
             font-size: 12px;
+            @media screen and (max-width: 520px) {
+                font-size: 15px;
+                line-height: 38px;
+                flex: 1 1 150px;
+                &.check {
+                    font-size: 12px;
+                    line-height: normal;
+                }
+            }
             margin: 0;
             line-height: 35px;
-            flex: 0 1 50%;
+            flex: 1 1 175px;
             &.check {
                 line-height: normal;
                 margin-top: 10px;
-            }
-            @media screen and (max-width: 680px) {
-                flex: 0 0 28%;
-            }
-            @media screen and (max-width: 520px) {
-                padding-top: 9px;
-                flex: 0 0 34%;
-            }
-            @media screen and (max-width: 400px) {
-                flex: 0 0 40%;
             }
         }
         textarea {
@@ -77,16 +93,40 @@
             padding-top: 5px;
         }
     }
-    .form-buttons, h2, h3 {
-        margin-left: 20%;
+    .form-buttons {
+        margin-left: 15%;
+        @media screen and (max-width: 1150px) {
+            margin-left: 25%;
+        }
         margin-bottom: 20px;
     }
+    h2, h3 {
+        margin-bottom: 20px;
+        margin-left: 15%;
+        @media screen and (max-width: 1150px) {
+            margin-left: 25%;
+        }
+        @media screen and (max-width: 520px) {
+            margin-left: 0;
+            font-size: 28px;
+        }
+    }
     h4 {
-        margin-left: 20%;
+        @media screen and (min-width: 520px) {
+            margin-left: 15%;
+        }
+        @media screen and (max-width: 1150px) {
+            margin-left: 25%;
+        }
     }
     ul, ol {
         margin-bottom: 20px;
-        margin-left: 20%;
+        @media screen and (max-width: 1150px) {
+            margin-left: 25%;
+        }
+        @media screen and (min-width: 520px) {
+            margin-left: 15%;
+        }
         li:hover {
             cursor: pointer;
         }
@@ -101,15 +141,48 @@
         margin-bottom: 0px !important;
     }
     .checkbox {
-        margin-top: 10px;
+        font-size: 24px;
+        margin-top: 4px;
+        color: #949494;
+        width: 20px;
+        @media screen and (max-width: 520px) {
+            font-size: 50px;
+        }
     }
     .ValidationError {
         flex: 0 0 100%;
         .validation-error {
             background-color: @error-red;
             padding: 5px 10px;
-            width: 50%;
-            margin-left: 20%;
+            width: 350px;
+            margin-left: 15%;
+            @media screen and (max-width: 1150px) {
+                margin-left: 25%;
+            }
+            @media screen and (max-width: 750px) {
+                margin-left: 32%;
+            }
+            @media screen and (max-width: 600px) {
+                width: 280px;
+            }
+            @media screen and (max-width: 520px) {
+                width: 100%;
+                margin-left: 0;
+            }
+        }
+    }
+    .submit {
+        width: 75px;
+        @media screen and (max-width: 520px) {
+            width: 160px;
+            padding: 10px;
+            text-align: center;
+            margin: auto;
+        }
+    }
+    .terms {
+        .checkbox {
+            margin-top: 8px;
         }
     }
 }

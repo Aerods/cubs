@@ -60,6 +60,8 @@ export default class CubForm extends React.Component {
         if (!data.terms_1) err.terms_1 = 'Please confirm this statement';
         if (!data.terms_2) err.terms_2 = 'Please confirm this statement';
         this.setState({ validation: err });
+        var PageContentDiv = document.getElementById('PageContent');
+        if (Object.keys(err).length) PageContentDiv.scrollTop = 0;
         return Object.keys(err).length;
     }
 
@@ -80,26 +82,6 @@ export default class CubForm extends React.Component {
         var state = this.state;
         state[name] = e.target.value;
         state.validation[name] = '';
-        if (name == 'p1_lives_with_cub' && e.target.checked) {
-            state.p1_lives_with_cub = 1;
-        } else if (name == 'p1_lives_with_cub') {
-            state.p1_lives_with_cub = 0;
-        }
-        if (name == 'p2_lives_with_cub' && e.target.checked) {
-            state.p2_lives_with_cub = 1;
-        } else if (name == 'p2_lives_with_cub') {
-            state.p2_lives_with_cub = 0;
-        }
-        if (name == 'terms_1' && e.target.checked) {
-            state.terms_1 = 1;
-        } else if (name == 'terms_1') {
-            state.terms_1 = 0;
-        }
-        if (name == 'terms_2' && e.target.checked) {
-            state.terms_2 = 1;
-        } else if (name == 'terms_2') {
-            state.terms_2 = 0;
-        }
         this.setState(state);
     }
 
@@ -124,15 +106,15 @@ export default class CubForm extends React.Component {
                             <FormGroup name="address_3" label="Address line 3:" value={ this.state.address_3 } onChange={ this.handleInputChange } />
                             <FormGroup name="town" value={ this.state.town } onChange={ this.handleInputChange } />
                             <FormGroup name="postcode" type="small" value={ this.state.postcode } onChange={ this.handleInputChange } />
-                            <FormGroup name="previous_group" value={ this.state.previous_group } onChange={ this.handleInputChange } />
                             <FormGroup name="medical_information" label="Medical info:" type="textarea" value={ this.state.medical_information } onChange={ this.handleInputChange } />
-                            <FormGroup name="notes" type="textarea" value={ this.state.notes } onChange={ this.handleInputChange } />
+                            <FormGroup name="notes" label="Additional notes:" type="textarea" value={ this.state.notes } onChange={ this.handleInputChange } />
+                            <div className="spacer"></div>
 
                             <h3>Parent / guardian 1 details</h3>
-                            <FormGroup name="p1_title" label="Title" type="select" value={ this.state.p1_title } data={ ['Mr', 'Mrs', 'Miss', 'Ms', 'Dr'] } onChange={ this.handleInputChange } error={ this.state.validation.p1_title} />
+                            <FormGroup name="p1_title" label="Title:" type="select" value={ this.state.p1_title } data={ ['Mr', 'Mrs', 'Miss', 'Ms', 'Dr'] } onChange={ this.handleInputChange } error={ this.state.validation.p1_title} />
                             <FormGroup name="p1_forename" label="First name:" value={ this.state.p1_forename } onChange={ this.handleInputChange } error={ this.state.validation.p1_forename } />
                             <FormGroup name="p1_surname" label="Last name:" value={ this.state.p1_surname } onChange={ this.handleInputChange } error={ this.state.validation.p1_surname } />
-                            <FormGroup name="p1_relationship" label={ "Relation to "+Cookies.member.toLowerCase()+":" } value={ this.state.p1_relationship } onChange={ this.handleInputChange } error={ this.state.validation.p1_relationship } />
+                            <FormGroup name="p1_relationship" label={ "Relationship to "+Cookies.member.toLowerCase()+":" } value={ this.state.p1_relationship } onChange={ this.handleInputChange } error={ this.state.validation.p1_relationship } />
                             <div className="form-group">
                                 <label className="control-label" htmlFor="lives_with_cub">{ 'Lives with ' + Cookies.member.toLowerCase() }:</label>
                                 <CheckboxInput name="p1_lives_with_cub" checked={ this.state.p1_lives_with_cub } onChange={ this.handleInputChange } />
@@ -146,16 +128,18 @@ export default class CubForm extends React.Component {
                                     <FormGroup name="p1_address_1" label="Address line 1:" value={ this.state.p1_address_1 } onChange={ this.handleInputChange } />
                                     <FormGroup name="p1_address_2" label="Address line 2:" value={ this.state.p1_address_2 } onChange={ this.handleInputChange } />
                                     <FormGroup name="p1_address_3" label="Address line 3:" value={ this.state.p1_address_3 } onChange={ this.handleInputChange } />
-                                    <FormGroup name="p1_town" label="Town" value={ this.state.p1_town } onChange={ this.handleInputChange } />
-                                    <FormGroup name="p1_postcode" label="Postcode" type="small" value={ this.state.p1_postcode } onChange={ this.handleInputChange } />
+                                    <FormGroup name="p1_town" label="Town:" value={ this.state.p1_town } onChange={ this.handleInputChange } />
+                                    <FormGroup name="p1_postcode" label="Postcode:" type="small" value={ this.state.p1_postcode } onChange={ this.handleInputChange } />
                                 </div>
                             ) : '' }
+                            <FormGroup name="p1_skills" label="Any knowledge, skills or resources to share:" type="textarea" value={ this.state.p1_skills } onChange={ this.handleInputChange } />
+                            <div className="spacer"></div>
 
                             <h3>Parent / guardian 2 details</h3>
-                            <FormGroup name="p2_title" label="Title" type="select" value={ this.state.p2_title } data={ ['Mr', 'Mrs', 'Miss', 'Ms', 'Dr'] } onChange={ this.handleInputChange } />
+                            <FormGroup name="p2_title" label="Title:" type="select" value={ this.state.p2_title } data={ ['Mr', 'Mrs', 'Miss', 'Ms', 'Dr'] } onChange={ this.handleInputChange } />
                             <FormGroup name="p2_forename" label="First name:" value={ this.state.p2_forename } onChange={ this.handleInputChange } />
                             <FormGroup name="p2_surname" label="Last name:" value={ this.state.p2_surname } onChange={ this.handleInputChange } />
-                            <FormGroup name="p2_relationship" label={ "Relation to "+Cookies.member.toLowerCase()+":" } value={ this.state.p2_relationship } onChange={ this.handleInputChange } />
+                            <FormGroup name="p2_relationship" label={ "Relationship to "+Cookies.member.toLowerCase()+":" } value={ this.state.p2_relationship } onChange={ this.handleInputChange } />
                             <div className="form-group">
                                 <label className="control-label" htmlFor="lives_with_cub">{ 'Lives with ' + Cookies.member.toLowerCase() }:</label>
                                 <CheckboxInput name="p2_lives_with_cub" checked={ this.state.p2_lives_with_cub } onChange={ this.handleInputChange } />
@@ -168,31 +152,32 @@ export default class CubForm extends React.Component {
                                     <FormGroup name="p2_address_1" label="Address line 1:" value={ this.state.p2_address_1 } onChange={ this.handleInputChange } />
                                     <FormGroup name="p2_address_2" label="Address line 2:" value={ this.state.p2_address_2 } onChange={ this.handleInputChange } />
                                     <FormGroup name="p2_address_3" label="Address line 3:" value={ this.state.p2_address_3 } onChange={ this.handleInputChange } />
-                                    <FormGroup name="p2_town" label="Town" value={ this.state.p2_town } onChange={ this.handleInputChange } />
-                                    <FormGroup name="p2_postcode" label="Postcode" type="small" value={ this.state.p2_postcode } onChange={ this.handleInputChange } />
+                                    <FormGroup name="p2_town" label="Town:" value={ this.state.p2_town } onChange={ this.handleInputChange } />
+                                    <FormGroup name="p2_postcode" label="Postcode:" type="small" value={ this.state.p2_postcode } onChange={ this.handleInputChange } />
                                 </div>
                             ) : '' }
+                            <FormGroup name="p2_skills" label="Any knowledge, skills or resources to share:" type="textarea" value={ this.state.p2_skills } onChange={ this.handleInputChange } />
 
                             <div className="spacer"></div>
-                            <div className="form-group">
+                            <div className="form-group terms">
                                 <label className="control-label" htmlFor=""></label>
                                 <CheckboxInput name="terms_1" checked={ this.state.terms_1 } onChange={ this.handleInputChange } />
                                 <label className="control-label-right check">I would like my child to join Tedburn and Cheriton Scout Group as soon as posible. I will pay for his/her uniform and annual subscription.</label>
                                 <ValidationError error={ this.state.validation.terms_1 } />
                             </div>
-                            <div className="form-group">
+                            <div className="form-group terms">
                                 <label className="control-label" htmlFor=""></label>
                                 <CheckboxInput name="terms_2" checked={ this.state.terms_2 } onChange={ this.handleInputChange } />
                                 <label className="control-label-right check">I give explicit consent for all of the information provided on this form to be recorded by the Scout Group for Scouting purposes only.</label>
                                 <ValidationError error={ this.state.validation.terms_2 } />
                             </div>
-                            <div className="form-group">
+                            <div className="form-group terms">
                                 <label className="control-label" htmlFor=""></label>
                                 <CheckboxInput name="can_photo" checked={ this.state.can_photo } onChange={ this.handleInputChange } />
                                 <label className="control-label-right check">I give content to photographic images of my child being used by the Scout Group for the express purposes of promoting the work of the Scout Association.</label>
                             </div>
                             <div className="spacer"></div>
-                            <a><span className="nav-button submit" onClick={ this.saveCub.bind(this) }>Submit</span></a>
+                            <a><div className="nav-button submit" onClick={ this.saveCub.bind(this) }>Submit</div></a>
                             <div className="spacer"></div>
                             <div className="spacer"></div>
                             <div className="spacer"></div>

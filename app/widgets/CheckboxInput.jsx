@@ -3,25 +3,39 @@ import React from 'react';
 var CheckboxInput = React.createClass({
     getInitialState: function () {
         return {
-            checked: this.props.checked || false
+            checked: this.props.checked || 0
         };
     },
-    handleClick: function(e) {
-        this.setState({ checked: e.target.checked });
-        this.props.onChange(e);
+    uncheckBox: function() {
+        this.setState({ checked: 0 });
+        this.props.onChange({
+            target: {
+                name: this.props.name,
+                value: 0
+            }
+        });
     },
-    solveReactError: function(e) {
+    checkBox: function() {
+        this.setState({ checked: 1 });
+        this.props.onChange({
+            target: {
+                name: this.props.name,
+                value: 1
+            }
+        });
     },
     render: function () {
         return (
             <span>
-                <input type="checkbox"
+                { this.state.checked ?
+                    (<i className="fa fa-check-square-o checkbox" onClick={ this.uncheckBox }></i>)
+                :
+                    (<i className="fa fa-square-o checkbox" onClick={ this.checkBox }></i>)
+                }
+                <input type="hidden"
                     name={ this.props.name }
                     checked={ this.state.checked }
-                    onClick={ this.handleClick }
-                    onChange={ this.solveReactError }
-                    className="checkbox"
-                    value={ this.props.value } />
+                    value={ this.state.checked } />
                 { this.props.label }
             </span>
         );

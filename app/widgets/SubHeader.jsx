@@ -25,6 +25,7 @@ var SubHeader = React.createClass({
     },
 
     render: function () {
+        var loggedIn = (Cookies.leader_id || Cookies.parent_id ? 1 : 0);
         return (
             <div className="SubHeader">
                 { this.state.sidebar ? (
@@ -40,9 +41,9 @@ var SubHeader = React.createClass({
                             <div className="sidebar-nav" onClick={ this.logout }>Log out</div>
                         </div>
                     </div>
-                ) : (
-                    <i className="fa fa-bars hidden-sm hidden-md hidden-lg" onClick={ this.showSidebar }></i>
-                ) }
+                ) :
+                    (loggedIn ? (<i className="fa fa-bars hidden-sm hidden-md hidden-lg" onClick={ this.showSidebar }></i>) : '')
+                }
                 <span className="heading">{ this.props.heading }</span>
                 { this.props.children }
             </div>

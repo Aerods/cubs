@@ -272,10 +272,10 @@ export default class ProgrammeForm extends React.Component {
 
         return(
             <div id="ProgrammeForm">
-                <SubHeader heading={ this.state.id ? 'Edit meeting' : 'New meeting' }>
+                <SubHeader heading={ this.state.id ? 'Edit' : 'New' }>
                     <Link to="/programme"><span className="nav-button">back</span></Link>
                     { this.state.id ? <a><span className="nav-button" onClick={ this.deleteMeeting.bind(this) }>Delete</span></a> : '' }
-                    { this.state.id ? <Link to={"/programmePrint/"+this.state.id}><span className="nav-button">Print</span></Link> : '' }
+                    { this.state.id ? <Link to={"/programmePrint/"+this.state.id}><span className="nav-button print-button">Print</span></Link> : '' }
                     <a><span className="nav-button" onClick={ this.saveMeeting.bind(this) }>Save</span></a>
                 </SubHeader>
 

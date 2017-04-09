@@ -96,7 +96,7 @@ export default class ParentForm extends React.Component {
         state[name] = e.target.value;
         state.validation[name] = '';
 
-        if (name == 'lives_with_cub' && e.target.checked) {
+        if (name == 'lives_with_cub' && e.target.value) {
             var cub = this.props.cub;
             state.phone_1 = (cub.phone || '');
             state.address_1 = (cub.address_1 || '');
