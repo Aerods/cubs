@@ -153,7 +153,7 @@ var DataTable = React.createClass({
         var filtering = self.props.filtering.map(function(filter, key) {
             function filterChange(e) {
                 var filters = self.state.filters;
-                filters[filter.field] = e.target.checked;
+                filters[filter.field] = e.target.value;
                 self.setState({ filters: filters });
             };
             return(

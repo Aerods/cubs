@@ -2,12 +2,14 @@ var db = require('../../db.js')
 var server = require('../server.js')
 
 exports.get = function(data, done) {
-    var where = 'WHERE deleted = 0 AND waiting is null';
+    var where = 'WHERE deleted = 0';
     var values = [];
     if (data.id) { where += ' and id = ?'; values.push(data.id); }
     if (data.section) { where += ' and section = ?'; values.push(data.section); }
     if (data.group) { where += ' and `group` = ?'; values.push(data.group); }
     if (data.cub_ids) { where += ' and id in ('+data.cub_ids+')';  }
+    if (data.waiting) where += ' AND waiting = 1';
+    else if (!data.id) where += ' AND (waiting is null OR waiting = 0)';
     var orderBy = ' ORDER BY dob';
     if (data.orderBy == 'name') orderBy = ' ORDER BY forename, surname';
 
@@ -34,6 +36,8 @@ exports.get = function(data, done) {
             previous_group,    \
             medical_information,    \
             notes,    \
+            waiting,    \
+            can_photo,    \
             DATE_FORMAT(to_scouts, "%d/%m/%Y") as to_scouts               \
         FROM cubs                   \
     ' + where + orderBy;

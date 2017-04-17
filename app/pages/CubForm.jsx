@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
+import CheckboxInput from '../widgets/CheckboxInput';
 import Cookies from '../cookies.js';
 import * as actions from '../Actions';
 import Store from '../store';
@@ -33,6 +34,8 @@ export default class CubForm extends React.Component {
             previous_group: '',
             medical_information: '',
             notes: '',
+            can_photo: false,
+            waiting: false,
             to_scouts: '',
             parents: [],
             cub_parents: [],
@@ -75,6 +78,8 @@ export default class CubForm extends React.Component {
             previous_group:         (cub.previous_group || ''),
             medical_information:    (cub.medical_information || ''),
             notes:                  (cub.notes || ''),
+            can_photo:              (cub.can_photo || 0),
+            waiting:                (cub.waiting || 0),
             to_scouts:              (cub.to_scout || '')
         });
     }
@@ -134,7 +139,7 @@ export default class CubForm extends React.Component {
                         <h3>{ Cookies.member } details</h3>
                         <FormGroup name="forename" label="First name:" value={ this.state.forename } onChange={ this.handleInputChange } error={ this.state.validation.forename } />
                         <FormGroup name="surname" label="Last name:" value={ this.state.surname } onChange={ this.handleInputChange } error={ this.state.validation.surname } />
-                        <FormGroup name="date_of_birth" type="small" value={ this.state.date_of_birth } onChange={ this.handleInputChange } error={ this.state.validation.date_of_birth } />
+                        <FormGroup name="date_of_birth" type="small" labelRight="DD/MM/YYYY" value={ this.state.date_of_birth } onChange={ this.handleInputChange } error={ this.state.validation.date_of_birth } />
                         <FormGroup name="gender" type="select" value={ this.state.gender } data={ ['Male', 'Female'] } onChange={ this.handleInputChange } error={ this.state.validation.gender } />
                         { Cookies.section == 'Cubs' ? <FormGroup name="rank" type="select" value={ this.state.rank } data={ ['None', 'Sixer', 'Seconder'] } onChange={ this.handleInputChange } /> : '' }
                         { Cookies.section == 'Cubs' ? (
@@ -154,6 +159,14 @@ export default class CubForm extends React.Component {
                         <FormGroup name="previous_group" value={ this.state.previous_group } onChange={ this.handleInputChange } />
                         <FormGroup name="medical_information" label="Medical info:" type="textarea" value={ this.state.medical_information } onChange={ this.handleInputChange } />
                         <FormGroup name="notes" type="textarea" value={ this.state.notes } onChange={ this.handleInputChange } />
+                        <div className="form-group">
+                            <label className="control-label" htmlFor="can_photo">Can photograph:</label>
+                            <CheckboxInput name="can_photo" checked={ this.state.can_photo } onChange={ this.handleInputChange } />
+                        </div>
+                        <div className="form-group">
+                            <label className="control-label" htmlFor="waiting">Waiting list:</label>
+                            <CheckboxInput name="waiting" checked={ this.state.waiting } onChange={ this.handleInputChange } />
+                        </div>
                         { Cookies.section == 'Cubs' ? <FormGroup name="to_scouts" type="small" value={ this.state.to_scouts } onChange={ this.handleInputChange } error={ this.state.validation.to_scouts } /> : '' }
                     </div>
                 </PageContent>

@@ -30,6 +30,7 @@ export default class ParentForm extends React.Component {
             address_3: '',
             town: '',
             postcode: '',
+            skills: '',
             cub_id: null,
             uuid: null,
             validation: {},
@@ -85,6 +86,7 @@ export default class ParentForm extends React.Component {
             address_3: parent.address_3,
             town: parent.town,
             postcode: parent.postcode,
+            skills: parent.skills,
             cub_id: parent.cub_id,
             uuid: parent.uuid
         });
@@ -190,6 +192,7 @@ export default class ParentForm extends React.Component {
                         <FormGroup name="address_3" label="Address line 3:" value={ this.state.address_3 } onChange={ this.handleInputChange } />
                         <FormGroup name="town" value={ this.state.town } onChange={ this.handleInputChange } />
                         <FormGroup name="postcode" type="small" value={ this.state.postcode } onChange={ this.handleInputChange } />
+                        <FormGroup name="skills" label="Any knowledge, skills or resources to share:" type="textarea" value={ this.state.skills } onChange={ this.handleInputChange } />
                     </div>
                 </PageContent>
             </div>

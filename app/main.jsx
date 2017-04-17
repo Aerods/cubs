@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Apply from './pages/Apply';
 import Cubs from './pages/Cubs';
 import PackStats from './pages/PackStats';
+import WaitingList from './pages/WaitingList';
 import ViewCub from './pages/ViewCub'
 import CubForm from './pages/CubForm'
 import ApplyForm from './pages/ApplyForm'
@@ -48,6 +49,7 @@ ReactDOM.render((
             <Route path="/" component={ Cubs } />
             <Route path="/cubs" component={ Cubs } />
             <Route path="/cubs/stats" component={ PackStats } />
+            <Route path="/cubs/waiting" component={ WaitingList } />
             <Route path="/cubs/new" component={ CubForm } />
             <Route path="/cubs/:id" component={ ViewCub } />
             <Route path="/cubs/:id/edit" component={ CubForm } />

@@ -33,6 +33,7 @@ var SubHeader = React.createClass({
                         <i className="fa fa-times hidden-sm hidden-md hidden-lg" onClick={ this.hideSidebar }></i>
                         <div className="sidebar hidden-sm hidden-md hidden-lg">
                             <Link className="sidebar-nav" to="/cubs">Cubs</Link>
+                            <Link className="sidebar-nav" to="/cubs/waiting">Waiting list</Link>
                             <Link className="sidebar-nav" to="/parents">Parents</Link>
                             <Link className="sidebar-nav" to="/leaders">Leaders</Link>
                             <Link className="sidebar-nav" to="/badges">Badges</Link>

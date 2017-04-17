@@ -27,7 +27,7 @@ var CheckboxInput = React.createClass({
     render: function () {
         return (
             <span>
-                { this.state.checked ?
+                { this.props.checked ?
                     (<i className="fa fa-check-square-o checkbox" onClick={ this.uncheckBox }></i>)
                 :
                     (<i className="fa fa-square-o checkbox" onClick={ this.checkBox }></i>)

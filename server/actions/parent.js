@@ -20,6 +20,7 @@ exports.create = function(data, done) {
         data.address_3,
         data.town,
         data.postcode,
+        data.skills,
         data.section,
         data.group
     ];
@@ -38,10 +39,11 @@ exports.create = function(data, done) {
                 address_3,                      \
                 town,                           \
                 postcode,                       \
+                skills,                         \
                 section,                        \
                 `group`                         \
             )                                   \
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) \
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) \
         ', values, function(err, result) {
             if (err) return done(err);
             server.emitSocket('parentsUpdate');
@@ -64,6 +66,7 @@ exports.update = function(data, done) {
         data.address_2,
         data.town,
         data.postcode,
+        data.skills,
         data.id
     ];
     action_log.create('parents', 'update', data, function() {
@@ -80,7 +83,8 @@ exports.update = function(data, done) {
                 address_2 = ?,          \
                 address_3 = ?,          \
                 town = ?,               \
-                postcode = ?            \
+                postcode = ?,           \
+                skills = ?              \
             where id = ?                \
         ', values, function(err, result) {
             if (err) return done(err)

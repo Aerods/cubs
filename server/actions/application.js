@@ -33,6 +33,7 @@ exports.create = function(data, done) {
         data.previous_group,
         data.medical_information,
         data.notes,
+        data.can_photo,
         (to_scouts == 'Invalid date' ? null : to_scouts),
         data.section,
         data.group
@@ -58,12 +59,13 @@ exports.create = function(data, done) {
                 previous_group,                                 \
                 medical_information,                            \
                 notes,                                          \
+                can_photo,                                      \
                 to_scouts,                                      \
                 section,                                        \
                 `group`,                                        \
                 waiting                                         \
             )                                                   \
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)    \
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)    \
         ', values, function(err, result) {
             if (err) return done(err)
             server.emitSocket('cubsUpdate');
@@ -80,7 +82,8 @@ exports.create = function(data, done) {
                 address_2: (data.p1_lives_with_cub ? data.address_2 : data.p1_address_2),
                 address_3: (data.p1_lives_with_cub ? data.address_3 : data.p1_address_3),
                 town: (data.p1_lives_with_cub ? data.town : data.p1_town),
-                postcode: (data.p1_lives_with_cub ? data.postcode : data.p1_postcode)
+                postcode: (data.p1_lives_with_cub ? data.postcode : data.p1_postcode),
+                skills: data.p1_skills
             }];
             if (data.p2_forename) {
                 data.parents.push({
@@ -96,7 +99,8 @@ exports.create = function(data, done) {
                     address_2: (data.p2_lives_with_cub ? data.address_2 : data.p2_address_2),
                     address_3: (data.p2_lives_with_cub ? data.address_3 : data.p2_address_3),
                     town: (data.p2_lives_with_cub ? data.town : data.p2_town),
-                    postcode: (data.p2_lives_with_cub ? data.postcode : data.p2_postcode)
+                    postcode: (data.p2_lives_with_cub ? data.postcode : data.p2_postcode),
+                    skills: data.p2_skills
                 });
             }
             cubActions.saveParents(data.parents, data.group, result.insertId, function(err) {

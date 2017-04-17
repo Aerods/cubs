@@ -32,6 +32,8 @@ exports.create = function(data, done) {
         data.previous_group,
         data.medical_information,
         data.notes,
+        data.can_photo,
+        data.waiting,
         (to_scouts == 'Invalid date' ? null : to_scouts),
         data.section,
         data.group
@@ -57,11 +59,13 @@ exports.create = function(data, done) {
                 previous_group,                                 \
                 medical_information,                            \
                 notes,                                          \
+                can_photo,                                      \
+                waiting,                                        \
                 to_scouts,                                      \
                 section,                                        \
                 `group`                                         \
             )                                                   \
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)    \
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)    \
         ', values, function(err, result) {
             if (err) return done(err)
             server.emitSocket('cubsUpdate');
@@ -101,6 +105,8 @@ exports.update = function(data, done) {
         data.previous_group,
         data.medical_information,
         data.notes,
+        data.can_photo,
+        data.waiting,
         (to_scouts == 'Invalid date' ? null : to_scouts),
         data.id
     ];
@@ -125,6 +131,8 @@ exports.update = function(data, done) {
                 previous_group = ?,     \
                 medical_information = ?,\
                 notes = ?,              \
+                can_photo = ?,          \
+                waiting = ?,            \
                 to_scouts = ?           \
             where id = ?                \
         ', values, function(err, result) {

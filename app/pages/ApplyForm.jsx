@@ -52,6 +52,7 @@ export default class CubForm extends React.Component {
         if (!data.date_of_birth) err.date_of_birth = 'This field is required';
         if (data.date_of_birth && moment(data.date_of_birth, 'DD/MM/YYYY').format() == 'Invalid date') err.date_of_birth = 'Please enter a date in DD/MM/YYYY format';
         if (data.gender != 'Male' && data.gender != 'Female') err.gender = "Please select a gender";
+        if (!data.phone) err.phone = 'This field is required';
         if (!data.p1_title) err.p1_title = 'This field is required';
         if (!data.p1_forename) err.p1_forename = 'This field is required';
         if (!data.p1_surname) err.p1_surname = 'This field is required';
@@ -100,7 +101,7 @@ export default class CubForm extends React.Component {
                             <FormGroup name="surname" label="Last name:" value={ this.state.surname } onChange={ this.handleInputChange } error={ this.state.validation.surname } />
                             <FormGroup name="date_of_birth" labelRight="DD/MM/YYYY" type="small" value={ this.state.date_of_birth } onChange={ this.handleInputChange } error={ this.state.validation.date_of_birth } />
                             <FormGroup name="gender" type="select" value={ this.state.gender } data={ ['Male', 'Female'] } onChange={ this.handleInputChange } error={ this.state.validation.gender } />
-                            <FormGroup name="phone" label="Home phone:" value={ this.state.phone } onChange={ this.handleInputChange } />
+                            <FormGroup name="phone" label="Home phone:" value={ this.state.phone } onChange={ this.handleInputChange } error={ this.state.validation.phone } />
                             <FormGroup name="address_1" label="Address line 1:" value={ this.state.address_1 } onChange={ this.handleInputChange } />
                             <FormGroup name="address_2" label="Address line 2:" value={ this.state.address_2 } onChange={ this.handleInputChange } />
                             <FormGroup name="address_3" label="Address line 3:" value={ this.state.address_3 } onChange={ this.handleInputChange } />
@@ -122,7 +123,7 @@ export default class CubForm extends React.Component {
                             </div>
                             { !this.state.p1_lives_with_cub ? (<FormGroup name="p1_phone_1" type="small" label="Home phone:" value={ this.state.p1_phone_1 } onChange={ this.handleInputChange } />) : '' }
                             <FormGroup name="p1_phone_2" type="small" label="Mobile phone:" value={ this.state.p1_phone_2 } onChange={ this.handleInputChange } />
-                            <FormGroup name="p1_email" label="Email address:" value={ this.state.p1_email } onChange={ this.handleInputChange } />
+                            <FormGroup name="p1_email" label="Email address:" value={ this.state.p1_email } onChange={ this.handleInputChange } error={ this.state.validation.p1_email } />
                             { !this.state.p1_lives_with_cub ? (
                                 <div>
                                     <FormGroup name="p1_address_1" label="Address line 1:" value={ this.state.p1_address_1 } onChange={ this.handleInputChange } />

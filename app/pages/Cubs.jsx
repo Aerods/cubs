@@ -65,6 +65,7 @@ export default class Cubs extends React.Component {
                 <SubHeader heading={ Cookies.section }>
                     <Link to="/cubs/new"><span className="nav-button">Add</span></Link>
                     <Link to="/cubs/stats"><span className="nav-button">Stats</span></Link>
+                    <Link to="/cubs/waiting"><span className="nav-button">Waiting list</span></Link>
                     { Cookies.section == 'Cubs' ? <a><span className="nav-button" onClick={ this.exportData.bind(this) }>Export</span></a> : '' }
                 </SubHeader>
                 <PageContent>
