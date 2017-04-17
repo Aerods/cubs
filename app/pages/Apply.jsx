@@ -72,7 +72,10 @@ export default class Apply extends React.Component {
     render() {
         return (
             <div id="Apply">
-                <h3>Tedburn and Cheriton Scout Group</h3>
+                <div className="title">
+                    <div className="group">Tedburn and Cheriton Scout Group</div>
+                    <div className="logo"><img src={ Cookies.host+'/images/logo.jpg' } /></div>
+                </div>
 
                 <div className="sections">
                     <div className="section">
