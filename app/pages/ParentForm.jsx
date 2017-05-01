@@ -167,32 +167,32 @@ export default class ParentForm extends React.Component {
                     :
                         <Link to="/parents"><span className="nav-button">back</span></Link>
                     }
-                    { this.props.params.id && !this.props.onClose ? <a><span className="nav-button" onClick={ this.deleteParent.bind(this) }>Delete</span></a> : '' }
-                    <a><span className="nav-button" onClick={ this.saveParent.bind(this) }>Save</span></a>
+                    { this.props.params.id && !this.props.onClose && Cookies.admin ? <a><span className="nav-button" onClick={ this.deleteParent.bind(this) }>Delete</span></a> : '' }
+                    { Cookies.admin ? (<a><span className="nav-button" onClick={ this.saveParent.bind(this) }>Save</span></a>) : '' }
                 </SubHeader>
 
                 <PageContent isModal={ this.props.onClose }>
 
                     <div className="form" onSubmit={ this.saveParent.bind(this) }>
                         <h3>Parent details</h3>
-                        <FormGroup name="title" type="select" value={ this.state.title } data={ ['Mr', 'Mrs', 'Miss', 'Ms', 'Dr'] } onChange={ this.handleInputChange } error={ this.state.validation.title} />
-                        <FormGroup name="forename" label="First name:" value={ this.state.forename } onChange={ this.handleInputChange } error={ this.state.validation.forename } />
-                        <FormGroup name="surname" label="Last name:" value={ this.state.surname } onChange={ this.handleInputChange } error={ this.state.validation.surname } />
-                        <FormGroup name="relationship" label="Relationship:" value={ this.state.relationship } onChange={ this.handleInputChange } error={ this.state.validation.relationship } />
+                        <FormGroup name="title" readonly={ !Cookies.admin } type="select" value={ this.state.title } data={ ['Mr', 'Mrs', 'Miss', 'Ms', 'Dr'] } onChange={ this.handleInputChange } error={ this.state.validation.title} />
+                        <FormGroup name="forename" readonly={ !Cookies.admin } label="First name:" value={ this.state.forename } onChange={ this.handleInputChange } error={ this.state.validation.forename } />
+                        <FormGroup name="surname" readonly={ !Cookies.admin } label="Last name:" value={ this.state.surname } onChange={ this.handleInputChange } error={ this.state.validation.surname } />
+                        <FormGroup name="relationship" readonly={ !Cookies.admin } label="Relationship:" value={ this.state.relationship } onChange={ this.handleInputChange } error={ this.state.validation.relationship } />
                         { this.state.hasCubData ? <div className="form-group">
                             <label className="control-label" htmlFor="lives_with_cub">{ 'Lives with ' + Cookies.member.toLowerCase() }:</label>
                             <CheckboxInput name="lives_with_cub" checked={ this.state.lives_with_cub } onChange={ this.handleInputChange } />
                             <ValidationError error={ this.state.validation.lives_with_cub } />
                         </div> : '' }
-                        <FormGroup name="phone_1" type="small" label="Home phone:" value={ this.state.phone_1 } onChange={ this.handleInputChange } />
-                        <FormGroup name="phone_2" type="small" label="Mobile phone:" value={ this.state.phone_2 } onChange={ this.handleInputChange } />
-                        <FormGroup name="email" label="Email address:" value={ this.state.email } onChange={ this.handleInputChange } />
-                        <FormGroup name="address_1" label="Address line 1:" value={ this.state.address_1 } onChange={ this.handleInputChange } />
-                        <FormGroup name="address_2" label="Address line 2:" value={ this.state.address_2 } onChange={ this.handleInputChange } />
-                        <FormGroup name="address_3" label="Address line 3:" value={ this.state.address_3 } onChange={ this.handleInputChange } />
-                        <FormGroup name="town" value={ this.state.town } onChange={ this.handleInputChange } />
-                        <FormGroup name="postcode" type="small" value={ this.state.postcode } onChange={ this.handleInputChange } />
-                        <FormGroup name="skills" label="Any knowledge, skills or resources to share:" type="textarea" value={ this.state.skills } onChange={ this.handleInputChange } />
+                        <FormGroup name="phone_1" readonly={ !Cookies.admin } type="small" label="Home phone:" value={ this.state.phone_1 } onChange={ this.handleInputChange } />
+                        <FormGroup name="phone_2" readonly={ !Cookies.admin } type="small" label="Mobile phone:" value={ this.state.phone_2 } onChange={ this.handleInputChange } />
+                        <FormGroup name="email" readonly={ !Cookies.admin } label="Email address:" value={ this.state.email } onChange={ this.handleInputChange } />
+                        <FormGroup name="address_1" readonly={ !Cookies.admin } label="Address line 1:" value={ this.state.address_1 } onChange={ this.handleInputChange } />
+                        <FormGroup name="address_2" readonly={ !Cookies.admin } label="Address line 2:" value={ this.state.address_2 } onChange={ this.handleInputChange } />
+                        <FormGroup name="address_3" readonly={ !Cookies.admin } label="Address line 3:" value={ this.state.address_3 } onChange={ this.handleInputChange } />
+                        <FormGroup name="town" readonly={ !Cookies.admin } value={ this.state.town } onChange={ this.handleInputChange } />
+                        <FormGroup name="postcode" readonly={ !Cookies.admin } type="small" value={ this.state.postcode } onChange={ this.handleInputChange } />
+                        <FormGroup name="skills" readonly={ !Cookies.admin } label="Any knowledge, skills or resources to share:" type="textarea" value={ this.state.skills } onChange={ this.handleInputChange } />
                     </div>
                 </PageContent>
             </div>

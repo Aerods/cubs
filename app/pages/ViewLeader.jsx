@@ -84,7 +84,7 @@ export default class ViewLeader extends React.Component {
             <div id="ViewLeader">
                 <SubHeader heading="View leader">
                     <Link to="/leaders"><span className="nav-button">back</span></Link>
-                    { !Cookies.parent_id ? <a><span className="nav-button" onClick={ this.deleteLeader.bind(this) }>Delete</span></a> : '' }
+                    { Cookies.admin ? <a><span className="nav-button" onClick={ this.deleteLeader.bind(this) }>Delete</span></a> : '' }
                 </SubHeader>
                 <PageContent>
                     <div className="spacer"></div>
@@ -92,7 +92,7 @@ export default class ViewLeader extends React.Component {
                     <div className="view-sheet">
                         <div className="view-group">
                             <h3>Leader details</h3>
-                            { !Cookies.parent_id ? <Link to={ "/leaders/"+this.props.params.id+"/edit" }><span className="nav-button">Edit</span></Link> : '' }
+                            { Cookies.admin || Cookies.leader_id == this.props.params.id ? <Link to={ "/leaders/"+this.props.params.id+"/edit" }><span className="nav-button">Edit</span></Link> : '' }
 
                             <div className="view-row">
                                 <div className="field-group">

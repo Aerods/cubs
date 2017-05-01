@@ -53,7 +53,7 @@ export default class TopBar extends React.Component {
                     <Link className={ "topbar-nav" + (path[1] == 'leaders' ? ' active' : '') } to="/leaders">Leaders</Link>
                     <Link className={ "topbar-nav" + (path[1] == 'badges' ? ' active' : '') } to="/badges">Badges</Link>
                     <Link className={ "topbar-nav" + (path[1] == 'programme' ? ' active' : '') } to="/programme">Programme</Link>
-                    <Link className={ "topbar-nav" + (path[1] == 'award' ? ' active' : '') } to="/award">Award</Link>
+                    { Cookies.admin ? <Link className={ "topbar-nav" + (path[1] == 'award' ? ' active' : '') } to="/award">Award</Link> : '' }
                     <div className="grow" />
                     <div className="topbar-nav hidden-sm" onClick={ this.logout }>Log out</div>
                 </div>);

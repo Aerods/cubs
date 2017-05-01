@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, browserHistory } from 'react-router';
 import * as actions from '../Actions';
 import Store from '../store';
+import Cookies from '../cookies.js';
 import Modal from '../widgets/Modal';
 import SelectActivity from '../components/SelectActivity';
 import BadgeGrid from '../components/BadgeGrid';
@@ -47,9 +48,9 @@ export default class Badges extends React.Component {
         return (
             <div id="Badges">
                 <SubHeader heading="Badges">
-                    <Link to="/badges/new"><span className="nav-button">Add</span></Link>
-                    <a><span className="nav-button hidden-sm hidden-md hidden-lg" onClick={ this.openModal.bind(this) }>Activity</span></a>
-                    <a><span className="nav-button hidden-xs" onClick={ this.openModal.bind(this) }>Complete activity</span></a>
+                    { Cookies.admin ? (<Link to="/badges/new"><span className="nav-button">Add</span></Link>) : '' }
+                    { Cookies.admin ? (<a><span className="nav-button hidden-sm hidden-md hidden-lg" onClick={ this.openModal.bind(this) }>Activity</span></a>) : '' }
+                    { Cookies.admin ? (<a><span className="nav-button hidden-xs" onClick={ this.openModal.bind(this) }>Complete activity</span></a>) : '' }
                     <Link to="/badges/progress"><span className="nav-button hidden-xs hidden-sm">Badge progress</span></Link>
                 </SubHeader>
 

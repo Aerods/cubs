@@ -12,6 +12,7 @@ exports.create = function(data, done) {
         data.forename,
         data.surname,
         data.position,
+        data.admin,
         data.cub_name,
         data.username,
         data.phone_1,
@@ -32,6 +33,7 @@ exports.create = function(data, done) {
                 forename,                       \
                 surname,                        \
                 position,                       \
+                admin,                          \
                 cub_name,                       \
                 username,                       \
                 phone_1,                        \
@@ -45,7 +47,7 @@ exports.create = function(data, done) {
                 section,                        \
                 `group`                        \
             )                                   \
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) \
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) \
         ', values, function(err, result) {
             if (err) return done(err);
             server.emitSocket('leadersUpdate');
@@ -60,6 +62,7 @@ exports.update = function(data, done) {
         data.forename,
         data.surname,
         data.position,
+        data.admin,
         data.cub_name,
         data.username,
         data.password,
@@ -68,7 +71,7 @@ exports.update = function(data, done) {
         data.email,
         data.address_1,
         data.address_2,
-        data.address_2,
+        data.address_3,
         data.town,
         data.postcode,
         data.id
@@ -81,6 +84,7 @@ exports.update = function(data, done) {
                 forename = ?,           \
                 surname = ?,            \
                 position = ?,           \
+                admin = ?,              \
                 cub_name = ?,           \
                 username = ?,           \
                 '+(data.password ? 'password = SHA1(?),' : '')+'\
@@ -112,9 +116,9 @@ exports.delete = function(data, done) {
 }
 
 exports.login = function(data, done) {
-    db.get().query('SELECT id, section, `group` FROM leaders WHERE (username = ? or email = ?) AND password = SHA1(?) AND deleted=0 LIMIT 1', [data.username, data.username, data.password], function(err, result) {
+    db.get().query('SELECT id, section, `group`, admin FROM leaders WHERE (username = ? or email = ?) AND password = SHA1(?) AND deleted=0 LIMIT 1', [data.username, data.username, data.password], function(err, result) {
         if (err) return done(err);
-        else if (result[0]) done(null, { result: 'success', token: 'P3X-595', leader_id: result[0].id, section: result[0].section, group: result[0].group });
+        else if (result[0]) done(null, { result: 'success', token: 'P3X-595', leader_id: result[0].id, section: result[0].section, group: result[0].group, admin: result[0].admin });
         else {
             db.get().query('SELECT id, section, `group` FROM parents WHERE email = ? AND password = SHA1(?) AND deleted=0 LIMIT 1', [data.username, data.password], function(err, result) {
                 if (err) return done(err);

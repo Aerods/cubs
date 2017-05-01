@@ -59,7 +59,7 @@ export default class Programme extends React.Component {
         return (
             <div id="Programme">
                 <SubHeader heading="Programme">
-                    { Cookies.parent_id ? '' : <Link to="/programme/new"><span className="nav-button">Add</span></Link> }
+                    { Cookies.admin ? <Link to="/programme/new"><span className="nav-button">Add</span></Link> : '' }
                 </SubHeader>
                 <PageContent>
                     <DataTable
@@ -67,7 +67,7 @@ export default class Programme extends React.Component {
                         classes={ classes }
                         filtering={ filtering }
                         data={ this.state.programme }
-                        onClick={ Cookies.parent_id ? '' : this.handleClick.bind(this) }
+                        onClick={ Cookies.leader_id ? this.handleClick.bind(this) : '' }
                         height="tall" />
                 </PageContent>
             </div>

@@ -145,7 +145,7 @@ export default class CubForm extends React.Component {
                         { Cookies.section == 'Cubs' ? (
                             <FormGroup name="six" type="select" value={ this.state.six } data={ ['Red', 'Blue', 'Green', 'Yellow'] } onChange={ this.handleInputChange } />
                         ) : (
-                            <FormGroup name="six" label="Lodge" type="select" value={ this.state.six } data={ ['Ducks', 'Otters', 'Turtles'] } onChange={ this.handleInputChange } />
+                            <FormGroup name="six" label="Lodge" type="select" value={ this.state.six } data={ ['Ducks', 'Otters', 'Turtles', 'Hares'] } onChange={ this.handleInputChange } />
                         ) }
                         <FormGroup name="phone" label="Home phone:" value={ this.state.phone } onChange={ this.handleInputChange } />
                         <FormGroup name="address_1" label="Address line 1:" value={ this.state.address_1 } onChange={ this.handleInputChange } />

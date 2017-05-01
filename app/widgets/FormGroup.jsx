@@ -8,6 +8,7 @@ var FormGroup = React.createClass({
             name: '',
             label: '',
             type: 'text',
+            readonly: 0,
             value: '',
             onChange: null,
             error: null,
@@ -29,7 +30,19 @@ var FormGroup = React.createClass({
             type = 'text';
             classes += ' small';
         }
-        if (type == 'text' || type == 'password') {
+        if (this.props.readonly) classes += ' readonly';
+        if (this.props.readonly) {
+            return (
+                <div className="form-group">
+                    <label className="control-label" htmlFor={ this.props.name }>{ label }</label>
+                    <div className={ classes }>{ this.props.value }</div>
+                    { this.props.labelRight ? (
+                        <label className="control-label-right">{ this.props.labelRight }</label>
+                    ) : '' }
+                    <ValidationError error={ this.props.error } />
+                </div>
+            );
+        } else if (type == 'text' || type == 'password') {
             return (
                 <div className="form-group">
                     <label className="control-label" htmlFor={ this.props.name }>{ label }</label>

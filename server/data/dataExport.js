@@ -12,7 +12,7 @@ exports.get = function(data, done) {
     if (data.section) { where += ' and section = ?'; values.push(data.section); }
     if (data.group) { where += ' and `group` = ?'; values.push(data.group); }
     var query = '                               \
-        SELECT id, CONCAT(forename, " ", surname) as name, date_of_birth, invested, phone                \
+        SELECT id, CONCAT(forename, " ", surname) as name, date_of_birth, invested, phone, address_1, address_2, address_3, town, postcode \
         FROM cubs                               \
         '+where+'                               \
         ORDER BY date_of_birth                  \
@@ -23,11 +23,13 @@ exports.get = function(data, done) {
 
         return new Promise(function (resolve, reject) {
             cubs.map(function(cub, i) {
+                var address = cub.address_1 + ', ' + cub.address_2 + (cub.address_3 ? (', ' + cub.address_3) : '') + ', ' + cub.town + ', ' + cub.postcode;
                 var exportCub = [
                     cub.name,
                     moment(cub.date_of_birth).format('DD-MM-YYYY'),
                     moment(cub.invested).format('DD-MM-YYYY'),
-                    cub.phone
+                    cub.phone,
+                    address
                 ];
 
                 return new Promise(function (resolve2, reject2) {
@@ -75,6 +77,7 @@ exports.get = function(data, done) {
                 'Date of birth',
                 'Invested',
                 'Home phone',
+                'Address',
                 'Parent 1 name',
                 'Mobile number',
                 'Email',

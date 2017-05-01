@@ -52,7 +52,7 @@ export default class Leaders extends React.Component {
         return (
             <div id="Leaders">
                 <SubHeader heading="Leaders">
-                    { Cookies.parent_id ? '' : <Link to="/leaders/new"><span className="nav-button">Add</span></Link> }
+                    { Cookies.admin ? <Link to="/leaders/new"><span className="nav-button">Add</span></Link> : '' }
                 </SubHeader>
                 <PageContent>
                     <DataTable headers={ headers } classes={ classes } data={ this.state.leaders } onClick={ this.handleClick.bind(this) } height="tall" />

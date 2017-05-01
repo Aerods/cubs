@@ -5,6 +5,7 @@ import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
 import * as actions from '../Actions';
 import Store from '../store';
+import Cookies from '../cookies.js';
 
 var ViewBadge = React.createClass({
     getDefaultProps: function() {
@@ -29,7 +30,7 @@ var ViewBadge = React.createClass({
                 <SubHeader heading="Badges">
                     <Link to="/badges"><span className="nav-button">back</span></Link>
                     <Link to={ "/badges/"+this.props.params.id+"/progress" }><span className="nav-button hidden-xs">Progress</span></Link>
-                    { this.props.params.id ? <a><span className="nav-button" onClick={ this.deleteBadge }>Delete</span></a> : '' }
+                    { this.props.params.id && Cookies.admin ? <a><span className="nav-button" onClick={ this.deleteBadge }>Delete</span></a> : '' }
                 </SubHeader>
                 <div className="spacer"></div>
 

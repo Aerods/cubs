@@ -90,12 +90,12 @@ export default class Apply extends React.Component {
                         <div>Thursdays 6:30pm - 8:00pm</div>
                         <div className="nav-button" onClick={ this.applyCub.bind(this) }>Apply</div>
                     </div>
-                    <div className="section">
+                    { 0 ? <div className="section">
                         <div className="logo scouts"><img src={ Cookies.host+'/images/scouts-logo.gif' } /></div>
                         <div>Age 10&frac12; - 14</div>
                         <div>Mondays 7:00pm - 9:00pm</div>
                         <div className="nav-button" onClick={ this.applyScout.bind(this) }>Apply</div>
-                    </div>
+                    </div> : '' }
                 </div>
             </div>
         )

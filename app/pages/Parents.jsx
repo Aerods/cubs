@@ -5,6 +5,7 @@ import Store from '../store';
 import PageContent from '../widgets/PageContent';
 import DataTable from '../widgets/DataTable';
 import SubHeader from '../widgets/SubHeader';
+import Cookies from '../cookies.js';
 
 export default class Parents extends React.Component {
     constructor() {
@@ -49,7 +50,7 @@ export default class Parents extends React.Component {
         return (
             <div id="Parents">
                 <SubHeader heading="Parents">
-                    <Link to="/parents/new"><span className="nav-button">Add</span></Link>
+                    { Cookies.admin ? (<Link to="/parents/new"><span className="nav-button">Add</span></Link>) : '' }
                 </SubHeader>
                 <PageContent>
                     <DataTable headers={ headers } classes={ classes } data={ this.state.parents } onClick={ this.handleClick.bind(this) } height="tall" />

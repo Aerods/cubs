@@ -12,6 +12,7 @@ import SelectInput from '../widgets/SelectInput';
 import ValidationError from '../widgets/ValidationError';
 import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
+import FormGroup from '../widgets/FormGroup';
 
 export default class ProgrammeForm extends React.Component {
     constructor() {
@@ -254,7 +255,7 @@ export default class ProgrammeForm extends React.Component {
             return (
                 <div key={ key }>
                     <div className="form-buttons">
-                        <a><span className="nav-button" onClick={ removeBadge }>Remove badge</span></a>
+                        { Cookies.admin ? (<a><span className="nav-button" onClick={ removeBadge }>Remove badge</span></a>) : '' }
                     </div>
 
                     <div className="select-activity">
@@ -262,8 +263,8 @@ export default class ProgrammeForm extends React.Component {
                         <CriteriaList
                             badge_criteria={ badge_criteria }
                             onClick={ function() {} }
-                            clickCriteria={ clickCriteria }
-                            clickTask={ clickTask } />
+                            clickCriteria={ Cookies.admin ? clickCriteria : '' }
+                            clickTask={ Cookies.admin ? clickTask : '' } />
                     </div>
                     <div className="spacer" />
                 </div>
@@ -274,56 +275,27 @@ export default class ProgrammeForm extends React.Component {
             <div id="ProgrammeForm">
                 <SubHeader heading={ this.state.id ? 'Edit' : 'New' }>
                     <Link to="/programme"><span className="nav-button">back</span></Link>
-                    { this.state.id ? <a><span className="nav-button" onClick={ this.deleteMeeting.bind(this) }>Delete</span></a> : '' }
-                    { this.state.id ? <Link to={"/programmePrint/"+this.state.id}><span className="nav-button print-button">Print</span></Link> : '' }
-                    <a><span className="nav-button" onClick={ this.saveMeeting.bind(this) }>Save</span></a>
+                    { this.state.id && Cookies.admin ? <a><span className="nav-button" onClick={ this.deleteMeeting.bind(this) }>Delete</span></a> : '' }
+                    { this.state.id && Cookies.admin ? <Link to={"/programmePrint/"+this.state.id}><span className="nav-button print-button">Print</span></Link> : '' }
+                    { Cookies.admin ? (<a><span className="nav-button" onClick={ this.saveMeeting.bind(this) }>Save</span></a>) : '' }
                 </SubHeader>
 
                 <PageContent>
                     <div className="form">
                         <h3>Meeting details</h3>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="date">Date:</label>
-                            <input type="text" className="form-control small" name="date" value={ this.state.date } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.date } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="title">Title:</label>
-                            <input type="text" className="form-control" name="title" value={ this.state.title } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.title } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="forename">Type:</label>
-                            <SelectInput
-                                data={ ['Standard', 'Off site', 'Camp'] }
-                                selected={ this.state.type }
-                                name="type"
-                                onChange={ this.handleInputChange } />
-                        </div>
-                        { this.state.type != 'Standard' ? <div className="form-group">
-                            <label className="control-label" htmlFor="location">Location:</label>
-                            <input type="text" className="form-control" name="location" value={ this.state.location } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.location } />
-                        </div> : '' }
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="details">Details:</label>
-                            <textarea type="text" className="form-control" name="details" value={ this.state.details } onChange={ this.handleInputChange } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="start_time">Start time:</label>
-                            <input type="text" className="form-control small" name="start_time" value={ this.state.start_time } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.start_time } />
-                        </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="end_time">End time:</label>
-                            <input type="text" className="form-control small" name="end_time" value={ this.state.end_time } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.end_time } />
-                        </div>
-                        { this.state.type == 'Camp' ? <div className="form-group">
-                            <label className="control-label" htmlFor="end_date">End date:</label>
-                            <input type="text" className="form-control small" name="end_date" value={ this.state.end_date } onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.end_date } />
-                        </div> : '' }
+                        <FormGroup name="date" readonly={ !Cookies.admin } labelRight="DD/MM/YYYY" type="small" value={ this.state.date } onChange={ this.handleInputChange } error={ this.state.validation.date } />
+                        <FormGroup name="title" readonly={ !Cookies.admin } value={ this.state.title } onChange={ this.handleInputChange } error={ this.state.validation.title } />
+                        <FormGroup name="type" readonly={ !Cookies.admin } type="select" value={ this.state.type } data={ ['Standard', 'Off site', 'Camp'] } onChange={ this.handleInputChange } error={ this.state.validation.type } />
+                        { this.state.type != 'Standard' ?
+                            <FormGroup name="location" readonly={ !Cookies.admin } value={ this.state.location } onChange={ this.handleInputChange } error={ this.state.validation.location } />
+                        : '' }
+                        <FormGroup name="details" readonly={ !Cookies.admin } type="textarea" value={ this.state.details } onChange={ this.handleInputChange } />
+
+                        <FormGroup name="start_time" readonly={ !Cookies.admin } type="small" value={ this.state.start_time } onChange={ this.handleInputChange } error={ this.state.validation.start_time } />
+                        <FormGroup name="end_time" readonly={ !Cookies.admin } type="small" value={ this.state.end_time } onChange={ this.handleInputChange } error={ this.state.validation.end_time } />
+                        { this.state.type == 'Camp' ?
+                            <FormGroup name="end_date" readonly={ !Cookies.admin } labelRight="DD/MM/YYYY" type="small" value={ this.state.end_date } onChange={ this.handleInputChange } error={ this.state.validation.end_date } />
+                        : '' }
 
                         <h3>Badge work</h3>
                         <div className="spacer" />
@@ -334,10 +306,10 @@ export default class ProgrammeForm extends React.Component {
 
                         { badgeWork }
                         <div className="form-buttons">
-                            <a><span className="nav-button" onClick={ self.openModal.bind(this) }>Add badge</span></a>
+                            { Cookies.admin ? <a><span className="nav-button" onClick={ self.openModal.bind(this) }>Add badge</span></a> : '' }
                         </div>
 
-                        { meetingInPast ? <div>
+                        { meetingInPast && Cookies.admin ? <div>
                             <div className="spacer" />
                             <h3>{ Cookies.section }</h3>
                             <a><span className="nav-button" onClick={ this.selectAll.bind(this) }>select all</span></a>

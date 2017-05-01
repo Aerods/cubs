@@ -63,10 +63,10 @@ export default class Cubs extends React.Component {
         return (
             <div id="Cubs">
                 <SubHeader heading={ Cookies.section }>
-                    <Link to="/cubs/new"><span className="nav-button">Add</span></Link>
-                    <Link to="/cubs/stats"><span className="nav-button">Stats</span></Link>
+                    { Cookies.admin ? (<Link to="/cubs/new"><span className="nav-button">Add</span></Link>) : '' }
+                    { Cookies.admin ? (<Link to="/cubs/stats"><span className="nav-button hidden-xs">Stats</span></Link>) : '' }
                     <Link to="/cubs/waiting"><span className="nav-button">Waiting list</span></Link>
-                    { Cookies.section == 'Cubs' ? <a><span className="nav-button" onClick={ this.exportData.bind(this) }>Export</span></a> : '' }
+                    { Cookies.section == 'Cubs' && Cookies.admin ? <a><span className="nav-button hidden-xs" onClick={ this.exportData.bind(this) }>Export</span></a> : '' }
                 </SubHeader>
                 <PageContent>
                     <DataTable headers={ headers } classes={ classes } data={ this.state.cubs } onClick={ this.selectCub } height="tall" />

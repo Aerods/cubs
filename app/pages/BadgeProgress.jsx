@@ -7,6 +7,7 @@ import PageContent from '../widgets/PageContent';
 import SubHeader from '../widgets/SubHeader';
 import reactMixin from 'react-mixin';
 var OnResize = require("react-window-mixins").OnResize;
+import Cookies from '../cookies.js';
 
 export default class BadgeProgress extends React.Component {
     constructor() {
@@ -71,7 +72,7 @@ export default class BadgeProgress extends React.Component {
                     var taskClass = criteria.complete_all ? 'single-task' : 'task';
                     var cells = self.state.cubs.map(function(cub, cellKey) {
                         function handleClick() {
-                            if (!self.state.updating) {
+                            if (!self.state.updating && Cookies.admin) {
                                 var cubs = self.state.cubs;
                                 cubs[cellKey].badge_tasks[task.id] = !cub.badge_tasks[task.id];
                                 self.setState({ cubs: cubs, updating: true });

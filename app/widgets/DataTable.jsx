@@ -155,6 +155,7 @@ var DataTable = React.createClass({
                 var filters = self.state.filters;
                 filters[filter.field] = e.target.value;
                 self.setState({ filters: filters });
+                filter.value = e.target.value;
             };
             return(
                 <div className="filter" key={ key }>

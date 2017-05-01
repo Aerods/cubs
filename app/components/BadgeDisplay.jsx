@@ -145,10 +145,8 @@ export default class BadgeDisplay extends React.Component {
             <div id="BadgeDisplay">
                 <div className="view-group">
                     <h3>Badge details</h3>
-                    { this.props.closeModal ?
-                        <a><span className="nav-button" onClick={ this.close.bind(this) }>Close</span></a> :
-                        <Link to={ "/badges/"+this.props.id+"/edit" }><span className="nav-button">Edit</span></Link>
-                    }
+                    { this.props.closeModal ? <a><span className="nav-button" onClick={ this.close.bind(this) }>Close</span></a> : '' }
+                    { !this.props.closeModal && Cookies.admin ? (<Link to={ "/badges/"+this.props.id+"/edit" }><span className="nav-button">Edit</span></Link>) : '' }
 
                     <div className="view-row">
                         <div className="view-image">

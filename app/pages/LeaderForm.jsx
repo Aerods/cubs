@@ -21,6 +21,7 @@ export default class LeaderForm extends React.Component {
             forename: '',
             surname: '',
             position: '',
+            admin: '',
             cub_name: '',
             username: '',
             password: '',
@@ -64,6 +65,7 @@ export default class LeaderForm extends React.Component {
             forename: leader.forename,
             surname: leader.surname,
             position: leader.position,
+            admin: leader.admin,
             cub_name: leader.cub_name,
             username: leader.username,
             phone_1: leader.phone_1,
@@ -143,15 +145,21 @@ export default class LeaderForm extends React.Component {
                             <input type="text" className="form-control" id="surname" name="surname" value={ this.state.surname } onChange={ this.handleInputChange } />
                             <ValidationError error={ this.state.validation.surname } />
                         </div>
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="position">Position:</label>
-                            <SelectInput
-                                data={ Cookies.section == 'Cubs' ? ['CSL', 'ACSL', 'SA', 'OH', 'YL'] : ['BSL', 'ABSL', 'SA', 'OH', 'YL'] }
-                                selected={ this.state.position }
-                                name="position"
-                                onChange={ this.handleInputChange } />
-                            <ValidationError error={ this.state.validation.position } />
-                        </div>
+
+                        <FormGroup
+                            name="position"
+                            readonly={ !Cookies.admin }
+                            type="select"
+                            value={ this.state.position }
+                            data={ Cookies.section == 'Cubs' ? ['CSL', 'ACSL', 'SA', 'OH', 'YL'] : ['BSL', 'ABSL', 'SA', 'OH', 'YL'] }
+                            onChange={ this.handleInputChange }
+                            error={ this.state.validation.position } />
+                        { Cookies.admin ? (
+                            <div className="form-group">
+                                <label className="control-label" htmlFor="admin">Admin:</label>
+                                <CheckboxInput name="admin" checked={ this.state.admin } onChange={ this.handleInputChange } />
+                            </div>
+                        ) : '' }
                         { Cookies.section == 'Cubs' ? <div className="form-group">
                             <label className="control-label" htmlFor="cub_name">Cub name:</label>
                             <input type="text" className="form-control" id="cub_name" name="cub_name" value={ this.state.cub_name } onChange={ this.handleInputChange } />

@@ -239,7 +239,7 @@ export default class ViewCub extends React.Component {
             <div id="ViewCub">
                 <SubHeader heading={ "View "+Cookies.member }>
                     <Link to="/cubs"><span className="nav-button">back</span></Link>
-                    { this.props.params.id ? <a><span className="nav-button" onClick={ this.deleteCub.bind(this) }>Delete</span></a> : '' }
+                    { this.props.params.id && Cookies.admin ? <a><span className="nav-button" onClick={ this.deleteCub.bind(this) }>Delete</span></a> : '' }
                 </SubHeader>
                 <PageContent>
                     <div className="spacer"></div>
@@ -247,7 +247,7 @@ export default class ViewCub extends React.Component {
                     <div className="view-sheet">
                         <div className="view-group">
                             <h3>{ Cookies.member } details</h3>
-                            <Link to={ "/cubs/"+this.props.params.id+"/edit" }><span className="nav-button">Edit</span></Link>
+                            { Cookies.admin ? (<Link to={ "/cubs/"+this.props.params.id+"/edit" }><span className="nav-button">Edit</span></Link>) : '' }
 
                             <div className="view-row">
                                 <div className="field-group">
@@ -351,7 +351,7 @@ export default class ViewCub extends React.Component {
                             <h3>Parents</h3>
 
                             <div className="form-buttons">
-                                <a><span className="nav-button" onClick={ this.openParentModal.bind(this) }>Add</span></a>
+                                { Cookies.admin ? (<a><span className="nav-button" onClick={ this.openParentModal.bind(this) }>Add</span></a>) : '' }
                             </div>
 
                             <Modal isOpen={ this.state.isParentModalOpen }>

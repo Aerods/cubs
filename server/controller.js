@@ -19,15 +19,20 @@ function post(req, res) {
         res.send('Permission error!');
     } else {
         getUserData(req, function(req) {
-            var actions = require("./actions/"+req.body.dataType);
-            actions.create(req.body, function (err, data) {
-                if (err) {
-                    console.log(err);
-                    res.send(err);
-                } else {
-                    res.json(data);
-                }
-            });
+            if (!req.body.admin) {
+                console.log('Permission error!');
+                res.send('Permission error!');
+            } else {
+                var actions = require("./actions/"+req.body.dataType);
+                actions.create(req.body, function (err, data) {
+                    if (err) {
+                        console.log(err);
+                        res.send(err);
+                    } else {
+                        res.json(data);
+                    }
+                });
+            }
         });
     }
 }
@@ -60,15 +65,20 @@ function put(req, res) {
         });
     } else if (req.body.actionType) {
         getUserData(req, function(req) {
-            var actions = require("./actions/"+req.body.dataType);
-            actions[req.body.actionType](req.body, function (err, data) {
-                if (err) {
-                    console.log(err);
-                    res.send(err);
-                } else {
-                    res.json(data);
-                }
-            });
+            if (!req.body.admin && (req.body.dataType != 'leader' || req.body.id != req.body.leader_id)) {
+                console.log('Permission error!');
+                res.send('Permission error!');
+            } else {
+                var actions = require("./actions/"+req.body.dataType);
+                actions[req.body.actionType](req.body, function (err, data) {
+                    if (err) {
+                        console.log(err);
+                        res.send(err);
+                    } else {
+                        res.json(data);
+                    }
+                });
+            }
         });
     } else {
         res.json();
@@ -81,6 +91,7 @@ function getUserData(req, done) {
             if (data[0]) {
                 req.body.group = data[0].group;
                 req.body.section = data[0].section;
+                req.body.admin = data[0].admin;
                 done(req);
             }
         });

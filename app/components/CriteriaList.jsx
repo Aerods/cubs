@@ -1,5 +1,6 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
+import Cookies from '../cookies.js';
 
 var CriteriaList = React.createClass({
     getDefaultProps: function() {
@@ -25,15 +26,15 @@ var CriteriaList = React.createClass({
             badge_tasks.sort(compare);
             badge_tasks = criteria.badge_tasks.map(function(task, key) {
                 function clickTask() {
-                    if (self.props.clickTask) self.props.clickTask(task);
+                    if (self.props.clickTask && Cookies.admin) self.props.clickTask(task);
                 }
                 if (!task.deleted) return (<li key={ key } className={ task.selected ? 'selected' : '' } onClick={ clickTask }>{ task.task }</li>);
             });
             function onClick() {
-                if (self.props.onClick) self.props.onClick(criteria);
+                if (self.props.onClick && Cookies.admin) self.props.onClick(criteria);
             }
             function clickCriteria() {
-                if (self.props.clickCriteria) self.props.clickCriteria(criteria);
+                if (self.props.clickCriteria && Cookies.admin) self.props.clickCriteria(criteria);
             }
 
             // Display appropriate criteria text if user entered text is not present

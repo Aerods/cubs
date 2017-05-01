@@ -41,6 +41,7 @@ export default class Login extends React.Component {
             Cookies.section = data.section;
             Cookies.group = data.group;
             Cookies.member = member;
+            Cookies.admin = data.admin;
             var cookieExpiry = moment().add(2, 'days').toDate();
             cookie.save('token', data.token, { expires: cookieExpiry });
             cookie.save('leader_id', data.leader_id, { expires: cookieExpiry });
@@ -48,6 +49,7 @@ export default class Login extends React.Component {
             cookie.save('section', data.section, { expires: cookieExpiry });
             cookie.save('group', data.group, { expires: cookieExpiry });
             cookie.save('member', member, { expires: cookieExpiry });
+            cookie.save('admin', data.admin, { expires: cookieExpiry });
             browserHistory.push('/');
         }
     }
