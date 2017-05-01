@@ -9,6 +9,7 @@ class Cookies {
         this.section = (cookie.load('section') || '');
         this.group = cookie.load('group');
         this.member = (cookie.load('member') || '');
+        this.admin = (cookie.load('admin') || 0);
     }
 }
 
