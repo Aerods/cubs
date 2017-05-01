@@ -64,7 +64,7 @@ export default class WaitingList extends React.Component {
             <div id="WaitingList">
                 <SubHeader heading="Waiting list">
                     <Link to="/cubs"><span className="nav-button">Back</span></Link>
-                    <Link to="/cubs/new"><span className="nav-button">Add</span></Link>
+                    { Cookies.admin ? <Link to="/cubs/new"><span className="nav-button">Add</span></Link> : '' }
                 </SubHeader>
                 <PageContent>
                     <DataTable headers={ headers } classes={ classes } data={ this.state.cubs } onClick={ this.selectCub } height="tall" />
