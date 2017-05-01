@@ -81,7 +81,7 @@ export default class Apply extends React.Component {
                     <div className="section">
                         <div className="logo beavers"><img src={ Cookies.host+'/images/beavers-logo.png' } /></div>
                         <div>Age 6 - 8</div>
-                        <div>Thursdays 5:45pm - 6:15pm</div>
+                        <div>Thursdays 5:15pm - 6:15pm</div>
                         <div className="nav-button" onClick={ this.applyBeaver.bind(this) }>Apply</div>
                     </div>
                     <div className="section">
