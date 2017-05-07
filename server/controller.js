@@ -19,7 +19,7 @@ function post(req, res) {
         res.send('Permission error!');
     } else {
         getUserData(req, function(req) {
-            if (!req.body.admin) {
+            if (!req.body.isAdmin) {
                 console.log('Permission error!');
                 res.send('Permission error!');
             } else {
@@ -65,7 +65,7 @@ function put(req, res) {
         });
     } else if (req.body.actionType) {
         getUserData(req, function(req) {
-            if (!req.body.admin && (req.body.dataType != 'leader' || req.body.id != req.body.leader_id)) {
+            if (!req.body.isAdmin && (req.body.dataType != 'leader' || req.body.id != req.body.leader_id)) {
                 console.log('Permission error!');
                 res.send('Permission error!');
             } else {
@@ -90,8 +90,8 @@ function getUserData(req, done) {
         leaderData.get({ id: req.body.leader_id }, function (err, data) {
             if (data[0]) {
                 req.body.group = data[0].group;
-                req.body.section = data[0].section;
-                req.body.admin = data[0].admin;
+                req.body.section = (data[0].section || req.body.section);
+                req.body.isAdmin = data[0].admin;
                 done(req);
             }
         });

@@ -26,6 +26,9 @@ export default class TopBar extends React.Component {
     logout() {
         Cookies.token = '';
         cookie.remove('token');
+        cookie.remove('leader_id');
+        cookie.remove('parent_id');
+        cookie.remove('section');
         browserHistory.push('/login');
     }
 

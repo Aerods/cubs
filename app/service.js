@@ -7,6 +7,7 @@ export function get(data, callback) {
     data.token = Cookies.token;
     data.leader_id = Cookies.leader_id;
     data.parent_id = Cookies.parent_id;
+    data.section = (data.section ? data.section : Cookies.section);
     return axios.put(resourceUrl, data).then((response) => {
         callback(response.data);
     });
@@ -17,6 +18,7 @@ export function add(data, callback) {
     data.token = Cookies.token;
     data.leader_id = Cookies.leader_id;
     data.parent_id = Cookies.parent_id;
+    data.section = (data.section ? data.section : Cookies.section);
     return axios.post(resourceUrl, data).then((response) => {
         callback(response.data);
     });
@@ -27,6 +29,7 @@ export function update(data, callback) {
     data.token = Cookies.token;
     data.leader_id = Cookies.leader_id;
     data.parent_id = Cookies.parent_id;
+    data.section = (data.section ? data.section : Cookies.section);
     return axios.put(resourceUrl, data).then((response) => {
         callback(response.data);
     });
@@ -37,6 +40,7 @@ export function destroy(data, callback) {
     data.token = Cookies.token;
     data.leader_id = Cookies.leader_id;
     data.parent_id = Cookies.parent_id;
+    data.section = (data.section ? data.section : Cookies.section);
     return axios.put(resourceUrl, data).then((response) => {
         callback(response.data);
     });

@@ -5,7 +5,7 @@ exports.get = function(data, done) {
     var where = 1;
     var values = [];
     if (data.id) { where += ' and id = ?'; values.push(data.id); }
-    if (data.section) { where += ' and section = ?'; values.push(data.section); }
+    if (data.section) { where += ' and (section = ? or section is null)'; values.push(data.section); }
     if (data.sections) { where += ' and (section in (?) or section is null)'; values.push(data.sections); }
     if (data.group) { where += ' and `group` = ?'; values.push(data.group); }
 

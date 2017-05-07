@@ -16,7 +16,8 @@ export default class Login extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            section: 'Beavers'
         };
     }
 
@@ -25,7 +26,8 @@ export default class Login extends React.Component {
         var user = {
             dataType: 'login',
             username: this.state.username,
-            password: this.state.password
+            password: this.state.password,
+            section: this.state.section
         };
         actions.update(user);
         Store.on('login-update', this.login);
@@ -68,6 +70,7 @@ export default class Login extends React.Component {
                     <h3>Login</h3>
                     <FormGroup name="username" label="Username:" value={ this.state.username } onChange={ this.handleInputChange } />
                     <FormGroup name="password" label="Password:" value={ this.state.password } onChange={ this.handleInputChange } type="password" />
+                    <FormGroup name="section" type="select" value={ this.state.section } data={ ['Beavers', 'Cubs'] } onChange={ this.handleInputChange } />
                     <input className="hidden" type="submit" />
                     <div className="nav-button" onClick={ this.submitLogin.bind(this) }>Login</div>
                 </form>

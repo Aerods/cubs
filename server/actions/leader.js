@@ -76,7 +76,7 @@ exports.update = function(data, done) {
         data.postcode,
         data.id
     ];
-    if (!data.password) values.splice(6, 1);
+    if (!data.password) values.splice(7, 1);
     action_log.create('leaders', 'update', data, function() {
         db.get().query('                \
             update leaders set          \
@@ -116,9 +116,9 @@ exports.delete = function(data, done) {
 }
 
 exports.login = function(data, done) {
-    db.get().query('SELECT id, section, `group`, admin FROM leaders WHERE (username = ? or email = ?) AND password = SHA1(?) AND deleted=0 LIMIT 1', [data.username, data.username, data.password], function(err, result) {
+    db.get().query('SELECT id, section, `group`, admin FROM leaders WHERE (username = ? or email = ?) AND password = SHA1(?) AND (section is null OR section = ?) AND deleted=0 LIMIT 1', [data.username, data.username, data.password, data.section], function(err, result) {
         if (err) return done(err);
-        else if (result[0]) done(null, { result: 'success', token: 'P3X-595', leader_id: result[0].id, section: result[0].section, group: result[0].group, admin: result[0].admin });
+        else if (result[0]) done(null, { result: 'success', token: 'P3X-595', leader_id: result[0].id, section: (result[0].section || data.section), group: result[0].group, admin: result[0].admin });
         else {
             db.get().query('SELECT id, section, `group` FROM parents WHERE email = ? AND password = SHA1(?) AND deleted=0 LIMIT 1', [data.username, data.password], function(err, result) {
                 if (err) return done(err);
