@@ -2,7 +2,7 @@ var db = require('../../db.js')
 var server = require('../server.js')
 
 exports.get = function(data, done) {
-    var where = 'WHERE c.deleted = 0';
+    var where = 'WHERE c.deleted = 0 and (waiting is null or waiting=0)';
     var values = [];
     if (data.section) { where += ' AND (section = ? OR pc.id IS NOT NULL)'; values.push(data.section); }
     if (data.group) { where += ' AND `group` = ?'; values.push(data.group); }

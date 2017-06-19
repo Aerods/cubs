@@ -92,7 +92,7 @@ exports.update = function(data, done) {
         (date_of_birth == 'Invalid date' ? null : date_of_birth),
         data.gender,
         (data.rank == 'None' ? null : data.rank),
-        data.six,
+        (data.rank != 'Senior sixer' ? data.six : null),
         data.phone,
         data.address_1,
         data.address_2,

@@ -141,12 +141,13 @@ export default class CubForm extends React.Component {
                         <FormGroup name="surname" label="Last name:" value={ this.state.surname } onChange={ this.handleInputChange } error={ this.state.validation.surname } />
                         <FormGroup name="date_of_birth" type="small" labelRight="DD/MM/YYYY" value={ this.state.date_of_birth } onChange={ this.handleInputChange } error={ this.state.validation.date_of_birth } />
                         <FormGroup name="gender" type="select" value={ this.state.gender } data={ ['Male', 'Female'] } onChange={ this.handleInputChange } error={ this.state.validation.gender } />
-                        { Cookies.section == 'Cubs' ? <FormGroup name="rank" type="select" value={ this.state.rank } data={ ['None', 'Sixer', 'Seconder'] } onChange={ this.handleInputChange } /> : '' }
-                        { Cookies.section == 'Cubs' ? (
+                        { Cookies.section == 'Cubs' ? <FormGroup name="rank" type="select" value={ this.state.rank } data={ ['None', 'Senior sixer', 'Sixer', 'Seconder'] } onChange={ this.handleInputChange } /> : '' }
+                        { Cookies.section == 'Cubs' && this.state.rank != 'Senior sixer' ? (
                             <FormGroup name="six" type="select" value={ this.state.six } data={ ['Red', 'Blue', 'Green', 'Yellow'] } onChange={ this.handleInputChange } />
-                        ) : (
+                        ) : '' }
+                        { Cookies.section == 'Beavers' ? (
                             <FormGroup name="six" label="Lodge" type="select" value={ this.state.six } data={ ['Ducks', 'Otters', 'Turtles', 'Hares'] } onChange={ this.handleInputChange } />
-                        ) }
+                        ) : '' }
                         <FormGroup name="phone" label="Home phone:" value={ this.state.phone } onChange={ this.handleInputChange } />
                         <FormGroup name="address_1" label="Address line 1:" value={ this.state.address_1 } onChange={ this.handleInputChange } />
                         <FormGroup name="address_2" label="Address line 2:" value={ this.state.address_2 } onChange={ this.handleInputChange } />
