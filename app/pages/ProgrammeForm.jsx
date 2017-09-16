@@ -116,6 +116,7 @@ export default class ProgrammeForm extends React.Component {
     saveMeeting(e) {
         e.preventDefault();
         var meeting = this.state;
+        meeting.all_badges = [];
         var errors = this.validateMeeting(meeting);
         if (!errors) {
             if (this.state.id) {

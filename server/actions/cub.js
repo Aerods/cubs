@@ -80,72 +80,86 @@ exports.create = function(data, done) {
 }
 
 exports.update = function(data, done) {
-    var date_of_birth = moment(data.date_of_birth, 'DD/MM/YYYY').format('YYYY-MM-DD');
-    var start_date = moment(data.start_date, 'DD/MM/YYYY').format('YYYY-MM-DD');
-    var from_beavers = moment(data.from_beavers, 'DD/MM/YYYY').format('YYYY-MM-DD');
-    var invested = moment(data.invested, 'DD/MM/YYYY').format('YYYY-MM-DD');
-    var to_scouts = moment(data.to_scouts, 'DD/MM/YYYY').format('YYYY-MM-DD');
-
-    var values = [
-        data.forename,
-        data.surname,
-        (date_of_birth == 'Invalid date' ? null : date_of_birth),
-        data.gender,
-        (data.rank == 'None' ? null : data.rank),
-        (data.rank != 'Senior sixer' ? data.six : null),
-        data.phone,
-        data.address_1,
-        data.address_2,
-        data.address_3,
-        data.town,
-        data.postcode,
-        (start_date == 'Invalid date' ? null : start_date),
-        (from_beavers == 'Invalid date' ? null : from_beavers),
-        (invested == 'Invalid date' ? null : invested),
-        data.previous_group,
-        data.medical_information,
-        data.notes,
-        data.can_photo,
-        data.waiting,
-        (to_scouts == 'Invalid date' ? null : to_scouts),
-        data.id
-    ];
-    action_log.create('cubs', 'update', data, function() {
-        db.get().query('                \
-            update cubs set             \
-                forename = ?,           \
-                surname = ?,            \
-                date_of_birth = ?,      \
-                gender = ?,             \
-                rank = ?,               \
-                six = ?,                \
-                phone = ?,              \
-                address_1 = ?,          \
-                address_2 = ?,          \
-                address_3 = ?,          \
-                town = ?,               \
-                postcode = ?,           \
-                start_date = ?,         \
-                from_beavers = ?,       \
-                invested = ?,           \
-                previous_group = ?,     \
-                medical_information = ?,\
-                notes = ?,              \
-                can_photo = ?,          \
-                waiting = ?,            \
-                to_scouts = ?           \
-            where id = ?                \
-        ', values, function(err, result) {
-            if (err) return done(err);
-            server.emitSocket('cubsUpdate');
-            saveParents(data.parents, data.group, data.id, function(err) {
-                cubBadgeActions.save(data.cub_badges, data.id, function(err) {
+    if (data.move_up) {
+        action_log.create('cubs', 'update', data, function() {
+            db.get().query('update cubs set section = ?, start_date=to_scouts, to_scouts=null where id = ?', [data.move_up, data.id], function(err, result) {
+                if (err) return done(err);
+                server.emitSocket('cubsUpdate');
+                saveParents(data.cub_parents, data.group, data.id, function(err) {
                     if (err) return done(err);
                     done(null, { id: data.id });
                 })
             })
         })
-    })
+    } else {
+        var date_of_birth = moment(data.date_of_birth, 'DD/MM/YYYY').format('YYYY-MM-DD');
+        var start_date = moment(data.start_date, 'DD/MM/YYYY').format('YYYY-MM-DD');
+        var from_beavers = moment(data.from_beavers, 'DD/MM/YYYY').format('YYYY-MM-DD');
+        var invested = moment(data.invested, 'DD/MM/YYYY').format('YYYY-MM-DD');
+        var to_scouts = moment(data.to_scouts, 'DD/MM/YYYY').format('YYYY-MM-DD');
+
+        var values = [
+            data.forename,
+            data.surname,
+            (date_of_birth == 'Invalid date' ? null : date_of_birth),
+            data.gender,
+            (data.rank == 'None' ? null : data.rank),
+            (data.rank != 'Senior sixer' ? data.six : null),
+            data.phone,
+            data.address_1,
+            data.address_2,
+            data.address_3,
+            data.town,
+            data.postcode,
+            (start_date == 'Invalid date' ? null : start_date),
+            (from_beavers == 'Invalid date' ? null : from_beavers),
+            (invested == 'Invalid date' ? null : invested),
+            data.previous_group,
+            data.medical_information,
+            data.notes,
+            data.can_photo,
+            data.waiting,
+            (to_scouts == 'Invalid date' ? null : to_scouts),
+            data.id
+        ];
+
+        action_log.create('cubs', 'update', data, function() {
+            db.get().query('                \
+                update cubs set             \
+                    forename = ?,           \
+                    surname = ?,            \
+                    date_of_birth = ?,      \
+                    gender = ?,             \
+                    rank = ?,               \
+                    six = ?,                \
+                    phone = ?,              \
+                    address_1 = ?,          \
+                    address_2 = ?,          \
+                    address_3 = ?,          \
+                    town = ?,               \
+                    postcode = ?,           \
+                    start_date = ?,         \
+                    from_beavers = ?,       \
+                    invested = ?,           \
+                    previous_group = ?,     \
+                    medical_information = ?,\
+                    notes = ?,              \
+                    can_photo = ?,          \
+                    waiting = ?,            \
+                    to_scouts = ?           \
+                where id = ?                \
+            ', values, function(err, result) {
+                if (err) return done(err);
+                server.emitSocket('cubsUpdate');
+                saveParents(data.parents, data.group, data.id, function(err) {
+                    cubBadgeActions.save(data.cub_badges, data.id, function(err) {
+                        if (err) return done(err);
+                        done(null, { id: data.id });
+                    })
+                })
+            })
+        })
+    }
 }
 
 exports.saveParents = function(data, group, cub_id, done) {
@@ -195,6 +209,8 @@ function saveParents(data, group, cub_id, done) {
                         addCubParent(cub_id, parent.id, function(err, id) {
                             updateParentSection(parent.id);
                         });
+                    } else {
+                        updateParentSection(parent.id);
                     }
                 });
             } else {

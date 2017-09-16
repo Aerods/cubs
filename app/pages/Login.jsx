@@ -44,7 +44,7 @@ export default class Login extends React.Component {
             Cookies.group = data.group;
             Cookies.member = member;
             Cookies.admin = data.admin;
-            var cookieExpiry = moment().add(2, 'days').toDate();
+            var cookieExpiry = moment().add(1, 'month').toDate();
             cookie.save('token', data.token, { expires: cookieExpiry });
             cookie.save('leader_id', data.leader_id, { expires: cookieExpiry });
             cookie.save('parent_id', data.parent_id, { expires: cookieExpiry });

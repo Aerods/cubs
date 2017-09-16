@@ -80,7 +80,7 @@ export default class CubForm extends React.Component {
             notes:                  (cub.notes || ''),
             can_photo:              (cub.can_photo || 0),
             waiting:                (cub.waiting || 0),
-            to_scouts:              (cub.to_scout || '')
+            to_scouts:              (cub.to_scouts || '')
         });
     }
 
@@ -168,7 +168,7 @@ export default class CubForm extends React.Component {
                             <label className="control-label" htmlFor="waiting">Waiting list:</label>
                             <CheckboxInput name="waiting" checked={ this.state.waiting } onChange={ this.handleInputChange } />
                         </div>
-                        { Cookies.section == 'Cubs' ? <FormGroup name="to_scouts" type="small" value={ this.state.to_scouts } onChange={ this.handleInputChange } error={ this.state.validation.to_scouts } /> : '' }
+                        <FormGroup name="to_scouts" label="Move up date:" type="small" value={ this.state.to_scouts } onChange={ this.handleInputChange } error={ this.state.validation.to_scouts } />
                     </div>
                 </PageContent>
             </div>

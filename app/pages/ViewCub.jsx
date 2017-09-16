@@ -85,6 +85,7 @@ export default class ViewCub extends React.Component {
 
     setCub() {
         var cub = Store.data[0];
+        if (!cub || !cub.id) browserHistory.push('/');
         this.setState({
             id: cub.id,
             forename: cub.forename,
@@ -142,6 +143,20 @@ export default class ViewCub extends React.Component {
         if (confirmed) {
             actions.destroy({ id: this.props.params.id, dataType: 'cub' });
             browserHistory.push('/');
+        }
+    }
+
+    moveUp(e) {
+        e.preventDefault();
+        var confirmed = Cookies.section == 'Cubs' ? confirm("Move this Cub up to Scouts?") : confirm("Move this Beaver up to Cubs?");
+        if (confirmed) {
+            var cub = this.state;
+            cub.id = this.props.params.id;
+            cub.move_up = (Cookies.section == 'Cubs' ? 'Scouts' : 'Cubs');
+            actions.update(cub);
+            Store.on('cub-update', () => {
+                browserHistory.push('/');
+            });
         }
     }
 
@@ -240,6 +255,7 @@ export default class ViewCub extends React.Component {
                 <SubHeader heading={ "View "+Cookies.member }>
                     <Link to="/cubs"><span className="nav-button">back</span></Link>
                     { this.props.params.id && Cookies.admin ? <a><span className="nav-button" onClick={ this.deleteCub.bind(this) }>Delete</span></a> : '' }
+                    { this.props.params.id && Cookies.admin && this.state.to_scouts ? <a><span className="nav-button" onClick={ this.moveUp.bind(this) }>Move up</span></a> : '' }
                 </SubHeader>
                 <PageContent>
                     <div className="spacer"></div>
@@ -295,7 +311,7 @@ export default class ViewCub extends React.Component {
                                 ) : (
                                     <div className="field-group">
                                         <div className="field-name">To Cubs:</div>
-                                        <div className="field-value">{ this.state.to_cubs || '-' }</div>
+                                        <div className="field-value">{ this.state.to_scouts || '-' }</div>
                                     </div>
                                 ) }
                             </div>
