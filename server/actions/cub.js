@@ -82,7 +82,7 @@ exports.create = function(data, done) {
 exports.update = function(data, done) {
     if (data.move_up) {
         action_log.create('cubs', 'update', data, function() {
-            db.get().query('update cubs set section = ?, start_date=to_scouts, to_scouts=null where id = ?', [data.move_up, data.id], function(err, result) {
+            db.get().query('update cubs set section = ?, from_beavers=to_scouts, to_scouts=null where id = ?', [data.move_up, data.id], function(err, result) {
                 if (err) return done(err);
                 server.emitSocket('cubsUpdate');
                 saveParents(data.cub_parents, data.group, data.id, function(err) {
